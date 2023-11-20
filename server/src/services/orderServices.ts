@@ -1,7 +1,7 @@
 import OrderInterface from "../types/Order"
 import orderDal from '../dal/orderDal'
 
-const addOrder = async (order: OrderInterface) => {
+const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
     const result = await orderDal.addOrder(order)
 
@@ -13,5 +13,18 @@ const addOrder = async (order: OrderInterface) => {
     }
 }
 
-const orderServices = { addOrder }
+const getOrders = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+
+    const result = await orderDal.getOrders(userId)
+
+    if (!Object.keys(result).length) {
+        throw new Error(`there is no such a user number: ${userId}`)
+    }
+
+    else {
+        return result;
+    }
+}
+
+const orderServices = { addOrder, getOrders }
 export default orderServices

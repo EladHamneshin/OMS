@@ -1,7 +1,7 @@
 import orderModel from "../Schemas/OrderModel";
 import OrderInterface from "../types/Order"
 
-const addOrder = async (order: OrderInterface) => {
+const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
     const { cartItems, orderTime, status, total, shippingDetails } = order; cartItems
     const { address, userId, contactNumber, orderType } = shippingDetails;
@@ -29,5 +29,11 @@ const addOrder = async (order: OrderInterface) => {
     return res
 }
 
-const orderDal = { addOrder }
+const getOrders = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+    const res = await orderModel.find({ 'shippingDetails.userId': userId })
+    return res
+
+}
+
+const orderDal = { addOrder, getOrders }
 export default orderDal

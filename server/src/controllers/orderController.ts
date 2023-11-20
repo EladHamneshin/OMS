@@ -13,5 +13,20 @@ const addOrder = async (req: Request, res: Response) => {
     }
 
 }
-const orderController = { addOrder }
+
+const getOrders = async (req: Request, res: Response) => {
+    
+    const userId = req.params.userId
+
+    try {
+        const orders = await orderServices.getOrders(userId)
+        res.status(200).json(orders)
+    }
+    catch (err) {
+        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+        res.status(401).json({ err: errorMessage })
+    }
+
+}
+const orderController = { addOrder, getOrders }
 export default orderController
