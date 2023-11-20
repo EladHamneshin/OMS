@@ -5,7 +5,8 @@ import orderController from "../controllers/orderController";
 const ordersRoutes = express.Router();
 
 ordersRoutes.post("/", orderController.addOrder);
-ordersRoutes.get("/:userId", orderController.getOrders);
+ordersRoutes.get("/:userId", orderController.getOrdersByUserId);
+ordersRoutes.get("/", orderController.getOrders);
 
 
 

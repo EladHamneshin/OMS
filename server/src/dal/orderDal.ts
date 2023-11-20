@@ -29,11 +29,17 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
     return res
 }
 
-const getOrders = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
     const res = await orderModel.find({ 'shippingDetails.userId': userId })
     return res
 
 }
 
-const orderDal = { addOrder, getOrders }
+const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
+    const res = await orderModel.find({})
+    return res
+
+}
+
+const orderDal = { addOrder, getOrdersByUserId, getOrders }
 export default orderDal

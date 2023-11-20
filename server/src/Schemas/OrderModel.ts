@@ -3,7 +3,6 @@ import OrderInterface, { OrderEnum, OrderStatusEnum } from '../types/Order';
 
 const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderInterface>({
 
-    // _id: mongoose.Types.ObjectId,
     cartItems: [{
         productId: String,
         name: String,
