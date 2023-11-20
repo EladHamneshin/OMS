@@ -1,11 +1,12 @@
 import express from "express";
-import userController from "../controllers/userController.js";
+import orderController from "../controllers/orderController";
 
 
-const userRouter = express.Router();
+const ordersRoutes = express.Router();
+
+ordersRoutes.post("/", orderController.addOrder);
+ordersRoutes.get("/:userId", orderController.getOrders);
 
 
-userRouter.get("/", userController.getUser);
-userRouter.post("/register", userController.registerUser);
 
-export default userRouter;
+export default ordersRoutes;

@@ -3,3 +3,5 @@ interface UserInterface {
     Password: string;
     confirm_password: string;
 }
+
+export default UserInterface
