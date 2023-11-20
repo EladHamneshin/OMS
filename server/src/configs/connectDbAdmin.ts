@@ -1,6 +1,6 @@
-import pkg from "pg"
+import pg from "pg"
 
-const { Client } = pkg
+const { Client } = pg
 const config = {
     user: "postgres",
     database: "OMS",

@@ -1,6 +1,7 @@
-import client from './connectDbAdmin';
+import client from '../configs/connectDbAdmin';
 import { AdminUser } from "../types/admin";
-import usersAdmin from "./usersAdmin"
+import usersAdmin from "../models/usersAdmin"
+
 
 const createUserAdmin = async (users: AdminUser[]) => {
     try {
