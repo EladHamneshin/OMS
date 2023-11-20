@@ -7,8 +7,8 @@ import usersAdmin from "../models/usersAdmin"
 const createUserAdmin = async (users: AdminUser[]) => {
     try {
         const query = `
-            INSERT INTO admin_users (first_name, last_name, email, password)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO admin_users (first_name, last_name, email, password, is_admin)
+            VALUES ($1, $2, $3, $4, $5)
         `;
 
         for (const user of users) {
@@ -17,6 +17,7 @@ const createUserAdmin = async (users: AdminUser[]) => {
                 user.lastName,
                 user.email,
                 user.password,
+                user.isAdmin
             ];
 
             const res = await pool.query(query, values);

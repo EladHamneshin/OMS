@@ -6,7 +6,7 @@ CREATE DATABASE omsproj;
 -- אחרי היצירה להוסיף בשורה הראשונה אחרי השטרודל את השם של הדאטה בייס
 
 CREATE TABLE admin_users (
-  id SERIAL PRIMARY KEY, 
+  user_id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL, 
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -14,7 +14,6 @@ CREATE TABLE admin_users (
   is_admin BOOLEAN,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 DROP TABLE admin_users;
 SELECT * FROM admin_users;
 
