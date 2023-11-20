@@ -1,4 +1,5 @@
-import client from '../configs/connectDbAdmin';
+import pool from '../configs/connectDbAdmin';
+
 import { AdminUser } from "../types/admin";
 import usersAdmin from "../models/usersAdmin"
 
@@ -18,9 +19,8 @@ const createUserAdmin = async (users: AdminUser[]) => {
                 user.password,
             ];
 
-            const res = await client.query(query, values);
+            const res = await pool.query(query, values);
             console.log('User admin inserted successfully:', user);
-            return res
         }
 
         return "Users admin inserted successfully";
@@ -29,6 +29,5 @@ const createUserAdmin = async (users: AdminUser[]) => {
         throw error;
     }
 };
-
 
 createUserAdmin(usersAdmin);
