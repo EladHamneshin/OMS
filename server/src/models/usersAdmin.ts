@@ -7,6 +7,7 @@ const usersAdmin: AdminUser[] = [
         lastName: "hacim",
         email: "ari05000@gmail.com",
         password: "1234",
+        isAdmin:false
     },
     {
         id: 0,
@@ -14,6 +15,7 @@ const usersAdmin: AdminUser[] = [
         lastName: "revach",
         email: "Evyatar@gmail.com",
         password: "1111",
+        isAdmin:false
     }
 ];
 
