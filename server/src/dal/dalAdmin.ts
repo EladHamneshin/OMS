@@ -22,7 +22,7 @@ const createUserAdmin = async (users: AdminUser[]) => {
             console.log('User admin inserted successfully:', user);
             return res
         }
-
+        
         return "Users admin inserted successfully";
     } catch (error) {
         console.error('Error inserting user admin:', error);
