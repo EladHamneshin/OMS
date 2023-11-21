@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
-interface Product {
-    id: string;
+
+interface ProductInterface {
+    productId: string;
     name: string;
     description: string;
-    price: number;
-    quantity: number;
+    price: number
+    quantity: number
+
 }
 
 export default Product
