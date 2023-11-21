@@ -3,8 +3,12 @@ import OrderInterface from "../types/Order.js"
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
-    const { cartItems, orderTime, status, total, shippingDetails } = order; cartItems
+
+
+    const { cartItems, orderTime, status, total, shippingDetails } = order; 
     const { address, userId, contactNumber, orderType } = shippingDetails;
+
+
     const { city, country, zipCode, celPhone, street } = address
 
     const res = await orderModel.create({

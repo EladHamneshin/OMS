@@ -10,7 +10,9 @@ import { connectToPg } from './configs/connectDbAdmin.js';
 const port = 3000;
 const app = express();
 
-config(); // Load configuration from .env file
+
+
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
