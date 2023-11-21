@@ -8,7 +8,6 @@ import connectToDatabase from './configs/connectToMongogoDB';
 const port = 3000
 const app = express();
 
-
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
