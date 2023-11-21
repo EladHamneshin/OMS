@@ -2,11 +2,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
 import userRoutes from './routes/userRoutes.js';
-import ordersRoutes from './routes/ordersRoutes.js';
-
 import {config} from "dotenv"
 
-import ordersRoutes from './routes/ordersRoutes';
+import ordersRoutes from './routes/ordersRoutes.js';
 import connectToDatabase from './configs/connectToMongogoDB';
 
 const port = 3000
