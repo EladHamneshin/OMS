@@ -1,25 +1,48 @@
 import OrderInterface from "../types/Order"
 import orderDal from '../dal/orderDal'
-import getAndSetQuantity from "./updateOrder"
-import ProductsQuantities from "../types/productsQuantities"
+import serverCheckOrder from "./serverCheckOrder"
+import ProductsQuantities, { Action } from "../types/ProductsQuantities"
+import { version } from "mongoose"
 
 
 
-const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
+const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
 
-    if (!getAndSetQuantity) {
-        throw new Error('there are products out of stock in this order, please try again')
-    } else {
-        const result = await orderDal.addOrder(order)
-        if (!result) {
-            throw new Error('Something went wrong while placing the order, please try again')
-        }
-        else {
-            return result;
-        }
+    // old version ######
+    // const { cartItems } = order
+
+    // const newCartItems = await serverForEachProduct.updateCart(cartItems)
+
+    // const newOrder: OrderInterface = {
+    //     cartItems: newCartItems,
+    //     shippingDetails: order.shippingDetails,
+    //     orderTime: order.orderTime,
+    //     status: order.status,
+    //     total: order.total
+    // }
+
+    // const result = await orderDal.addOrder(newOrder)
+    // ######
+
+    const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
+    const productsQuantities: ProductsQuantities = {
+        productsArray: productsQuantitiesArray,
+        action: Action.buy
+    }
+    await serverCheckOrder.getAndSetQuantity(productsQuantities)
+    const result = await orderDal.addOrder(order)
+    if (!result) {
+        throw new Error('Something went wrong while placing the order, please try again')
+    }
+    else {
+
+        return result;
     }
 
 }
+
+
+
 
 const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
 

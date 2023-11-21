@@ -1,13 +1,8 @@
 import mongoose from "mongoose";
+import ProductInterface from "./Product";
 
 interface OrderInterface {
-    cartItems: [{
-        productId : string;
-        name: string;
-        description: string;
-        price: number
-        quantity: number
-    }]
+    cartItems: ProductInterface[]
     orderTime: Date;
     status: OrderStatusEnum;
     total: number;

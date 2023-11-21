@@ -7,23 +7,23 @@ const addOrder = async (req: Request, res: Response) => {
         const order = await orderServices.addOrder(req.body)
         res.status(200).json(order)
     }
-    catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
-        res.status(401).json({ err: errorMessage })
+    catch (errer) {
+        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
+        res.status(401).json({ errer: errorMessage })
     }
 
 }
 
 const getOrdersByUserId = async (req: Request, res: Response) => {
-    
+
     const userId = req.params.userId
 
     try {
         const orders = await orderServices.getOrdersByUserId(userId)
         res.status(200).json(orders)
     }
-    catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+    catch (errer) {
+        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 
@@ -36,8 +36,8 @@ const getOrders = async (req: Request, res: Response) => {
         const orders = await orderServices.getOrders()
         res.status(200).json(orders)
     }
-    catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+    catch (errer) {
+        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 
