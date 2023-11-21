@@ -13,18 +13,29 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
     }
 }
 
-const getOrders = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
 
-    const result = await orderDal.getOrders(userId)
+    const result = await orderDal.getOrdersByUserId(userId)
 
     if (!Object.keys(result).length) {
         throw new Error(`there is no such a user number: ${userId}`)
     }
-
     else {
         return result;
     }
 }
 
-const orderServices = { addOrder, getOrders }
+const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
+
+    const result = await orderDal.getOrders()
+
+    if (!Object.keys(result).length) {
+        throw new Error("Something went wrong with the request, please try again")
+    }
+    else {
+        return result;
+    }
+}
+
+const orderServices = { addOrder, getOrdersByUserId, getOrders }
 export default orderServices
