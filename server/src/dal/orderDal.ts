@@ -1,18 +1,17 @@
-import orderModel from "../Schemas/OrderModel";
-import OrderInterface from "../types/Order"
+import orderModel from "../Schemas/OrderModel.js";
+import OrderInterface from "../types/Order.js"
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
-    const { cartItems, orderTime, userId, status, totalPrice, shippingDetails } = order;
-    const { address, contactNumber, orderType } = shippingDetails;
+    const { cartItems, orderTime, status, total, shippingDetails } = order; cartItems
+    const { address, userId, contactNumber, orderType } = shippingDetails;
     const { city, country, zipCode, celPhone, street } = address
 
     const res = await orderModel.create({
         cartItems: cartItems,
         orderTime: orderTime,
-        userId: userId,
         status: status,
-        totalPrice: totalPrice,
+        total: total,
         shippingDetails: {
             address: {
                 city: city,
@@ -21,6 +20,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
                 celPhone: celPhone,
                 street: street
             },
+            userId: userId,
             contactNumber: contactNumber,
             orderType: orderType,
         },

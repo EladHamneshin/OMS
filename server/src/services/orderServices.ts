@@ -1,5 +1,5 @@
-import OrderInterface from "../types/Order"
-import orderDal from '../dal/orderDal'
+import OrderInterface from "../types/Order.js"
+import orderDal from '../dal/orderDal.js'
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
