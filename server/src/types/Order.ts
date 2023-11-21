@@ -1,25 +1,29 @@
 import mongoose from "mongoose";
-import Product from "./Product";
 
 interface OrderInterface {
-    cartItems: Product[];
+    cartItems: [{
+        productId : string;
+        name: string;
+        description: string;
+        price: number
+        quantity: number
+    }]
     orderTime: Date;
-    userId: string;
     status: OrderStatusEnum;
-    totalPrice: number;
+    total: number;
     shippingDetails: {
         address: {
-            country: string;
-            city: string;
-            street: string;
-            celPhone: number;
-            zipCode: number;
+            country: string,
+            city: string,
+            street: string,
+            celPhone: number,
+            zipCode: number
         };
+        userId: string
         contactNumber: string;
-        orderType: OrderEnum;
-    };
+        orderType: OrderEnum
+    }
 }
-
 
 export enum OrderEnum {
     Express = 'Express',
