@@ -1,18 +1,16 @@
-import pg from "pg"
+import pg, { Pool } from "pg";
 
-const { Client } = pg
-const config = {
+const poolConfig = {
     user: "postgres",
-    database: "OMS",
+    database: "omsproj",
     host: "localhost",
     password: "0528302qw",
     port: 5432,
 };
 
-const client = new Client(config);
-client.connect();
+const pool = new Pool(poolConfig);
 
-export default client;
+export default pool;
 
 
 

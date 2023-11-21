@@ -1,4 +1,5 @@
-import client from '../configs/connectDbAdmin';
+import pool from '../configs/connectDbAdmin';
+
 import { AdminUser } from "../types/admin";
 import usersAdmin from "../models/usersAdmin"
 
@@ -6,8 +7,8 @@ import usersAdmin from "../models/usersAdmin"
 const createUserAdmin = async (users: AdminUser[]) => {
     try {
         const query = `
-            INSERT INTO admin_users (first_name, last_name, email, password)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO admin_users (first_name, last_name, email, password, is_admin)
+            VALUES ($1, $2, $3, $4, $5)
         `;
 
         for (const user of users) {
@@ -16,11 +17,11 @@ const createUserAdmin = async (users: AdminUser[]) => {
                 user.lastName,
                 user.email,
                 user.password,
+                user.isAdmin
             ];
 
-            const res = await client.query(query, values);
+            const res = await pool.query(query, values);
             console.log('User admin inserted successfully:', user);
-            return res
         }
 
         return "Users admin inserted successfully";
@@ -29,6 +30,5 @@ const createUserAdmin = async (users: AdminUser[]) => {
         throw error;
     }
 };
-
 
 createUserAdmin(usersAdmin);

@@ -4,4 +4,5 @@ export interface AdminUser {
     lastName: string;
     email: string; 
     password: string;
+    isAdmin :boolean;
   }
