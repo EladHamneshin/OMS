@@ -1,35 +1,40 @@
 import mongoose from 'mongoose';
 import OrderInterface, { OrderEnum, OrderStatusEnum } from '../types/Order';
+import Product from '../types/Product';
+import Order from '../types/Order';
 
-const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderInterface>({
+const orderSchema = new mongoose.Schema<Order>({
+    cartItems: [
+        {
+            id: String,
+            name: String,
+            description: String,
+            price: Number,
+            quantity: Number,
+        },
+    ],
 
-    cartItems: [{
-        productId: String,
-        name: String,
-        description: String,
-        price: Number,
-        quantity: Number
-    }],
+
     orderTime: Date,
+    userId: String,
     status: {
         type: String,
         enum: Object.values(OrderStatusEnum),
     },
-    total: Number,
+    totalPrice: Number,
     shippingDetails: {
         address: {
             country: String,
             city: String,
             street: String,
             celPhone: Number,
-            zipCode: Number
+            zipCode: Number,
         },
-        userId: String,
         contactNumber: String,
         orderType: {
             type: String,
             enum: Object.values(OrderEnum),
-        }
+        },
     }
 }
     , {

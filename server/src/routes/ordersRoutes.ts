@@ -1,6 +1,4 @@
 import express from "express";
-
-import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
 
 
