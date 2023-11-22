@@ -3,7 +3,8 @@ import { AdminUser } from "../types/admin.js";
 import bcrypt from 'bcrypt';
 
 const addUser = async (user: AdminUser) => {
-
+const userExists = `SELECT * FROM admin_users WHERE email = $1`
+if(userExists)throw new Error("user already exists")
     const values = [
         user.first_name,
         user.last_name,
@@ -36,6 +37,7 @@ const getUserByEmail = async (email: string) => {
 
 
 const validatePassword = async (password: string, hashedPassword: string) => {
+    console.log("dal",hashedPassword,password);
     return await bcrypt.compare(password, hashedPassword);
 }
 
