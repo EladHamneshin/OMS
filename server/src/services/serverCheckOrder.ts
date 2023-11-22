@@ -1,59 +1,56 @@
-import OrderInterface from "../types/Order.js"
-import {ProductsQuantities}from "../types/ProductsQuantities.js"
-import ProductInterface from "../types/Product.js"
-import { ProductQuantity } from "../types/ProductsQuantities.js"
+// import OrderInterface from "../types/Order.js"
+// import ProductInterface from "../types/Product.js"
+// import { ProductQuantity } from "../types/ProductsQuantities.js"
 
-const getAndSetQuantity = async (
-    productsArray :  ProductQuantity[]
-): Promise<ProductQuantity[] | undefined> => {
+// const getAndSetQuantity = async (
+//     productsArray :  ProductQuantity[]
+// ): Promise<ProductQuantity[] | undefined> => {
 
-    const PORT = process.env.GLOBAL_FETCH_PORT
-    const IP = process.env.GLOBAL_FETCH_IP
+//     const PORT = process.env.GLOBAL_FETCH_PORT
+//     const IP = process.env.GLOBAL_FETCH_IP
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            // 'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            productsArray: productsArray,
-        })
-    };
-    try {
-        const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
-            requestOptions)
+//     const requestOptions = {
+//         method: 'POST',
+//         headers: {
+//             // 'Authorization': `Bearer ${authToken}`,
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             productsArray: productsArray,
+//         })
+//     };
+//     try {
+//         const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
+//             requestOptions)
 
-        if (response.ok) {
-            return response.json()
-        }
-    } catch (errer) {
-        throw new Error(`The order was not made The server returned: ${errer}`)
-    }
-}
-
+//         if (response.ok) {
+//             return response.json()
+//         }
+//     } catch (errer) {
+//         throw new Error(`The order was not made The server returned: ${errer}`)
+//     }
+// }
 
 
-const creatProductsQuantitiesArray = (cartItems: ProductInterface[]) => {
-    return cartItems.map(({ productId, quantity }) => ({ productId, quantity }))
-}
 
-const updateCart = async (cartItems: ProductInterface[]): Promise<ProductInterface[]> => {
+// const creatProductsQuantitiesArray = (cartItems: ProductInterface[]) => {
+//     return cartItems.map(({ productId, quantity }) => ({ productId, quantity }))
+// }
 
-    const productsQuantitiesArray = creatProductsQuantitiesArray(cartItems)
+// const updateCart = async (cartItems: ProductInterface[]): Promise<ProductInterface[]> => {
 
-    const newProductsQuantitiesArray = await getAndSetQuantity(
-        productsQuantitiesArray,
-    )
+//     const productsQuantitiesArray = creatProductsQuantitiesArray(cartItems)
 
-    return cartItems.map(product => {
-        const update = newProductsQuantitiesArray!.find(u => u.productId === product.productId);
-        if (update) {
-            return { ...product, quantity: update.quantity };
-        }
-        return product;
-    });
-}
+//     const newProductsQuantitiesArray = await getAndSetQuantity(productsQuantitiesArray)
 
-const serverCheckOrder = { getAndSetQuantity, updateCart, creatProductsQuantitiesArray }
-export default serverCheckOrder 
+//     return cartItems.map(product => {
+//         const update = newProductsQuantitiesArray!.find(u => u.productId === product.productId);
+//         if (update) {
+//             return { ...product, quantity: update.quantity };
+//         }
+//         return product;
+//     });
+// }
+
+// const serverCheckOrder = { getAndSetQuantity, updateCart, creatProductsQuantitiesArray }
+// export default serverCheckOrder 

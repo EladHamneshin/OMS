@@ -1,9 +1,11 @@
-/** @type {import('jest').Config} */
-const config = {
-  verbose: true,
-  testRegex: '/dist/.*\\.test\\.js$',
-};
+// jest.config.js
 
-module.exports = config;
-
- 
+module.exports = {
+    verbose: true,
+    testRegex: '/dist/.*\\.test\\.js$',
+    transform: {},
+    transformIgnorePatterns: [],
+    moduleFileExtensions: ['js', 'json', 'node'],
+    // ניתן להוסיף אפשרויות נוספות כמו testEnvironment או כל תצורה נוספת לפי הצורך
+  };
+  

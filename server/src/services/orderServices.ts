@@ -1,11 +1,7 @@
-import OrderInterface from "../types/Order.js"
-import orderDal from '../dal/orderDal.js'
-import serverCheckOrder from "./serverCheckOrder.js"
-import {ProductsQuantities} from "../types/ProductsQuantities.js"
 import OrderInterface, { ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
-import serverCheckOrder from "./serverCheckOrder.js"
-import ProductsQuantities from "../types/ProductsQuantities.js"
+// import serverCheckOrder from "./serverCheckOrder.js"
+// import ProductsQuantities from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
 
@@ -48,11 +44,11 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
         throw new Error('Something went wrong while placing the order, please try again')
     }
     else {
-    const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
+    // const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
 
-    const response = await serverCheckOrder.getAndSetQuantity(productsQuantitiesArray)
-    if (response) {
-        const result = await orderDal.addOrder(order)
+    // const response = await serverCheckOrder.getAndSetQuantity(productsQuantitiesArray)
+    // if (response) {
+    //     const result = await orderDal.addOrder(order)
         if (!result) {
             throw new Error('Something went wrong while placing the order, please try again')
         }
@@ -62,20 +58,21 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
     }
 }
 
-}
 
 
-const getOrdersByUserId = async (userId: string) => {
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]> => {
+    try {
+        const result = await orderDal.getOrdersByUserId(userId);
 
-    const result = await orderDal.getOrdersByUserId(userId)
-
-    if (!Object.keys(result).length) {
-        throw new Error(`there is no such a user number: ${userId}`)
-    }
-    else {
+        if (!result) {
+            throw new Error(`There are no orders for user number: ${userId}`);
+        }
         return result;
+    } catch (error) {
+        throw new Error(`Error while fetching orders: ${error}`);
     }
-}
+};
+
 
 const getOrders = async () => {
 

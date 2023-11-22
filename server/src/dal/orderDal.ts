@@ -8,8 +8,9 @@ const addOrder = async (order: OrderInterface) => {
     return res
 }
 
-const getOrdersByUserId = async (userId: string) => {
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]>  => {
     const res = await orderModel.find({ 'order.userId': userId })
+    return res
 }
 
 const getOrders = async () => {
