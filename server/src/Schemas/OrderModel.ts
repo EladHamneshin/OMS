@@ -10,12 +10,13 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
         price: Number,
         quantity: Number
     }],
+    userId: String,
     orderTime: Date,
     status: {
         type: String,
         enum: Object.values(OrderStatusEnum),
     },
-    total: Number,
+    totalPrice: Number,
     shippingDetails: {
         address: {
             country: String,
@@ -24,7 +25,6 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
             celPhone: Number,
             zipCode: Number
         },
-        userId: String,
         contactNumber: String,
         orderType: {
             type: String,
