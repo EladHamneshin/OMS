@@ -50,7 +50,6 @@ const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
     const res = await orderModel.find({})
     return res
-
 }
 
 const updateOrders = async (

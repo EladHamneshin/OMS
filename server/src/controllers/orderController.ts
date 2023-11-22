@@ -4,7 +4,8 @@ import mongoose from "mongoose"
 import { ChangeStatusBody, OrderStatusEnum } from "../types/Order.js"
 
 const addOrder = async (req: Request, res: Response) => {
-
+    console.log(1);
+    
     try {
         const order = await orderServices.addOrder(req.body)
         res.status(200).json(order)
