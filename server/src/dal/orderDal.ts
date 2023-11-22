@@ -7,7 +7,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
     await connectToDatabase();
 
-    const { cartItems, userId, orderTime, status, totalPrice, shippingDetails } = order;
+    const { cartItems, userId, userName, userEmail, orderTime, status, totalPrice, shippingDetails } = order;
     const { address, contactNumber, orderType } = shippingDetails;
     const { city, country, zipCode, celPhone, street } = address
 
@@ -15,6 +15,8 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
         cartItems: cartItems,
         orderTime: orderTime,
         userId: userId,
+        userName: userName,
+        userEmail: userEmail,
         status: status,
         totalPrice: totalPrice,
         shippingDetails: {
