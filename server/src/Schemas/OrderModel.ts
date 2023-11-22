@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import OrderInterface, { OrderEnum, OrderStatusEnum } from '../types/Order';
+import OrderInterface, { OrderEnum, OrderStatusEnum } from '../types/Order.js';
 
 const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderInterface>({
 
@@ -10,12 +10,15 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
         price: Number,
         quantity: Number
     }],
+    userId: String,
+    userName: String,
+    userEmail: String,
     orderTime: Date,
     status: {
         type: String,
         enum: Object.values(OrderStatusEnum),
     },
-    total: Number,
+    totalPrice: Number,
     shippingDetails: {
         address: {
             country: String,
@@ -24,7 +27,6 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
             celPhone: Number,
             zipCode: Number
         },
-        userId: String,
         contactNumber: String,
         orderType: {
             type: String,

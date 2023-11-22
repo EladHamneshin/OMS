@@ -1,16 +1,14 @@
 import mongoose from "mongoose";
+import Product from "./Product.js";
 
 interface OrderInterface {
-    cartItems: [{
-        productId : string;
-        name: string;
-        description: string;
-        price: number
-        quantity: number
-    }]
+    cartItems: Product[];
+    userId: string;
+    userName: string;
+    userEmail: string;
     orderTime: Date;
     status: OrderStatusEnum;
-    total: number;
+    totalPrice: number;
     shippingDetails: {
         address: {
             country: string,
@@ -19,7 +17,6 @@ interface OrderInterface {
             celPhone: number,
             zipCode: number
         };
-        userId: string
         contactNumber: string;
         orderType: OrderEnum
     }
@@ -37,4 +34,9 @@ export enum OrderStatusEnum {
     Received = 'Received',
     Canceled = 'Canceled'
 }
+
+export interface ChangeStatusBody {
+    status: OrderStatusEnum
+}
+
 export default OrderInterface
