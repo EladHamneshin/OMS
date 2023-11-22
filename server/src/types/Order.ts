@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import ProductInterface from "./Product";
+import Product from "./Product.js";
 
 interface OrderInterface {
-    cartItems: ProductInterface[]
+    cartItems: Product[];
+    userId: string;
     orderTime: Date;
     status: OrderStatusEnum;
-    total: number;
+    totalPrice: number;
     shippingDetails: {
         address: {
             country: string,
@@ -14,7 +15,6 @@ interface OrderInterface {
             celPhone: number,
             zipCode: number
         };
-        userId: string
         contactNumber: string;
         orderType: OrderEnum
     }

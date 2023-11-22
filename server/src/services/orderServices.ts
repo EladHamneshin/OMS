@@ -1,3 +1,4 @@
+
 import OrderInterface from "../types/Order"
 import orderDal from '../dal/orderDal'
 import serverCheckOrder from "./serverCheckOrder"
@@ -5,8 +6,7 @@ import ProductsQuantities, { Action } from "../types/ProductsQuantities"
 
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
-
-    // old version ######
+   // old version ######
     // const { cartItems } = order
 
     // const newCartItems = await serverForEachProduct.updateCart(cartItems)
