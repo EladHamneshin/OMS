@@ -5,6 +5,8 @@ interface OrderInterface {
     cartItems: Product[];
     userId: string;
     orderTime: Date;
+    userName: String,
+    userEmail: String,
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: {

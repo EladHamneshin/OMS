@@ -12,14 +12,12 @@ if(userExists)throw new Error("user already exists")
         user.password,
         user.isAdmin
     ];
-    // console.log(user);
     
     const query = `
             INSERT INTO admin_users (first_name, last_name, email, password, is_admin)
             VALUES ($1, $2, $3, $4, $5)
         `;
     const res = await pool.query(query, values);
-    console.log(res);
     
     if(res) return "Users admin inserted successfully";
     // console.log('User admin inserted successfully:', user);

@@ -14,7 +14,6 @@ CREATE TABLE admin_users (
   is_admin BOOLEAN,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-DROP TABLE admin_users;
+
 SELECT * FROM admin_users;
 
-SELECT usename FROM pg_user WHERE usename = 'projOsm';

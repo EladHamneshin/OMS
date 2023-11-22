@@ -1,11 +1,11 @@
 
-import OrderInterface from "../types/Order"
-import orderDal from '../dal/orderDal'
-import serverCheckOrder from "./serverCheckOrder"
-import ProductsQuantities, { Action } from "../types/ProductsQuantities"
+import OrderInterface from "../types/Order.js"
+import orderDal from '../dal/orderDal.js'
+import serverCheckOrder from "./serverCheckOrder.js"
+import ProductsQuantities, { Action } from "../types/ProductsQuantities.js"
 
 
-const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
+const addOrder = async (order: OrderInterface) => {
    // old version ######
     // const { cartItems } = order
 
@@ -22,12 +22,12 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
     // const result = await orderDal.addOrder(newOrder)
     // ######
 
-    const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
-    const productsQuantities: ProductsQuantities = {
-        productsArray: productsQuantitiesArray,
-        action: Action.buy
-    }
-    await serverCheckOrder.getAndSetQuantity(productsQuantities)
+    // const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
+    // const productsQuantities: ProductsQuantities = {
+    //     productsArray: productsQuantitiesArray,
+    //     action: Action.buy
+    // }
+    // await serverCheckOrder.getAndSetQuantity(productsQuantities)
     const result = await orderDal.addOrder(order)
     if (!result) {
         throw new Error('Something went wrong while placing the order, please try again')
@@ -42,7 +42,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
 
 
 
-const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+const getOrdersByUserId = async (userId: string) => {
 
     const result = await orderDal.getOrdersByUserId(userId)
 
@@ -54,7 +54,7 @@ const getOrdersByUserId = async (userId: string): Promise<OrderInterface | Order
     }
 }
 
-const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
+const getOrders = async () => {
 
     const result = await orderDal.getOrders()
 
