@@ -2,8 +2,6 @@ import OrderInterface from "../types/Order"
 import orderDal from '../dal/orderDal'
 import serverCheckOrder from "./serverCheckOrder"
 import ProductsQuantities, { Action } from "../types/ProductsQuantities"
-import { version } from "mongoose"
-
 
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {

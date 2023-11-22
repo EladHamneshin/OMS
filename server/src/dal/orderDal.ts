@@ -33,12 +33,14 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 }
 
 const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
+    await connectToDatabase()
     const res = await orderModel.find({ 'shippingDetails.userId': userId })
     return res
 
 }
 
 const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
+    await connectToDatabase()
     const res = await orderModel.find({})
     return res
 
