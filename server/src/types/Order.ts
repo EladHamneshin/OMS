@@ -4,6 +4,8 @@ import Product from "./Product.js";
 interface OrderInterface {
     cartItems: Product[];
     userId: string;
+    userName: string;
+    userEmail: string;
     orderTime: Date;
     userName: String,
     userEmail: String,
@@ -34,4 +36,9 @@ export enum OrderStatusEnum {
     Received = 'Received',
     Canceled = 'Canceled'
 }
+
+export interface ChangeStatusBody {
+    status: OrderStatusEnum
+}
+
 export default OrderInterface

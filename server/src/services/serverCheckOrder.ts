@@ -1,9 +1,10 @@
 import OrderInterface from "../types/Order.js"
+import {ProductsQuantities}from "../types/ProductsQuantities.js"
 import ProductInterface from "../types/Product.js"
-import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
+import { ProductQuantity } from "../types/ProductsQuantities.js"
 
 const getAndSetQuantity = async (
-    { productsArray, action }: ProductsQuantities
+    productsArray :  ProductQuantity[]
 ): Promise<ProductQuantity[] | undefined> => {
 
     const PORT = process.env.GLOBAL_FETCH_PORT
@@ -17,14 +18,17 @@ const getAndSetQuantity = async (
         },
         body: JSON.stringify({
             productsArray: productsArray,
-            action: action
         })
     };
-    const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
-        requestOptions)
+    try {
+        const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
+            requestOptions)
 
-    if (response.ok) {
-        return response.json()
+        if (response.ok) {
+            return response.json()
+        }
+    } catch (errer) {
+        throw new Error(`The order was not made The server returned: ${errer}`)
     }
 }
 
@@ -38,10 +42,9 @@ const updateCart = async (cartItems: ProductInterface[]): Promise<ProductInterfa
 
     const productsQuantitiesArray = creatProductsQuantitiesArray(cartItems)
 
-    const newProductsQuantitiesArray = await getAndSetQuantity({
-        productsArray: productsQuantitiesArray,
-        action: Action.buy
-    })
+    const newProductsQuantitiesArray = await getAndSetQuantity(
+        productsQuantitiesArray,
+    )
 
     return cartItems.map(product => {
         const update = newProductsQuantitiesArray!.find(u => u.productId === product.productId);
