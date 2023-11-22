@@ -11,6 +11,8 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
         quantity: Number
     }],
     userId: String,
+    userName: String,
+    userEmail: String,
     orderTime: Date,
     status: {
         type: String,
