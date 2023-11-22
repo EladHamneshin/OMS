@@ -4,11 +4,8 @@ import Product from "./Product.js";
 interface OrderInterface {
     cartItems: Product[];
     userId: string;
-    userName: string;
-    userEmail: string;
     orderTime: Date;
-    userName: String,
-    userEmail: String,
+
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: {

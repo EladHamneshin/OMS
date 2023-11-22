@@ -1,8 +1,7 @@
-
-import OrderInterface from "../types/Order.js"
+import OrderInterface from "../types/Order"
 import orderDal from '../dal/orderDal.js'
 import serverCheckOrder from "./serverCheckOrder.js"
-import ProductsQuantities, { Action } from "../types/ProductsQuantities.js"
+import {ProductsQuantities} from "../types/ProductsQuantities.js"
 import OrderInterface, { ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
 import serverCheckOrder from "./serverCheckOrder.js"
@@ -64,7 +63,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
 }
 
 
-
+}
 
 
 const getOrdersByUserId = async (userId: string) => {
@@ -108,5 +107,4 @@ const updateOrders = async (
     }
 }
 
-const orderServices = { addOrder, getOrdersByUserId, getOrders, updateOrders }
-export default orderServices
+export default { addOrder, getOrdersByUserId, getOrders, updateOrders }
