@@ -2,12 +2,12 @@ import OrderInterface from "../types/Order"
 import ProductInterface from "../types/Product"
 import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities"
 
-const PORT = process.env.GLOBAL_FETCH_PORT
-const IP = process.env.GLOBAL_FETCH_IP
-
 const getAndSetQuantity = async (
     { productsArray, action }: ProductsQuantities
 ): Promise<ProductQuantity[] | undefined> => {
+
+    const PORT = process.env.GLOBAL_FETCH_PORT
+    const IP = process.env.GLOBAL_FETCH_IP
 
     const requestOptions = {
         method: 'POST',
