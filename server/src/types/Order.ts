@@ -32,4 +32,9 @@ export enum OrderStatusEnum {
     Received = 'Received',
     Canceled = 'Canceled'
 }
+
+export interface ChangeStatusBody {
+    status: OrderStatusEnum
+}
+
 export default OrderInterface
