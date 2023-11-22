@@ -8,7 +8,7 @@ const addOrder = asyncHandler(async (req: Request, res: Response) => {
         res.status(200).json(order)
     }
     catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+        const errorMessage = err instanceof Error ? err.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 
@@ -22,7 +22,7 @@ const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
         res.status(200).json(orders)
     }
     catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+        const errorMessage = err instanceof Error ? err.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 
@@ -34,7 +34,7 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
         res.status(200).json(orders)
     }
     catch (err) {
-        const errorMessage: string = err instanceof Error ? err.message : "An error occurred";
+        const errorMessage= err instanceof Error ? err.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 }
