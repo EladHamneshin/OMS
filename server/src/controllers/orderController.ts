@@ -1,48 +1,51 @@
 import { Request, Response } from "express"
-import orderServices from '../services/orderServices.js'
+import orderServices from '../services/orderServices'
+import asyncHandler from "express-async-handler";
+
 import mongoose from "mongoose"
 import { ChangeStatusBody, OrderStatusEnum } from "../types/Order.js"
 
-const addOrder = async (req: Request, res: Response) => {
-    console.log(1);
-    
+const addOrder = asyncHandler(async (req: Request, res: Response) => {
     try {
         const order = await orderServices.addOrder(req.body)
         res.status(200).json(order)
     }
-    catch (errer) {
-        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
-        res.status(401).json({ errer: errorMessage })
-    }
-
-}
-
-const getOrdersByUserId = async (req: Request, res: Response) => {
-
-    const userId = req.params.userId
-
-    try {
-        const orders = await orderServices.getOrdersByUserId(userId)
-        res.status(200).json(orders)
-    }
-    catch (errer) {
-        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
+    catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 
 }
+)
 
-const getOrders = async (req: Request, res: Response) => {
+const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    try {
+        const orders = await orderServices.getOrdersByUserId(userId)
+        res.status(200).json(orders)
+    }
+    catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "An error occurred";
+        res.status(401).json({ err: errorMessage })
+    }
+
+}
+)
+
+const getOrders = asyncHandler(async (req: Request, res: Response) => {
 
     try {
         const orders = await orderServices.getOrders()
         res.status(200).json(orders)
     }
-    catch (errer) {
-        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
+    catch (err) {
+        const errorMessage= err instanceof Error ? err.message : "An error occurred";
         res.status(401).json({ err: errorMessage })
     }
 }
+
+)
+
 
 const updateOrders = async (req: Request, res: Response) => {
     console.log(req.body);
@@ -59,5 +62,6 @@ const updateOrders = async (req: Request, res: Response) => {
     }
 }
 
-const orderController = { addOrder, getOrdersByUserId, getOrders, updateOrders }
-export default orderController
+
+export default  { addOrder, getOrdersByUserId, getOrders, updateOrders }
+
