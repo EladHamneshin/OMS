@@ -10,16 +10,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
+import { register } from "../api/userApi"
 
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
   const navigate = useNavigate()
 
   const [formData, setFormData] = React.useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
   });
@@ -29,25 +31,37 @@ export default function SignUp() {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
 
-    setFormValid(
-      formData.firstName !== '' &&
-      formData.lastName !== '' &&
-      formData.email !== '' &&
-      formData.password !== ''
-    );
+      setFormValid(
+        formData.first_name !== '' &&
+        formData.last_name !== '' &&
+        formData.email !== '' &&
+        formData.password !== '' 
+      );
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-  };
+    const data = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      password: formData.password,
+    };
 
-  const register = () => {
-    // const chackUser = await
-    // if (checkUser) {
-    navigate('/signin')
-    // }
-  }
+    try {
+      // Call the register function and wait for the response
+      const response = await register(data);
+
+      if (response.status === 200) {
+        // Registration successful, you can redirect or perform other actions
+        navigate('/login')
+      } else {
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -72,10 +86,10 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="first_name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="first_name"
                   label="First Name"
                   autoFocus
                   onChange={handleChange}
@@ -123,14 +137,14 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled={!formValid}
-              onClick={() => { register() }}
+              // disabled={!formValid}
+              onClick={() => { handleSubmit }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to={"/signin"}>
+                <Link to={"/login"}>
                   Already have an account? Sign in
                 </Link>
               </Grid>
