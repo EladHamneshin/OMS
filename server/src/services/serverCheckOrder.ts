@@ -1,6 +1,6 @@
-import OrderInterface from "../types/Order"
-import ProductInterface from "../types/Product"
-import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities"
+import OrderInterface from "../types/Order.js"
+import ProductInterface from "../types/Product.js"
+import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
 
 const getAndSetQuantity = async (
     { productsArray, action }: ProductsQuantities
