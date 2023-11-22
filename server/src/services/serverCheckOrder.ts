@@ -1,4 +1,7 @@
+
+import OrderInterface from "../types/Order.js"
 import ProductInterface from "../types/Product.js"
+import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
 import { ProductQuantity } from "../types/ProductsQuantities.js"
 
 const getAndSetQuantity = async (
