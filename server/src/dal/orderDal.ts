@@ -22,7 +22,6 @@ const updateOrders = async (
     newStatus: ChangeStatusBody
 ): Promise<OrderInterface | OrderInterface[] | null> => {
 
-    await connectToDatabase();
 
     const filter = { _id: orderId }
     const updateStatus = { status: newStatus.status }

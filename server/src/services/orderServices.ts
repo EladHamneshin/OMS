@@ -1,4 +1,4 @@
-import OrderInterface from "../types/Order"
+import OrderInterface from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
 import serverCheckOrder from "./serverCheckOrder.js"
 import {ProductsQuantities} from "../types/ProductsQuantities.js"
@@ -62,7 +62,6 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
     }
 }
 
-
 }
 
 
@@ -94,8 +93,6 @@ const updateOrders = async (
     orderId: mongoose.Types.ObjectId,
     newStatus: ChangeStatusBody
 ): Promise<OrderInterface | OrderInterface[] | null> => {
-
-
 
     const result = await orderDal.updateOrders(orderId, newStatus)
 
