@@ -2,7 +2,8 @@ import { Request, Response } from "express"
 import orderServices from '../services/orderServices'
 
 const addOrder = async (req: Request, res: Response) => {
-
+    console.log(1);
+    
     try {
         const order = await orderServices.addOrder(req.body)
         res.status(200).json(order)

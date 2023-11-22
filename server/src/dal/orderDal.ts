@@ -38,7 +38,6 @@ const getOrdersByUserId = async (userId: string): Promise<OrderInterface | Order
 const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
     const res = await orderModel.find({})
     return res
-
 }
 
 const orderDal = { addOrder, getOrdersByUserId, getOrders }
