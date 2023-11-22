@@ -16,13 +16,14 @@ const registerUser = async (req: Request, res: Response) => {
 }
 
 const validateLogin = async (email: string, password: string) => {
-    const user:any = await userService.getUserByEmailService(email);
+    const user: any = await userService.getUserByEmailService(email);
     if (!user) {
-        throw { error: "User not found" };
+        throw new Error("User not found");
     }
-    const isPasswordValid = await userService.validatePasswordService(password, user.password);
+    const hash = user[0]
+    const isPasswordValid = await userService.validatePasswordService(password, hash.password)
     if (!isPasswordValid) {
-        throw { error: "Invalid password" };
+        throw new Error("Invalid password");
     }
     return user;
 }
@@ -31,9 +32,9 @@ const loginController = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
         //   validate
-        const user:any = await validateLogin(email, password);
-        console.log("userr",user);
-        
+        const user: any = await validateLogin(email, password);
+        console.log("userr", user);
+
         //   create token
         const userEmail = req.body.email;
         const token = createToken(userEmail);
