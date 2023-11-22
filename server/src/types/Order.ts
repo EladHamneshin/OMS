@@ -5,6 +5,8 @@ interface OrderInterface {
     cartItems: Product[];
     userId: string;
     orderTime: Date;
+    userName: String,
+    userEmail: String,
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: {
@@ -32,4 +34,9 @@ export enum OrderStatusEnum {
     Received = 'Received',
     Canceled = 'Canceled'
 }
+
+export interface ChangeStatusBody {
+    status: OrderStatusEnum
+}
+
 export default OrderInterface

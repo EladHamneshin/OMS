@@ -1,44 +1,35 @@
+import mongoose from "mongoose";
 import orderModel from "../Schemas/OrderModel.js";
-import OrderInterface from "../types/Order.js"
+import OrderInterface, { ChangeStatusBody } from "../types/Order.js"
+import connectToDatabase from "../configs/connectToMongogoDB.js";
 
-const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
-    const { cartItems, userId, orderTime, status, totalPrice, shippingDetails } = order;
-    const { address, contactNumber, orderType } = shippingDetails;
-    const { city, country, zipCode, celPhone, street } = address
-
-    const res = await orderModel.create({
-        cartItems: cartItems,
-        orderTime: orderTime,
-        userId: userId,
-        status: status,
-        totalPrice: totalPrice,
-        shippingDetails: {
-            address: {
-                city: city,
-                country: country,
-                zipCode: zipCode,
-                celPhone: celPhone,
-                street: street
-            },
-            contactNumber: contactNumber,
-            orderType: orderType,
-        },
-    });
-
+const addOrder = async (order: OrderInterface) => {
+    const res = await orderModel.create({order});
     return res
 }
 
-const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
-    const res = await orderModel.find({ 'shippingDetails.userId': userId })
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]>  => {
+    const res = await orderModel.find({ 'order.userId': userId })
     return res
-
 }
 
-const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
+const getOrders = async () => {
     const res = await orderModel.find({})
     return res
-
 }
 
-const orderDal = { addOrder, getOrdersByUserId, getOrders }
-export default orderDal
+const updateOrders = async (
+    orderId: mongoose.Types.ObjectId,
+    newStatus: ChangeStatusBody
+): Promise<OrderInterface | OrderInterface[] | null> => {
+
+
+    const filter = { _id: orderId }
+    const updateStatus = { status: newStatus.status }
+    const res = await orderModel.findByIdAndUpdate(filter, updateStatus, {
+        new: true
+    })
+    return res
+}
+
+export default { addOrder, getOrdersByUserId, getOrders, updateOrders }

@@ -1,13 +1,8 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
-const pool = new Pool({
-    user: "postgres",
-    database: "omsproj",
-    host: "localhost",
-    password: "0528302qw",
-    port: 5432,
-});
+const pool = new Pool();
+
 
 export const connectToPg = async () => {
     try {

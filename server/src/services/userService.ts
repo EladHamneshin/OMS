@@ -3,6 +3,7 @@ import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
 
 const register = async (userInput: AdminUser) => {
+console.log(userInput);
 
     // Validate email format
     validate.validateEmail(userInput.email);
@@ -31,8 +32,6 @@ const getUserByEmailService = async (email: string) => {
 
 const validatePasswordService = async (password: string, hashedPassword: string) => {
     const data = await userDal.validatePassword(password, hashedPassword);
-    console.log("service data",data);
-    
     if (data) return data
     throw new Error("error validate Password .service")
 }
