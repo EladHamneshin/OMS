@@ -38,6 +38,7 @@ const loginController = async (req: Request, res: Response) => {
         const userEmail = req.body.email;
         const userAdmin = req.body.isAdmin
         const token = createToken(userEmail,userAdmin);
+        res.cookie('token', token, { httpOnly: true });
         return res.status(200).json({ token, user, message: "Login successful" });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
