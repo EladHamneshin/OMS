@@ -1,8 +1,8 @@
 
-import OrderInterface, { ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import OrderInterface, { ChangeOrderBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
-import serverCheckOrder from "./serverCheckOrder.js"
-import ProductsQuantities from "../types/ProductsQuantities.js"
+import serverCheckOrder from "./checkOrder.js"
+import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
 
@@ -34,8 +34,12 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
     }
 
     const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
+    const productsQuantities: ProductsQuantities = {
+        productsArray: productsQuantitiesArray,
+        action: Action.buy
+    }
 
-    const response = await serverCheckOrder.getAndSetQuantity(productsQuantitiesArray)
+    const response = await serverCheckOrder.getAndSetQuantity(productsQuantities)
     if (response) {
         const result = await orderDal.addOrder(order)
         if (!result) {
@@ -74,12 +78,10 @@ const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
 const updateOrders = async (
     orderId: mongoose.Types.ObjectId,
-    newStatus: ChangeStatusBody
-): Promise<OrderInterface | OrderInterface[] | null> => {
+    changeOrderBody: ChangeOrderBody
+): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
 
-
-
-    const result = await orderDal.updateOrders(orderId, newStatus)
+    const result = await orderDal.updateOrders(orderId, changeOrderBody)
 
     if (!Object.keys(result!).length) {
         throw new Error("Something went wrong with the request, please try again")

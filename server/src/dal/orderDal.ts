@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 import orderModel from "../Schemas/OrderModel.js";
-import OrderInterface, { ChangeStatusBody } from "../types/Order.js"
+import OrderInterface, { ChangeOrderBody } from "../types/Order.js"
 import connectToDatabase from "../configs/connectToMongogoDB.js";
+import serverCheckOrder from "../services/checkOrder.js";
+import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
     await connectToDatabase();
 
-    const { cartItems, userId, userName, userEmail, orderTime, status, totalPrice, shippingDetails } = order;
+    const { cartItems, userId, userName, userEmail, celPhone, orderTime, status, totalPrice, shippingDetails } = order;
     const { address, contactNumber, orderType } = shippingDetails;
-    const { city, country, zipCode, celPhone, street } = address
+    const { city, country, zipCode, street } = address
 
     const res = await orderModel.create({
         cartItems: cartItems,
@@ -17,6 +19,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
         userId: userId,
         userName: userName,
         userEmail: userEmail,
+        celPhone: celPhone,
         status: status,
         totalPrice: totalPrice,
         shippingDetails: {
@@ -24,7 +27,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
                 city: city,
                 country: country,
                 zipCode: zipCode,
-                celPhone: celPhone,
+
                 street: street
             },
             contactNumber: contactNumber,
@@ -39,7 +42,7 @@ const getOrdersByUserId = async (userId: string): Promise<OrderInterface | Order
 
     await connectToDatabase();
 
-    const res = await orderModel.find({ 'shippingDetails.userId': userId })
+    const res = await orderModel.find({ userId: userId })
     return res
 
 }
@@ -55,17 +58,47 @@ const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
 const updateOrders = async (
     orderId: mongoose.Types.ObjectId,
-    newStatus: ChangeStatusBody
-): Promise<OrderInterface | OrderInterface[] | null> => {
+    changeOrderBody: ChangeOrderBody
+): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
 
     await connectToDatabase();
 
-    const filter = { _id: orderId }
-    const updateStatus = { status: newStatus.status }
-    const res = await orderModel.findByIdAndUpdate(filter, updateStatus, {
-        new: true
-    })
-    return res
+    const immutableStatuses: string[] = ["Sent", "Received", "Canceled"]
+
+    const existingOrder = await orderModel.findById({ _id: orderId, new: true })
+    if (!existingOrder) {
+        return null;
+    }
+
+    const orderStatus = existingOrder.status
+
+    if (immutableStatuses.includes(orderStatus)) {
+        throw new Error('This order cannot be edited, as it has been processed')
+    }
+
+    if (changeOrderBody.status === "Canceled") {
+
+        const productQuantityArray = serverCheckOrder.creatProductsQuantitiesArray(existingOrder!.cartItems)
+        const productsQuantitiesInterface: ProductsQuantities = {
+            productsArray: productQuantityArray,
+            action: Action.return
+        }
+        const res = await serverCheckOrder.getAndSetQuantity(productsQuantitiesInterface)
+        return res
+
+    }
+    if (changeOrderBody.status) {
+        existingOrder.status = changeOrderBody.status;
+    }
+    if (changeOrderBody.celPhone) {
+        existingOrder.celPhone = changeOrderBody.celPhone;
+    }
+    if (changeOrderBody.address) {
+        existingOrder.shippingDetails.address = changeOrderBody.address;
+    }
+
+    const updatedOrder = await existingOrder.save();
+    return updatedOrder;
 }
 
 const orderDal = { addOrder, getOrdersByUserId, getOrders, updateOrders }

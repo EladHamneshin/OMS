@@ -6,6 +6,7 @@ interface OrderInterface {
     userId: string;
     userName: string;
     userEmail: string;
+    celPhone: number,
     orderTime: Date;
     status: OrderStatusEnum;
     totalPrice: number;
@@ -14,7 +15,6 @@ interface OrderInterface {
             country: string,
             city: string,
             street: string,
-            celPhone: number,
             zipCode: number
         };
         contactNumber: string;
@@ -35,8 +35,15 @@ export enum OrderStatusEnum {
     Canceled = 'Canceled'
 }
 
-export interface ChangeStatusBody {
-    status: OrderStatusEnum
+export interface ChangeOrderBody {
+    status?: OrderStatusEnum,
+    celPhone?: number,
+    address?: {
+        country: string,
+        city: string,
+        street: string,
+        zipCode: number
+    };
 }
 
 export default OrderInterface

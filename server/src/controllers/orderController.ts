@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import orderServices from '../services/orderServices.js'
 import mongoose from "mongoose"
-import { ChangeStatusBody, OrderStatusEnum } from "../types/Order.js"
+import { ChangeOrderBody, OrderStatusEnum } from "../types/Order.js"
 
 const addOrder = async (req: Request, res: Response) => {
 
@@ -44,12 +44,12 @@ const getOrders = async (req: Request, res: Response) => {
 }
 
 const updateOrders = async (req: Request, res: Response) => {
-    console.log(req.body);
+
     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
-    const newStatus = req.body as unknown as ChangeStatusBody
+    const changeOrderBody = req.body as unknown as ChangeOrderBody
 
     try {
-        const response = await orderServices.updateOrders(orderId, newStatus)
+        const response = await orderServices.updateOrders(orderId, changeOrderBody)
         res.status(200).json(response)
     }
     catch (errer) {
