@@ -9,9 +9,7 @@ import RequestError from "../utils/RequestError.js"
 import STATUS_CODES from "../utils/StatusCodes.js"
 
 
-const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
-
-
+const addOrder = async (order: OrderInterface) => {
 
     if (!isEnumValue(order.status, OrderStatusEnum)) {
         const validStatusValues = Object.values(OrderStatusEnum).join(', ');
