@@ -8,20 +8,17 @@ import ordersRoutes from './routes/ordersRoutes.js';
 import connectToDatabase from './configs/connectToMongogoDB.js';
 import { connectToPg } from './configs/connectDbAdmin.js';
 import orderModel from './Schemas/OrderModel.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
-
-
-
 dotenv.config();
-
-
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/orders', ordersRoutes);
@@ -30,8 +27,10 @@ const port = process.env.PORT || 3000 ;
 
 
 app.listen(port, async () => {
+    const a = new orderModel()
+
   await connectToDatabase();
-  await connectToPg();
+  // await connectToPg();
   console.log(`Server is running at port ${port}`);
 });
 

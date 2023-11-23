@@ -1,21 +1,39 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import asyncHandler from 'express-async-handler';
+import RequestError from "../types/RequestError.js";
 
-export const createToken = (email: string, admin: boolean) => {
-    if (process.env.ACCESS_TOKEN_SECRET) {
-        const userEmail = { email: email };
-        return jwt.sign(userEmail, process.env.ACCESS_TOKEN_SECRET);
-    } else {
-        throw new Error("ACCESS_TOKEN_SECRET is not defined");
-    }
+
+
+export const createToken = (email: string, isAdmin: boolean) => {
+  if (process.env.ACCESS_TOKEN_SECRET) {
+
+      const user = { email: email, isAdmin: isAdmin };
+      return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
+    
+  } else {
+      throw new Error("ACCESS_TOKEN_SECRET is not defined");
+  }
+
 };
+export const autoToken = asyncHandler( async (req, _res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    throw new RequestError('Not authorized, no token', 404);
+     
+  }
+  try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) ;
+      
+      req.isAdmin = (decoded as JwtPayload).isAdmin;
+      console.log(req.isAdmin);
+      
+      next();
+  } catch (err) {
+    throw new RequestError('Not authorized, token failed', 403);
+  }
+});
 
-export const autoToken = (req: Request, res: Response, next: NextFunction) => {
-    const token: string | undefined = req.headers.token as string | undefined;
-    if (!token) return res.send('not found a token')
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET!,(err,user)=>{
-        if(err) return res.status(403).send('you need a token')
 
-        next()
-    })
-}
+
+

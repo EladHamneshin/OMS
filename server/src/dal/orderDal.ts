@@ -1,14 +1,43 @@
 import mongoose from "mongoose";
 import orderModel from "../Schemas/OrderModel.js";
-import OrderInterface, { ChangeStatusBody } from "../types/Order.js"
-import connectToDatabase from "../configs/connectToMongogoDB.js";
+import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface) => {
-    const res = await orderModel.create({order});
-    return res
+    const res = await orderModel.create(order);
+    console.log(res.shippingDetails.orderType !== OrderEnum.SelfCollection);
+
+    if (res.shippingDetails.orderType !== OrderEnum.SelfCollection) {
+        setTimeout(async () => {
+            const updatedOrder = await orderModel.findByIdAndUpdate(
+                res._id,
+                { $set: { status: OrderStatusEnum.Sent } },
+            );
+        }, 10000);
+        const delayToArrivedMilliseconds = getDelayToArrivedMilliseconds(order.shippingDetails.orderType);
+        setTimeout(async () => {
+            const arrivedOrder = await orderModel.findByIdAndUpdate(
+                res._id,
+                { $set: { status: OrderStatusEnum.Received } },
+            );
+        }, delayToArrivedMilliseconds);
+    }
+
+    return "The order has been successfully added";
+};
+
+
+const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
+    if (OrderEnum.Express) {
+        return 15000;
+    }
+    return 20000;
 }
 
-const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]>  => {
+
+
+
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]> => {
     const res = await orderModel.find({ 'order.userId': userId })
     return res
 }
@@ -18,18 +47,62 @@ const getOrders = async () => {
     return res
 }
 
-const updateOrders = async (
-    orderId: mongoose.Types.ObjectId,
-    newStatus: ChangeStatusBody
-): Promise<OrderInterface | OrderInterface[] | null> => {
+const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): Promise<OrderInterface | null> => {
+    try {
+        const updatedOrder = await orderModel.findByIdAndUpdate(
+            orderId,
+            { $set: { status: newStatus } },
+            { new: true }
+        );
+
+        return updatedOrder;
+    } catch (error) {
+        console.error(`Error updating order status: ${error}`);
+        return null;
+    }
+};
+
+// const updateOrders = async (
+//     orderId: mongoose.Types.ObjectId,
+//     changeOrderBody: ChangeOrderBody
+// ): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
 
 
-    const filter = { _id: orderId }
-    const updateStatus = { status: newStatus.status }
-    const res = await orderModel.findByIdAndUpdate(filter, updateStatus, {
-        new: true
-    })
-    return res
-}
+//     const immutableStatuses: string[] = ["Sent", "Received", "Canceled"]
 
-export default { addOrder, getOrdersByUserId, getOrders, updateOrders }
+//     const existingOrder = await orderModel.findById({ _id: orderId, new: true })
+//     if (!existingOrder) {
+//         return null;
+//     }
+
+//     const orderStatus = existingOrder.status
+
+//     if (immutableStatuses.includes(orderStatus)) {
+//         throw new Error('This order cannot be edited, as it has been processed')
+//     }
+
+//     if (changeOrderBody.status === "Canceled") {
+
+//         const productsQuantitiesInterface: ProductsQuantities = {
+//             productsArray: productQuantityArray,
+//             action: Action.return
+//         }
+//         const res = await serverCheckOrder.getAndSetQuantity(productsQuantitiesInterface)
+//         return res
+
+//     }
+//     if (changeOrderBody.status) {
+//         existingOrder.status = changeOrderBody.status;
+//     }
+//     if (changeOrderBody.celPhone) {
+//         existingOrder.cartItems = changeOrderBody.celPhone;
+//     }
+//     if (changeOrderBody.address) {
+//         existingOrder.shippingDetails.address = changeOrderBody.address;
+//     }
+
+//     const updatedOrder = await existingOrder.save();
+//     return updatedOrder;
+// }
+
+export default { addOrder, getOrdersByUserId, getOrders }
