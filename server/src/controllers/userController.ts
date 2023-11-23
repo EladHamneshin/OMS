@@ -4,7 +4,6 @@ import { userService } from "../services/userService.js"
 import { createToken } from "../middlewares/token.js"
 import { validate } from "../utils/validate.js"
 
-const registerUser = async (req: Request, res: Response) => {
 
 const registerUser =asyncHandler (async (req: Request, res: Response) => {
     try {
@@ -16,7 +15,7 @@ const registerUser =asyncHandler (async (req: Request, res: Response) => {
     }
 }
 )
-}
+
 
 const validateLogin = async (email: string, password: string) => {
     const user  = await userService.getUserByEmailService(email);
