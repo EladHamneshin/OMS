@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import orderModel from "../Schemas/OrderModel.js";
 import OrderInterface, { ChangeStatusBody } from "../types/Order.js"
-import connectToDatabase from "../configs/connectToMongogoDB.js";
 
 const addOrder = async (order: OrderInterface) => {
     const res = await orderModel.create({order});

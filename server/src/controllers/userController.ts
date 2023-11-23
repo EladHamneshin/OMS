@@ -2,7 +2,6 @@ import asyncHandler from "express-async-handler";
 import { Request, Response } from "express"
 import { userService } from "../services/userService.js"
 import { createToken } from "../middlewares/token.js"
-import { validate } from "../utils/validate.js"
 
 
 const registerUser =asyncHandler (async (req: Request, res: Response) => {
