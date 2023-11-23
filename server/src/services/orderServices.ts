@@ -26,12 +26,12 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefin
     // ###### עד פה ######
 
 
-    if (!isEnumValue(order.status, OrderStatusEnum)) {
-        throw new Error(`The value in the field: status can only receive one of the following strings: 'Waiting' | 'Sent' | 'Received' | 'Canceled', not: ${order.status}`)
-    }
-    if (!isEnumValue(order.shippingDetails.orderType, OrderEnum)) {
-        throw new Error(`The value in the field: order.shippingDetails.orderType can only receive one of the following strings: 'Express' | 'Regular' | 'SelfCollection', not: ${order.shippingDetails.orderType}`)
-    }
+    // if (!isEnumValue(order.status, OrderStatusEnum)) {
+    //     throw new Error(`The value in the field: status can only receive one of the following strings: 'Waiting' | 'Sent' | 'Received' | 'Canceled', not: ${order.status}`)
+    // }
+    // if (!isEnumValue(order.shippingDetails.orderType, OrderEnum)) {
+    //     throw new Error(`The value in the field: order.shippingDetails.orderType can only receive one of the following strings: 'Express' | 'Regular' | 'SelfCollection', not: ${order.shippingDetails.orderType}`)
+    // }
 
     // const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
     // const productsQuantities: ProductsQuantities = {
