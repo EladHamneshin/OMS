@@ -18,6 +18,7 @@ const registerUser =asyncHandler (async (req: Request, res: Response) => {
 
 const validateLogin = async (email: string, password: string) => {
     const user  = await userService.getUserByEmailService(email);
+    
     if (!user) {
         throw new Error("User not found");
     }
@@ -36,7 +37,9 @@ const loginController = async (req: Request, res: Response) => {
         const user = await validateLogin(email, password);
         //   create token
         const userEmail = req.body.email;
-        const userAdmin = req.body.isAdmin
+        
+        const userAdmin = user[0].is_admin
+        
         const token = createToken(userEmail,userAdmin);
         res.cookie('token', token, { httpOnly: true });
         return res.status(200).json({ token, user, message: "Login successful" });

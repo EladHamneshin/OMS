@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import orderServices from '../services/orderServices.js'
 import asyncHandler from "express-async-handler";
-
 import mongoose from "mongoose"
 import { ChangeStatusBody, OrderStatusEnum } from "../types/Order.js"
 
@@ -45,7 +44,6 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 }
 
 )
-
 
 const updateOrders = async (req: Request, res: Response) => {
     console.log(req.body);
