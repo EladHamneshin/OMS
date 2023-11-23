@@ -28,9 +28,10 @@ app.use('/api/orders', ordersRoutes);
 
 const port = process.env.PORT || 3000 ;
 
-const a = new orderModel()
 
 app.listen(port, async () => {
+    const a = new orderModel()
+
   await connectToDatabase();
   await connectToPg();
   console.log(`Server is running at port ${port}`);
