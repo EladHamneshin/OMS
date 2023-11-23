@@ -23,6 +23,7 @@ app.use('/api/orders', ordersRoutes);
 
 const port = process.env.PORT || 3000 ;
 
+const a = new orderModel()
 
 app.listen(port, async () => {
   await connectToDatabase();
