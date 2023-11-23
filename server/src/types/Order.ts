@@ -6,7 +6,6 @@ interface OrderInterface {
     userId: string;
     userName: string;
     userEmail: string;
-    celPhone: number,
     orderTime: Date;
     status: OrderStatusEnum;
     totalPrice: number;
@@ -14,6 +13,7 @@ interface OrderInterface {
         address: {
             country: string,
             city: string,
+            celPhone: number,
             street: string,
             zipCode: number
         };
@@ -37,9 +37,9 @@ export enum OrderStatusEnum {
 
 export interface ChangeOrderBody {
     status?: OrderStatusEnum,
-    celPhone?: number,
     address?: {
         country: string,
+        celPhone: number,
         city: string,
         street: string,
         zipCode: number

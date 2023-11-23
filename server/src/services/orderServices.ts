@@ -5,91 +5,77 @@ import serverCheckOrder from "./checkOrder.js"
 import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
+import RequestError from "../utils/RequestError.js"
+import STATUS_CODES from "../utils/StatusCodes.js"
 
+// Add order services func 
+const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined | Error> => {
 
-const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
-
-    //  ##### אם יפתחו את האפשרות לבדוק כל מוצר בנפרד להדליק מפה ######
-    // const { cartItems } = order
-
-    // const newCartItems = await serverForEachProduct.updateCart(cartItems)
-
-    // const newOrder: OrderInterface = {
-    //     cartItems: newCartItems,
-    //     shippingDetails: order.shippingDetails,
-    //     orderTime: order.orderTime,
-    //     status: order.status,
-    //     total: order.total
-    // }
-
-    // const result = await orderDal.addOrder(newOrder)
-    // ###### עד פה ######
-
-
+    // Check if "order.status" not in "OrderStatusEnum"
     if (!isEnumValue(order.status, OrderStatusEnum)) {
-        throw new Error(`The value in the field: status can only receive one of the following strings: 'Waiting' | 'Sent' | 'Received' | 'Canceled', not: ${order.status}`)
+        throw new RequestError(`The value in the field: status can only receive one of the following strings: 'Waiting' | 'Sent' | 'Received' | 'Canceled', not: ${order.status}`,
+            STATUS_CODES.BAD_REQUEST)
     }
+    // Check if "order.shippingDetails.orderType" not in "OrderEnum"
     if (!isEnumValue(order.shippingDetails.orderType, OrderEnum)) {
-        throw new Error(`The value in the field: order.shippingDetails.orderType can only receive one of the following strings: 'Express' | 'Regular' | 'SelfCollection', not: ${order.shippingDetails.orderType}`)
+        throw new RequestError(`The value in the field: order.shippingDetails.orderType can only receive one of the following strings: 'Express' | 'Regular' | 'SelfCollection', not: ${order.shippingDetails.orderType}`,
+            STATUS_CODES.BAD_REQUEST)
     }
 
-    const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
-    const productsQuantities: ProductsQuantities = {
-        productsArray: productsQuantitiesArray,
-        action: Action.buy
-    }
+    // Fetch to 'ERP' to check quantities
+    await serverCheckOrder.getAndSetQuantity(order, Action.buy)
 
-    const response = await serverCheckOrder.getAndSetQuantity(productsQuantities)
-    if (response) {
-        const result = await orderDal.addOrder(order)
-        if (!result) {
-            throw new Error('Something went wrong while placing the order, please try again')
-        }
-        else {
-            return result;
-        }
+    const result = await orderDal.addOrder(order)
+
+    if (!result) {
+        throw new RequestError('Something went wrong while placing the order, please try again', STATUS_CODES.INTERNAL_SERVER_RRROR)
+    }
+    else {
+        return result;
     }
 }
 
-
+// Get all orders by userId Services func
 const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
 
     const result = await orderDal.getOrdersByUserId(userId)
 
     if (!Object.keys(result).length) {
-        throw new Error(`there is no such a user number: ${userId}`)
+        throw new RequestError(`there is no such a user number: ${userId}`, STATUS_CODES.BAD_REQUEST)
     }
     else {
         return result;
     }
 }
 
+// Get all orders Services func
 const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
     const result = await orderDal.getOrders()
 
     if (!Object.keys(result).length) {
-        throw new Error("Something went wrong with the request, please try again")
+        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
     }
     else {
         return result;
     }
 }
 
-const updateOrders = async (
+// Update order Services func
+const updateOrder = async (
     orderId: mongoose.Types.ObjectId,
     changeOrderBody: ChangeOrderBody
-): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
+): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined | string> => {
 
-    const result = await orderDal.updateOrders(orderId, changeOrderBody)
+    const result = await orderDal.updateOrder(orderId, changeOrderBody)
 
     if (!Object.keys(result!).length) {
-        throw new Error("Something went wrong with the request, please try again")
+        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
     }
     else {
         return result;
     }
 }
 
-const orderServices = { addOrder, getOrdersByUserId, getOrders, updateOrders }
+const orderServices = { addOrder, getOrdersByUserId, getOrders, updateOrder }
 export default orderServices

@@ -13,7 +13,7 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
     userId: String,
     userName: String,
     userEmail: String,
-    celPhone: Number,
+    
     orderTime: Date,
     status: {
         type: String,
@@ -24,6 +24,7 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
         address: {
             country: String,
             city: String,
+            celPhone: Number,
             street: String,
             zipCode: Number
         },

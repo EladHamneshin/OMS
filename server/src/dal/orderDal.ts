@@ -4,14 +4,17 @@ import OrderInterface, { ChangeOrderBody } from "../types/Order.js"
 import connectToDatabase from "../configs/connectToMongogoDB.js";
 import serverCheckOrder from "../services/checkOrder.js";
 import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js";
+import RequestError from "../utils/RequestError.js";
+import STATUS_CODES from "../utils/StatusCodes.js";
 
+// Add order dal func
 const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
 
     await connectToDatabase();
 
-    const { cartItems, userId, userName, userEmail, celPhone, orderTime, status, totalPrice, shippingDetails } = order;
+    const { cartItems, userId, userName, userEmail, orderTime, status, totalPrice, shippingDetails } = order;
     const { address, contactNumber, orderType } = shippingDetails;
-    const { city, country, zipCode, street } = address
+    const { city, country, zipCode, street, celPhone } = address
 
     const res = await orderModel.create({
         cartItems: cartItems,
@@ -19,7 +22,6 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
         userId: userId,
         userName: userName,
         userEmail: userEmail,
-        celPhone: celPhone,
         status: status,
         totalPrice: totalPrice,
         shippingDetails: {
@@ -27,7 +29,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
                 city: city,
                 country: country,
                 zipCode: zipCode,
-
+                celPhone: celPhone,
                 street: street
             },
             contactNumber: contactNumber,
@@ -38,6 +40,7 @@ const addOrder = async (order: OrderInterface): Promise<OrderInterface> => {
     return res
 }
 
+// Get all orders by userId dal func
 const getOrdersByUserId = async (userId: string): Promise<OrderInterface | OrderInterface[]> => {
 
     await connectToDatabase();
@@ -47,6 +50,7 @@ const getOrdersByUserId = async (userId: string): Promise<OrderInterface | Order
 
 }
 
+// Add Get all orders dal func
 const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
     await connectToDatabase();
@@ -56,42 +60,49 @@ const getOrders = async (): Promise<OrderInterface | OrderInterface[]> => {
 
 }
 
-const updateOrders = async (
+// Update order dal func
+const updateOrder = async (
     orderId: mongoose.Types.ObjectId,
     changeOrderBody: ChangeOrderBody
-): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
+): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined | string> => {
 
     await connectToDatabase();
 
-    const immutableStatuses: string[] = ["Sent", "Received", "Canceled"]
-
+    // Find this order
     const existingOrder = await orderModel.findById({ _id: orderId, new: true })
+
+    //If INTERNAL_SERVER_RRROR
     if (!existingOrder) {
-        return null;
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+    }
+
+    // If not find such an orderId"
+    if (!Object.keys(existingOrder!).length) {
+        throw new RequestError("We did not find such an orderId", STATUS_CODES.BAD_REQUEST)
     }
 
     const orderStatus = existingOrder.status
 
+    // All status states that cannot be changed
+    const immutableStatuses: string[] = ["Sent", "Received", "Canceled"]
+
+    // Checking whether the status can be changed
     if (immutableStatuses.includes(orderStatus)) {
         throw new Error('This order cannot be edited, as it has been processed')
     }
 
+    //If you want to cancel the order
     if (changeOrderBody.status === "Canceled") {
-
-        const productQuantityArray = serverCheckOrder.creatProductsQuantitiesArray(existingOrder!.cartItems)
-        const productsQuantitiesInterface: ProductsQuantities = {
-            productsArray: productQuantityArray,
-            action: Action.return
-        }
-        const res = await serverCheckOrder.getAndSetQuantity(productsQuantitiesInterface)
-        return res
-
+        const res = await serverCheckOrder.getAndSetQuantity(existingOrder, Action.return)
+        if (res) return "The order has been successfully deleted"
     }
+
+    // Checks if there is a value
     if (changeOrderBody.status) {
         existingOrder.status = changeOrderBody.status;
     }
-    if (changeOrderBody.celPhone) {
-        existingOrder.celPhone = changeOrderBody.celPhone;
+    if (changeOrderBody.address!.celPhone) {
+        existingOrder.shippingDetails.address.celPhone = changeOrderBody.address!.celPhone;
     }
     if (changeOrderBody.address) {
         existingOrder.shippingDetails.address = changeOrderBody.address;
@@ -101,5 +112,5 @@ const updateOrders = async (
     return updatedOrder;
 }
 
-const orderDal = { addOrder, getOrdersByUserId, getOrders, updateOrders }
+const orderDal = { addOrder, getOrdersByUserId, getOrders, updateOrder, }
 export default orderDal

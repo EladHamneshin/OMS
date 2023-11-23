@@ -1,10 +1,21 @@
 import OrderInterface from "../types/Order.js"
 import ProductInterface from "../types/Product.js"
 import ProductsQuantities, { Action, ProductQuantity } from "../types/ProductsQuantities.js"
+import RequestError from "../utils/RequestError.js"
+import STATUS_CODES from "../utils/StatusCodes.js"
 
 const getAndSetQuantity = async (
-    { productsArray, action }: ProductsQuantities
+    order: OrderInterface, action: Action
 ): Promise<ProductQuantity[] | undefined> => {
+
+    // Creat 'Products Quantities Array' from the order
+    const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
+
+    //Add 'action' state
+    const productsQuantities: ProductsQuantities = {
+        productsArray: productsQuantitiesArray,
+        action: Action.buy
+    }
 
     const PORT = process.env.GLOBAL_FETCH_PORT
     const IP = process.env.GLOBAL_FETCH_IP
@@ -16,47 +27,26 @@ const getAndSetQuantity = async (
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            productsArray: productsArray,
+            productsArray: productsQuantities.productsArray,
             action: action
         })
     };
-    try {
-        const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
-            requestOptions)
 
-        if (response.ok) {
-            return response.json()
-        }
-    } catch (errer) {
-        throw new Error(`The order was not made The server returned: ${errer}`)
+    const response = await fetch(`http://${IP}:${PORT}/api/shopInventory/updateInventory`,
+        requestOptions)
+
+    if (!response) {
+        throw new RequestError(`Server returned:`, STATUS_CODES.BAD_REQUEST)
     }
+    return response.json()
 }
 
 
+const creatProductsQuantitiesArray = (
+    cartItems: ProductInterface[],
+): ProductQuantity[] => {
+    return cartItems.map(({ productId, quantity }) => ({ productId, quantity }))
+}
 
-    const creatProductsQuantitiesArray = (
-        cartItems: ProductInterface[],
-    ): ProductQuantity[] => {
-        return cartItems.map(({ productId, quantity }) => ({ productId, quantity }))
-    }
-
-    const updateCart = async (cartItems: ProductInterface[]): Promise<ProductInterface[]> => {
-
-        const productsQuantitiesArray = creatProductsQuantitiesArray(cartItems)
-
-        const newProductsQuantitiesArray = await getAndSetQuantity({
-            productsArray: productsQuantitiesArray,
-            action: Action.buy
-        })
-
-        return cartItems.map(product => {
-            const update = newProductsQuantitiesArray!.find(u => u.productId === product.productId);
-            if (update) {
-                return { ...product, quantity: update.quantity };
-            }
-            return product;
-        });
-    }
-
-    const serverCheckOrder = { getAndSetQuantity, updateCart, creatProductsQuantitiesArray }
-    export default serverCheckOrder 
+const serverCheckOrder = { getAndSetQuantity, creatProductsQuantitiesArray }
+export default serverCheckOrder 
