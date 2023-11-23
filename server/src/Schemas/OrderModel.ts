@@ -39,7 +39,3 @@ const orderSchema: mongoose.Schema<OrderInterface> = new mongoose.Schema<OrderIn
         strict: false
     }
 );
-
-const orderModel: mongoose.Model<OrderInterface> = mongoose.model<OrderInterface>('orders', orderSchema);
-
-export default orderModel
