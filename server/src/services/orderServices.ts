@@ -6,38 +6,26 @@ import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
 
 
-
 const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
 
-    //  ##### אם יפתחו את האפשרות לבדוק כל מוצר בנפרד להדליק מפה ######
-    // const { cartItems } = order
+   
 
-    // const newCartItems = await serverForEachProduct.updateCart(cartItems)
-
-    // const newOrder: OrderInterface = {
-    //     cartItems: newCartItems,
-    //     shippingDetails: order.shippingDetails,
-    //     orderTime: order.orderTime,
-    //     status: order.status,
-    //     total: order.total
-    // }
-
-    // const result = await orderDal.addOrder(newOrder)
-    // ###### עד פה ######
-
-
-    // if (!isEnumValue(order.status, OrderStatusEnum)) {
-    //     throw new Error(`The value in the field: status can only receive one of the following strings: 'Waiting' | 'Sent' | 'Received' | 'Canceled', not: ${order.status}`)
-    // }
-    // if (!isEnumValue(order.shippingDetails.orderType, OrderEnum)) {
-    //     throw new Error(`The value in the field: order.shippingDetails.orderType can only receive one of the following strings: 'Express' | 'Regular' | 'SelfCollection', not: ${order.shippingDetails.orderType}`)
-    // }
-
-    // const productsQuantitiesArray = serverCheckOrder.creatProductsQuantitiesArray(order.cartItems)
-    // const productsQuantities: ProductsQuantities = {
-    //     productsArray: productsQuantitiesArray,
-    //     action: Action.buy
-    // }
+    if (!isEnumValue(order.status, OrderStatusEnum)) {
+        const validStatusValues = Object.values(OrderStatusEnum).join(', ');
+        throw new Error(
+            `The value in the field 'status' can only receive one of the following strings: ${validStatusValues}, not: ${order.status}`
+        );
+    }
+    if (!isEnumValue(order.shippingDetails.orderType, OrderEnum)) {
+        const validOrderTypeValues = Object.values(OrderEnum).join(', ');
+        throw new Error(
+            `The value in the field 'order.shippingDetails.orderType' can only receive one of the following strings: ${validOrderTypeValues}, not: ${order.shippingDetails.orderType}`
+        );
+    }
+    const productsQuantities= {
+        productsArray: order.cartItems ,
+        action: "buy"
+    }
     // await serverCheckOrder.getAndSetQuantity(productsQuantities)
     const result = await orderDal.addOrder(order)
     if (!result) {

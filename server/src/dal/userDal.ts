@@ -2,7 +2,7 @@ import pool from '../configs/connectDbAdmin.js';
 import { AdminUser } from "../types/admin.js";
 import bcrypt from 'bcrypt';
 
-const addUser = async (user: AdminUser): Promise<string> => {
+const addUser = async (user: AdminUser) => {
     try {
         // Check if the user already exists
         const userExistsQuery = 'SELECT * FROM admin_users WHERE email = $1';
@@ -27,11 +27,6 @@ const addUser = async (user: AdminUser): Promise<string> => {
         `;
         const res = await pool.query(query, values);
 
-        if (Array.isArray(res.rows) && res.rows.length > 0) {
-            return "Admin user inserted successfully";
-        } else {
-            throw new Error("Data entry failed");
-        }
     } catch (error) {
         throw new Error(`Error while adding user: ${error}`);
     }

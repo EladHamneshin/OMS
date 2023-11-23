@@ -1,31 +1,17 @@
-import mongoose from "mongoose";
-import Product from "./Product.js";
-
-interface OrderInterface {
-    cartItems: Product[];
-    userId: string;
-    orderTime: Date;
-    userName: String,
-    userEmail: String,
-    status: OrderStatusEnum;
-    totalPrice: number;
-    shippingDetails: {
-        address: {
-            country: string,
-            city: string,
-            street: string,
-            celPhone: number,
-            zipCode: number
-        };
-        contactNumber: string;
-        orderType: OrderEnum
-    }
+interface Address {
+    country: string;
+    city: string;
+    street: string;
+    celPhone: number;
+    zipCode: number;
 }
 
-export enum OrderEnum {
-    Express = 'Express',
-    Regular = 'Regular',
-    SelfCollection = 'SelfCollection'
+interface Product {
+    productId: string;
+    name: string;
+    description: string;
+    price: number;
+    quantity: number;
 }
 
 export enum OrderStatusEnum {
@@ -35,8 +21,32 @@ export enum OrderStatusEnum {
     Canceled = 'Canceled'
 }
 
+export const OrderEnum = {
+    Express: 'Express',
+    Regular: 'Regular',
+    SelfCollection: 'SelfCollection'
+} as const;
+
+export type OrderEnum = keyof typeof OrderEnum;
+
+interface ShippingDetails {
+    address: Address;
+    contactNumber: string;
+    orderType: OrderEnum;
+}
+
+interface OrderInterface {
+    cartItems: Product[];
+    userId: string;
+    orderTime: Date;
+    userName: string;
+    userEmail: string;
+    status: OrderStatusEnum;
+    totalPrice: number;
+    shippingDetails: ShippingDetails;
+}
+
 export interface ChangeStatusBody {
     status: OrderStatusEnum
 }
-
-export default OrderInterface
+export default OrderInterface;
