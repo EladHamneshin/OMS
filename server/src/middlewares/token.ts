@@ -10,7 +10,7 @@ export const createToken = (email: string, admin: boolean) => {
             email: email,
             admin: admin
         };
-        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
     } else {
         throw new Error("ACCESS_TOKEN_SECRET is not defined");
     }
