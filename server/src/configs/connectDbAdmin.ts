@@ -3,7 +3,6 @@ const { Pool } = pkg;
 
 const pool = new Pool();
 
-
 export const connectToPg = async () => {
     try {
         await pool.connect();

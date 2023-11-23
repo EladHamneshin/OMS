@@ -11,12 +11,7 @@ import orderModel from './Schemas/OrderModel.js';
 
 const app = express();
 
-
-
-
 dotenv.config();
-
-
 
 app.use(cors());
 app.use(morgan('dev'));
