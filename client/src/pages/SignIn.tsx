@@ -10,18 +10,28 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-
+import { login } from '../api/usersAPI';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+    const user: any = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string
+    };
+
+    try {
+      await login(user);
+      console.log("successful login");
+       
+    } catch (error) {
+
+      console.error('Login failed:', error);
+    }
   };
 
   return (
