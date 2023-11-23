@@ -1,25 +1,36 @@
 import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
+
+import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
-import {config} from "dotenv"
-
 import ordersRoutes from './routes/ordersRoutes.js';
-import connectToDatabase from './configs/connectToMongogoDB';
+import connectToDatabase from './configs/connectToMongogoDB.js';
+import { connectToPg } from './configs/connectDbAdmin.js';
+import orderModel from './Schemas/OrderModel.js';
+import cookieParser from 'cookie-parser';
 
-const port = 3000
 const app = express();
 
-app.use(config)
+dotenv.config();
+
 app.use(cors());
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(express.json());
 
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
-app.use('/api/orders/', ordersRoutes);
+app.use('/api/orders', ordersRoutes);
 
-app.listen(port, () => {
-  connectToDatabase()
-  console.log(`server is running at port ${port}`);
+const port = process.env.PORT || 3000 ;
+
+const a = new orderModel()
+
+app.listen(port, async () => {
+  await connectToDatabase();
+  // await connectToPg();
+  console.log(`Server is running at port ${port}`);
 });
+
+export default app;

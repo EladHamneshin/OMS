@@ -1,17 +1,15 @@
-import pg, { Pool } from "pg";
+import pkg from 'pg';
+const { Pool } = pkg;
 
-const poolConfig = {
-    user: "postgres",
-    database: "omsproj",
-    host: "localhost",
-    password: "0528302qw",
-    port: 5432,
+const pool = new Pool();
+
+export const connectToPg = async () => {
+    try {
+        await pool.connect();
+        console.log('Connected to postgres');
+    } catch (err) {
+        console.error('Error connecting to DB', err);
+    }
 };
 
-const pool = new Pool(poolConfig);
-
 export default pool;
-
-
-
-
