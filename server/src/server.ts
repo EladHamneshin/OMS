@@ -8,6 +8,7 @@ import ordersRoutes from './routes/ordersRoutes.js';
 import connectToDatabase from './configs/connectToMongogoDB.js';
 import { connectToPg } from './configs/connectDbAdmin.js';
 import orderModel from './Schemas/OrderModel.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/orders', ordersRoutes);
