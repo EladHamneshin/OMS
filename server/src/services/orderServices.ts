@@ -1,9 +1,10 @@
-import OrderInterface, { ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
 // import serverCheckOrder from "./serverCheckOrder.js"
 // import ProductsQuantities from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
+import { ProductQuantity } from "../types/ProductsQuantities.js"
 
 
 const addOrder = async (order: OrderInterface): Promise<OrderInterface | undefined> => {
@@ -74,19 +75,20 @@ const getOrders = async () => {
     }
 }
 
-const updateOrders = async (
-    orderId: mongoose.Types.ObjectId,
-    newStatus: ChangeStatusBody
-): Promise<OrderInterface | OrderInterface[] | null> => {
+// const updateOrders = async (
+//     orderId: mongoose.Types.ObjectId,
+//     changeOrderBody: ChangeOrderBody
+// ): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
 
-    const result = await orderDal.updateOrders(orderId, newStatus)
+//     const result = await orderDal.updateOrders(orderId, changeOrderBody)
 
-    if (!Object.keys(result!).length) {
-        throw new Error("Something went wrong with the request, please try again")
-    }
-    else {
-        return result;
-    }
-}
+//     if (!Object.keys(result!).length) {
+//         throw new Error("Something went wrong with the request, please try again")
+//     }
+//     else {
+//         return result;
+//     }
+// }
 
-export default { addOrder, getOrdersByUserId, getOrders, updateOrders }
+
+export default { addOrder, getOrdersByUserId, getOrders }
