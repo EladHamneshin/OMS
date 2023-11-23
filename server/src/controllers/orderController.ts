@@ -1,64 +1,75 @@
 import { Request, Response } from "express"
+import asyncHandler from "express-async-handler"
 import orderServices from '../services/orderServices.js'
-import asyncHandler from "express-async-handler";
-import mongoose from "mongoose"
-import { ChangeStatusBody, OrderStatusEnum } from "../types/Order.js"
+import mongoose, { Error } from "mongoose"
+import { ChangeOrderBody, OrderStatusEnum } from "../types/Order.js"
+import RequestError from "../utils/RequestError.js";
+import STATUS_CODES from "../utils/StatusCodes.js";
 
+
+
+// Add order Controller func
 const addOrder = asyncHandler(async (req: Request, res: Response) => {
-    try {
-        const order = await orderServices.addOrder(req.body)
-        res.status(200).json(order)
-    }
-    catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An error occurred";
-        res.status(401).json({ err: errorMessage })
-    }
 
-}
-)
+    const order = await orderServices.addOrder(req.body)
+    if (!order) {
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+    }
+    res.status(STATUS_CODES.CREATED).json(order)
+})
 
+// Get all orders by userId order Controller func
 const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
+
     const userId = req.params.userId
-    try {
-        const orders = await orderServices.getOrdersByUserId(userId)
-        res.status(200).json(orders)
-    }
-    catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An error occurred";
-        res.status(401).json({ err: errorMessage })
+    if (!userId) {
+        throw new RequestError("userId is reqaed", STATUS_CODES.BAD_REQUEST)
     }
 
-}
-)
+    const orders = await orderServices.getOrdersByUserId(userId)
+    if (!orders) {
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+    }
+    res.status(STATUS_CODES.OK).json(orders)
+})
 
+// Get all orders Controller func
 const getOrders = asyncHandler(async (req: Request, res: Response) => {
 
-    try {
-        const orders = await orderServices.getOrders()
-        res.status(200).json(orders)
+    const orders = await orderServices.getOrders()
+    if (!orders) {
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
     }
-    catch (err) {
-        const errorMessage= err instanceof Error ? err.message : "An error occurred";
-        res.status(401).json({ err: errorMessage })
-    }
-}
+    res.status(STATUS_CODES.OK).json(orders)
+})
 
-)
+// Update order Controller func
+// const updateOrder = asyncHandler(async (req: Request, res: Response) => {
 
-const updateOrders = async (req: Request, res: Response) => {
-    console.log(req.body);
-    const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
-    const newStatus = req.body as unknown as ChangeStatusBody
+// const updateOrders = async (req: Request, res: Response) => {
+//     console.log(req.body);
+//     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
+//     const newStatus = req.body as unknown as ChangeStatusBody
 
-    try {
-        const response = await orderServices.updateOrders(orderId, newStatus)
-        res.status(200).json(response)
-    }
-    catch (errer) {
-        const errorMessage: string = errer instanceof Error ? errer.message : "An error occurred";
-        res.status(401).json({ err: errorMessage })
-    }
-}
+//     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
+//     if (!orderId) {
+//         throw new RequestError("orderId params is reqaed", STATUS_CODES.BAD_REQUEST)
+//     }
+
+//     const changeOrderBody = req.body as unknown as ChangeOrderBody
+//     if (!changeOrderBody) {
+//         throw new RequestError("Body is reqaed", STATUS_CODES.BAD_REQUEST)
+//     }
+
+//     const response = await orderServices.updateOrder(orderId, changeOrderBody)
+//     if (!response) {
+//         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+//     }
+//     res.status(STATUS_CODES.OK).json(response)
+
+// })
 
 
-export default  { addOrder, getOrdersByUserId, getOrders, updateOrders }
+
+export default  { addOrder, getOrdersByUserId, getOrders}
+
