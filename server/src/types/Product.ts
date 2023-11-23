@@ -1,7 +1,3 @@
-import mongoose from "mongoose";
-
-
-
 interface ProductInterface {
     productId: string;
     name: string;
@@ -10,6 +6,5 @@ interface ProductInterface {
     quantity: number
 
 }
-
 
 export default ProductInterface

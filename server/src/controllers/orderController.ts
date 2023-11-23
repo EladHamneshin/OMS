@@ -4,8 +4,8 @@ import orderServices from '../services/orderServices.js'
 import mongoose, { Error } from "mongoose"
 import { ChangeOrderBody, OrderStatusEnum } from "../types/Order.js"
 import RequestError from "../utils/RequestError.js";
-
 import STATUS_CODES from "../utils/StatusCodes.js";
+
 
 
 // Add order Controller func
@@ -46,6 +46,11 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 // Update order Controller func
 // const updateOrder = asyncHandler(async (req: Request, res: Response) => {
 
+// const updateOrders = async (req: Request, res: Response) => {
+//     console.log(req.body);
+//     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
+//     const newStatus = req.body as unknown as ChangeStatusBody
+
 //     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
 //     if (!orderId) {
 //         throw new RequestError("orderId params is reqaed", STATUS_CODES.BAD_REQUEST)
@@ -63,6 +68,7 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 //     res.status(STATUS_CODES.OK).json(response)
 
 // })
+
 
 
 export default  { addOrder, getOrdersByUserId, getOrders}
