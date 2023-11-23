@@ -9,11 +9,12 @@ export const createToken = (email: string, isAdmin: boolean) => {
   if (process.env.ACCESS_TOKEN_SECRET) {
 
       const user = { email: email, isAdmin: isAdmin };
-      return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
     
   } else {
       throw new Error("ACCESS_TOKEN_SECRET is not defined");
   }
+
 };
 export const autoToken = asyncHandler( async (req, _res, next) => {
   const token = req.cookies.token;
