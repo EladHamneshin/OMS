@@ -1,4 +1,4 @@
-import OrderInterface from "../types/Order";
+import OrderInterface from "../types/order";
 
 const API_URL = 'http://localhost:3000/api/orders';
 
