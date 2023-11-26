@@ -49,14 +49,4 @@ interface OrderInterface {
 export interface ChangeStatusBody {
     status: OrderStatusEnum
 }
-export interface ChangeOrderBody {
-    status?: OrderStatusEnum,
-    celPhone?: number,
-    address?: {
-        country: string,
-        city: string,
-        street: string,
-        zipCode: number
-    };
-}
 export default OrderInterface;
