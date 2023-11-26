@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import orderModel from "../models/OrderModel.js";
-import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
-import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
+import OrderInterface, {  OrderEnum, OrderStatusEnum } from "../types/Order.js"
+// import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface) => {
     const res = await orderModel.create(order);

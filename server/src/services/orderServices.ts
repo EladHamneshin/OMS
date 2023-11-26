@@ -1,10 +1,9 @@
-import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import OrderInterface, { OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
 // import serverCheckOrder from "./serverCheckOrder.js"
 // import ProductsQuantities from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
-import { ProductQuantity } from "../types/ProductsQuantities.js"
 import RequestError from "../utils/RequestError.js"
 import STATUS_CODES from "../utils/StatusCodes.js"
 
