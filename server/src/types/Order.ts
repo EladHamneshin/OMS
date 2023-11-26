@@ -2,7 +2,6 @@ interface Address {
     country: string;
     city: string;
     street: string;
-    celPhone: number;
     zipCode: number;
 }
 
@@ -10,8 +9,12 @@ interface Product {
     productId: string;
     name: string;
     description: string;
-    price: number;
+    salePrice: number;
     quantity: number;
+    discount: number;
+    image: {
+        url: string
+    };
 }
 
 export enum OrderStatusEnum {
@@ -44,19 +47,8 @@ interface OrderInterface {
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: ShippingDetails;
+    contactNumber: string;
 }
 
-export interface ChangeStatusBody {
-    status: OrderStatusEnum
-}
-export interface ChangeOrderBody {
-    status?: OrderStatusEnum,
-    celPhone?: number,
-    address?: {
-        country: string,
-        city: string,
-        street: string,
-        zipCode: number
-    };
-}
+
 export default OrderInterface;
