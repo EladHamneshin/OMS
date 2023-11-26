@@ -8,4 +8,6 @@ userRouter.post("/register", userController.registerUser);
 
 userRouter.post("/login", userController.loginController);
 
+userRouter.post("/logout",userController.logoutController)
+
 export default userRouter;

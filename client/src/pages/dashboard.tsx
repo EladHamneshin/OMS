@@ -1,6 +1,8 @@
 // import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -54,6 +56,17 @@ const rows = [
 ];
 
 export default function Dashboard() {
+    
+        const navigate = useNavigate();
+      
+        useEffect(() => {
+          
+          const isAdmin = localStorage.getItem('admin') ;
+    
+          if (!isAdmin) {
+            navigate('/login'); 
+          }
+        }, [navigate]);
     return (
 
         <>

@@ -7,11 +7,9 @@ const addUser = async (user: AdminUser) => {
         // Check if the user already exists
         const userExistsQuery = 'SELECT * FROM admin_users WHERE email = $1';
         const existingUser = await pool.query(userExistsQuery, [user.email]);
-
         if (existingUser.rows.length > 0) {
             throw new Error("User already exists");
         }
-
         // If the user doesn't exist, proceed with insertion
         const values = [
             user.first_name,
@@ -20,7 +18,6 @@ const addUser = async (user: AdminUser) => {
             user.password,
             user.isAdmin
         ];
-
         const query = `
             INSERT INTO admin_users (first_name, last_name, email, password, is_admin)
             VALUES ($1, $2, $3, $4, $5)
@@ -51,8 +48,17 @@ const validatePassword = async (password: string, hashedPassword: string) => {
     }
 };
 
+const logoutDal = async () => {
+    try {
+      // Implement your logout operations here (e.g., session invalidation, etc.)
+      // This function might interact with your database to update user records, etc.
+    } catch (error) {
+      throw new Error('Logout DAL failed:', error!);
+    }
+  };
 export const userDal = {
     addUser,
     getUserByEmail,
-    validatePassword
+    validatePassword,
+    logoutDal
 };

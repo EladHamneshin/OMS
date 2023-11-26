@@ -36,10 +36,17 @@ const validatePasswordService = async (password: string, hashedPassword: string)
     throw new Error("error validate Password .service")
 }
 
-
+const logout = async () => {
+    try {
+      await userDal.logoutDal();
+    } catch (error) {
+      throw new Error('Logout service failed:',error!);
+    }
+  };
 
 export const userService = {
     register,
     getUserByEmailService,
     validatePasswordService,
+    logout
 }

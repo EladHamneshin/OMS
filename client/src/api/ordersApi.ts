@@ -1,10 +1,10 @@
 import OrderInterface from "../types/order";
 
-const API_URL = 'http://localhost:3000/api/orders';
+const API_URI = import.meta.env.VITE_API_URI
 
 async function getAllOrders() {
     try {
-        const response = await fetch(`${API_URL}`);
+        const response = await fetch(`${API_URI}/orders`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -16,7 +16,7 @@ async function getAllOrders() {
 }
 async function getOrdersById(id: string) {
     try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await fetch(`${API_URI}/orders/${id}`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -46,7 +46,7 @@ async function getOrdersById(id: string) {
 // }
 async function updateOrder(id:string, updatedOrder:OrderInterface) {
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_URI}/orders/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
