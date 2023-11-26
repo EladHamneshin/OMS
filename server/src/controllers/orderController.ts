@@ -1,8 +1,6 @@
-import { Request, Response } from "express"
-import asyncHandler from "express-async-handler"
-import orderServices from '../services/orderServices.js'
-import mongoose, { Error } from "mongoose"
-import { ChangeOrderBody, OrderStatusEnum } from "../types/Order.js"
+import { Request, Response } from "express";
+import asyncHandler from "express-async-handler";
+import orderServices from '../services/orderServices.js';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
 
@@ -10,7 +8,6 @@ import STATUS_CODES from "../utils/StatusCodes.js";
 
 // Add order Controller func
 const addOrder = asyncHandler(async (req: Request, res: Response) => {
-
     const order = await orderServices.addOrder(req.body)
     if (!order) {
         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
@@ -54,7 +51,6 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
         throw new RequestError("Body is required", STATUS_CODES.BAD_REQUEST)
     }
     const isAdmin = req.body.isAdmin
-
 
     const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
     if (!response) {
