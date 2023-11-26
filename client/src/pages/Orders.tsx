@@ -149,7 +149,6 @@ const OrdersComponent = () => {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                // pageSize={5}
                 onRowClick={handleRowClick}
                 initialState={{
                     pagination: {
