@@ -4,8 +4,8 @@ import orderServices from '../services/orderServices.js'
 import mongoose, { Error } from "mongoose"
 import { ChangeOrderBody, OrderStatusEnum } from "../types/Order.js"
 import RequestError from "../utils/RequestError.js";
-
 import STATUS_CODES from "../utils/StatusCodes.js";
+
 
 
 // Add order Controller func
@@ -55,6 +55,7 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
     }
     const isAdmin = req.body.isAdmin
 
+
     const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
     if (!response) {
         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
@@ -65,4 +66,5 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
 
 
 export default { addOrder, getOrdersByUserId, getOrders, updateOrder }
+
 
