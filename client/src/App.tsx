@@ -6,12 +6,12 @@ import NavBar from './pages/navBar'
 import Home from './pages/home'
 import Dashboard from './pages/dashboard'
 import OrdersComponent from './pages/Orders'
+import Logout from './components/Logout'
 
 function App() {
 
   return (
     <>
-
 
       <NavBar />
 
@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/orders" element={<OrdersComponent/>} />
+          <Route path="/logout" element={<Logout/>} />
         </Routes>
       </BrowserRouter>
     </>
