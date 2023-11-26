@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp'
 import NavBar from './pages/navBar'
 import Home from './pages/home'
 import Dashboard from './pages/dashboard'
+import OrdersComponent from './pages/Orders'
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
-
+          <Route path="/orders" element={<OrdersComponent/>} />
         </Routes>
       </BrowserRouter>
     </>
