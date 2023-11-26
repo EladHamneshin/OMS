@@ -24,6 +24,9 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/orders', ordersRoutes);
 
+app.use(notFound)
+app.use(errorHandler)
+
 const port = process.env.PORT || 3000;
 
 
