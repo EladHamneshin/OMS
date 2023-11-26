@@ -21,20 +21,25 @@ export async function register(user: AdminUser) {
 }
 
 export async function login(user: AdminUser) {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},  
-        body: JSON.stringify(user)
-      });
-      
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-      return response.json();
-    } catch (error) {
-      console.error('lo failed:', error);
-      throw error;
+  try {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
     }
+    const res = await response.json();
+    console.log(res);
+    const adminResponse = res.user[0].is_admin
+    console.log(adminResponse);
+    localStorage.setItem("admin",adminResponse)
+    
+
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw error;
   }
-  
+}
