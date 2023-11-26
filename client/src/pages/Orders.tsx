@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import { login } from '../api/usersAPI';
+
 
 interface OrderInterface {
     id: any;
@@ -58,7 +58,7 @@ const columns: GridColDef[] = [
     { field: 'totalPrice', headerName: 'Total Price', width: 150, type: 'number' },
 ];
 
-const OrderDetails = ({ selectedOrder, onClose }: { selectedOrder: OrderInterface, onClose: () => void }) => (
+const OrderDetails = ({ selectedOrder }: { selectedOrder: OrderInterface, onClose: () => void }) => (
     <>
         <DialogTitle>Order Details</DialogTitle>
         <DialogContent>
@@ -121,7 +121,7 @@ const OrdersComponent = () => {
                 // console.log('API Response:', data);
 
                 if (Array.isArray(data)) {
-                    const formattedData = data.map((order,index) => ({
+                    const formattedData = data.map((order) => ({
                         ...order.order,  // Keep this line if 'order' is necessary
                         id: order._id,
                         cart: order.order.cartItems,
@@ -149,7 +149,7 @@ const OrdersComponent = () => {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSize={5}
+                // pageSize={5}
                 onRowClick={handleRowClick}
                 initialState={{
                     pagination: {
