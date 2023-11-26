@@ -1,3 +1,5 @@
+import RequestError from "../utils/RequestError.js";
+import STATUS_CODES from "../utils/StatusCodes.js";
 import { validate } from '../utils/validate.js';
 import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
@@ -27,13 +29,13 @@ console.log(userInput);
 const getUserByEmailService = async (email: string) => {
     const data = await userDal.getUserByEmail(email);
     if (data) return data
-    throw new Error("error getting .service")
+    throw new RequestError("error getting .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
 }
 
 const validatePasswordService = async (password: string, hashedPassword: string) => {
     const data = await userDal.validatePassword(password, hashedPassword);
     if (data) return data
-    throw new Error("error validate Password .service")
+    throw new RequestError("error validate Password .service", STATUS_CODES.UNAUTHORIZED)
 }
 
 

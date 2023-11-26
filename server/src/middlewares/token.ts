@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import RequestError from "../types/RequestError.js";
+import RequestError from "../types/errors/RequestError.js";
 
 
 

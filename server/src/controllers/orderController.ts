@@ -13,7 +13,7 @@ const addOrder = asyncHandler(async (req: Request, res: Response) => {
 
     const order = await orderServices.addOrder(req.body)
     if (!order) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     res.status(STATUS_CODES.CREATED).json(order)
 })
@@ -28,7 +28,7 @@ const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
 
     const orders = await orderServices.getOrdersByUserId(userId)
     if (!orders) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     res.status(STATUS_CODES.OK).json(orders)
 })
@@ -38,7 +38,7 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 
     const orders = await orderServices.getOrders()
     if (!orders) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     res.status(STATUS_CODES.OK).json(orders)
 })
@@ -63,7 +63,7 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 
 //     const response = await orderServices.updateOrder(orderId, changeOrderBody)
 //     if (!response) {
-//         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+//         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
 //     }
 //     res.status(STATUS_CODES.OK).json(response)
 
