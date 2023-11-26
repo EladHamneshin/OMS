@@ -62,3 +62,9 @@ async function updateOrder(id:string, updatedOrder:OrderInterface) {
       throw error;
     }
   }
+
+export const api = {
+    getAllOrders,
+    getOrdersById,
+    updateOrder
+  }
