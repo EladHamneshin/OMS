@@ -8,13 +8,9 @@ import Dashboard from './pages/dashboard'
 import OrdersComponent from './pages/Orders'
 
 function App() {
-
   return (
     <>
-
-
       <NavBar />
-
       <BrowserRouter>
         <Routes>
           <Route path="/home" element={<Home />} />
