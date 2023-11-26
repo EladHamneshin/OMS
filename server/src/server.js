@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import ordersRoutes from './routes/ordersRoutes.js';
 import connectToDatabase from './configs/connectToMongogoDB.js';
-import { connectToPg } from './configs/connectDbAdmin.js';
 import orderModel from './Schemas/OrderModel.js';
 
 const app = express();
