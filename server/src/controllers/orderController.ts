@@ -23,7 +23,7 @@ const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
 
     const userId = req.params.userId
     if (!userId) {
-        throw new RequestError("userId is reqaed", STATUS_CODES.BAD_REQUEST)
+        throw new RequestError("userId is required", STATUS_CODES.BAD_REQUEST)
     }
 
     const orders = await orderServices.getOrdersByUserId(userId)
@@ -44,26 +44,25 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
 })
 
 // Update order Controller func
-// const updateOrder = asyncHandler(async (req: Request, res: Response) => {
+const updateOrder = asyncHandler(async (req: Request, res: Response) => {
+    const orderId = req.params.orderId
+    if (!orderId) {
+        throw new RequestError("orderId params is required", STATUS_CODES.BAD_REQUEST)
+    }
+    const changeOrderBody = req.body
+    if (!changeOrderBody) {
+        throw new RequestError("Body is required", STATUS_CODES.BAD_REQUEST)
+    }
+    const isAdmin = req.body.isAdmin
 
-//     const orderId = req.params.orderId as unknown as mongoose.Types.ObjectId
-//     if (!orderId) {
-//         throw new RequestError("orderId params is reqaed", STATUS_CODES.BAD_REQUEST)
-//     }
+    const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
+    if (!response) {
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+    }
+    res.status(STATUS_CODES.OK).json(response)
 
-//     const changeOrderBody = req.body as unknown as ChangeOrderBody
-//     if (!changeOrderBody) {
-//         throw new RequestError("Body is reqaed", STATUS_CODES.BAD_REQUEST)
-//     }
-
-//     const response = await orderServices.updateOrder(orderId, changeOrderBody)
-//     if (!response) {
-//         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
-//     }
-//     res.status(STATUS_CODES.OK).json(response)
-
-// })
+})
 
 
-export default  { addOrder, getOrdersByUserId, getOrders}
+export default { addOrder, getOrdersByUserId, getOrders, updateOrder }
 

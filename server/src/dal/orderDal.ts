@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import orderModel from "../Schemas/OrderModel.js";
+import orderModel from "../models/OrderModel.js";
 import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
@@ -47,20 +47,27 @@ const getOrders = async () => {
     return res
 }
 
-const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): Promise<OrderInterface | null> => {
-    try {
-        const updatedOrder = await orderModel.findByIdAndUpdate(
-            orderId,
-            { $set: { status: newStatus } },
-            { new: true }
-        );
 
-        return updatedOrder;
-    } catch (error) {
-        console.error(`Error updating order status: ${error}`);
-        return null;
-    }
+
+const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => {
+    const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });
+    return updatedOrder;
 };
+
+// const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): Promise<OrderInterface | null> => {
+//     try {
+//         const updatedOrder = await orderModel.findByIdAndUpdate(
+//             orderId,
+//             { $set: { status: newStatus } },
+//             { new: true }
+//         );
+
+//         return updatedOrder;
+//     } catch (error) {
+//         console.error(`Error updating order status: ${error}`);
+//         return null;
+//     }
+// };
 
 // const updateOrders = async (
 //     orderId: mongoose.Types.ObjectId,
@@ -105,4 +112,4 @@ const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): P
 //     return updatedOrder;
 // }
 
-export default { addOrder, getOrdersByUserId, getOrders }
+export default { addOrder, getOrdersByUserId, getOrders, updateOrder}
