@@ -8,6 +8,7 @@ export default function NavBar() {
                 <a href='/login'>Sign In</a>
                 <a href='/register'>Sign Up</a>
                 <a href='/dashboard'>Dashboard</a>
+                <a href='/logout'>Logout</a>
                 <div className='animation start-home'></div>
             </nav>
         </div>
