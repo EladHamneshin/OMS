@@ -2,14 +2,14 @@ import * as React from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import OrderInterface from '../types/order';
+import OrderInterface from '../types/orderType';
 
 interface OrderDetailsProps {
     selectedOrder: OrderInterface;
     onClose: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) => (
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => (
     <>
         <DialogTitle>Order Details</DialogTitle>
         <DialogContent>

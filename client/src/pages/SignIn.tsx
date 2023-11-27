@@ -30,7 +30,7 @@ export default function SignIn() {
     try {
       await login(user);
       toast.success('Successful login');
-      navigate('/dashboard');
+      navigate('/orders');
     } catch (error) {
       console.error('Login failed:', error);
       toast.error('Login failed. Please check your credentials.');
