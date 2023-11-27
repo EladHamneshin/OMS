@@ -26,13 +26,13 @@ export const autoToken = asyncHandler( async (req, _res, next) => {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) ;
       
       req.isAdmin = (decoded as JwtPayload).isAdmin;
-      console.log(req.isAdmin);
       
       next();
   } catch (err) {
     throw new RequestError('Not authorized, token failed', 403);
   }
 });
+
 
 
 

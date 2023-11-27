@@ -12,6 +12,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const reg = await userService.register(req.body)
     if (!reg) {
         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+
     }
     res.status(STATUS_CODES.OK).json(reg)
 }
@@ -50,8 +51,21 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
         res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
 })
 
+
+const logoutController = async (req: Request, res: Response) => {
+    try {
+        await userService.logout();
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.error('Logout failed:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 export const userController = {
     registerUser,
-    loginController
+    loginController,
+    logoutController
 }
 

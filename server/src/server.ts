@@ -7,7 +7,8 @@ import userRoutes from './routes/userRoutes.js';
 import ordersRoutes from './routes/ordersRoutes.js';
 import connectToDatabase from './configs/connectToMongogoDB.js';
 import { connectToPg } from './configs/connectDbAdmin.js';
-import orderModel from './Schemas/OrderModel.js';
+
+import orderModel from './models/OrderModel.js';
 import cookieParser from 'cookie-parser';
 import { errorHandler, notFound } from './middlewares/errorsMiddleware.js';
 
