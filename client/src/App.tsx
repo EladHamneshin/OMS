@@ -9,12 +9,10 @@ import OrdersComponent from './pages/Orders'
 import Logout from './components/Logout'
 
 function App() {
-
   return (
     <>
 
       <NavBar />
-
       <BrowserRouter>
         <Routes>
           <Route path="/home" element={<Home />} />
