@@ -4,7 +4,7 @@ import OrderInterface, { ChangeOrderBody, ChangeStatusBody } from "../types/Orde
 import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface) => {
-    const res = await orderModel.create({order});
+    const res = await orderModel.create(order);
     return res
 }
 

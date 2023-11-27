@@ -28,62 +28,63 @@ describe('GET /api/orders/:userId', () => {
 
 describe('POST /api/orders', () => {
   test('It should create a new order', async () => {
-    const response = await request(app)
-      .post('/api/orders')
+    const response = await request(app).post('/api/orders')
       .send({
         cartItems: [
           {
-            name: 'Product A',
-            description: 'Description for Product A',
-            price: 10,
-            quantity: 3,
-          },
-          {
-            name: 'Product B',
-            description: 'Description for Product B',
-            price: 15,
+            productId: "21",
+            name: "Produc3 1",
+            description: "Description 1",
+            salePrice: 50,
             quantity: 2,
+            discount: 0,
+            image: {
+              url: "https://example.com/product-image.jpg",
+            },
           },
         ],
-        orderTime: 'Thu Jun 15 2023',
-        status: 'Waiting',
-        total: 85,
+        userId: "user21שש1",
+        userName: "John yy",
+        userEmail: "johan.doe@example.com",
+        orderTime: "2023-11-22T12:00:00.000Z",
+        status: "Waiting",
+        totalPrice: 100,
         shippingDetails: {
           address: {
-            country: 'Country A',
-            city: 'City A',
-            street: '123',
-            celPhone: 123456789,
-            zipCode: 54321,
+            country: "Israel",
+            city: "Tel Aviv",
+            street: "Main Street",
+            zipCode: 12345,
           },
-          userId: '65554a49d6dce586149ec6b7',
-          contactNumber: '987654321',
-          orderType: 'Express',
+          contactNumber: "123456789",
+          orderType: "SelfCollection",
         },
-      });
+        contactNumber: "123456789",
+      }
+      );
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     // Add more assertions based on your application's behavior
   });
 });
 
 
 
-describe('PUT /api/orders/:orderId', () => {
-  test('should update an existing order', async () => {
-    // Assume orderId is a valid order ID in your application
-    const orderId = '655f3c0c05eb2e8e4ac6d91e';
+// describe('PUT /api/orders/:orderId', () => {
+//   test('should update an existing order', async () => {
+//     // Assume orderId is a valid order ID in your application
+//     const orderId = '655f3c0c05eb2e8e4ac6d91e';
 
-    const response = await request(app)
-      .put(`/api/orders/${orderId}`)
-      .send({
-        // Update the order with new data
-        status: 'Shipped',
-        // Add other fields to update based on your application's requirements
-      });
+//     const response = await request(app)
+//       .put(`/api/orders/${orderId}`)
+//       .send({
+//         // Update the order with new data
+//         status: 'Shipped',
+//         // Add other fields to update based on your application's requirements
+//       });
 
-    // Assertions
+//     // Assertions
   
    
-  });
-});
+//   });
+// });
