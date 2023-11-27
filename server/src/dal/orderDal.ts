@@ -1,14 +1,45 @@
 import mongoose from "mongoose";
-import orderModel from "../Schemas/OrderModel.js";
-import OrderInterface, { ChangeOrderBody, ChangeStatusBody } from "../types/Order.js"
-import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
+import orderModel from "../models/OrderModel.js";
+import OrderInterface, {  OrderEnum, OrderStatusEnum } from "../types/Order.js"
+// import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface) => {
     const res = await orderModel.create(order);
-    return res
+
+    console.log(res.shippingDetails.orderType !== OrderEnum.SelfCollection);
+
+    if (res.shippingDetails.orderType !== OrderEnum.SelfCollection) {
+        setTimeout(async () => {
+            const updatedOrder = await orderModel.findByIdAndUpdate(
+                res._id,
+                { $set: { status: OrderStatusEnum.Sent } },
+            );
+        }, 10000);
+        const delayToArrivedMilliseconds = getDelayToArrivedMilliseconds(order.shippingDetails.orderType);
+        setTimeout(async () => {
+            const arrivedOrder = await orderModel.findByIdAndUpdate(
+                res._id,
+                { $set: { status: OrderStatusEnum.Received } },
+            );
+        }, delayToArrivedMilliseconds);
+    }
+
+    return "The order has been successfully added";
+};
+
+
+const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
+    if (OrderEnum.Express) {
+        return 15000;
+    }
+    return 20000;
+
 }
 
-const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]>  => {
+
+
+
+const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]> => {
     const res = await orderModel.find({ 'order.userId': userId })
     return res
 }
@@ -17,6 +48,28 @@ const getOrders = async () => {
     const res = await orderModel.find({})
     return res
 }
+
+
+
+const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => {
+    const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });
+    return updatedOrder;
+};
+
+// const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): Promise<OrderInterface | null> => {
+//     try {
+//         const updatedOrder = await orderModel.findByIdAndUpdate(
+//             orderId,
+//             { $set: { status: newStatus } },
+//             { new: true }
+//         );
+
+//         return updatedOrder;
+//     } catch (error) {
+//         console.error(`Error updating order status: ${error}`);
+//         return null;
+//     }
+// };
 
 // const updateOrders = async (
 //     orderId: mongoose.Types.ObjectId,
@@ -61,4 +114,4 @@ const getOrders = async () => {
 //     return updatedOrder;
 // }
 
-export default { addOrder, getOrdersByUserId, getOrders }
+export default { addOrder, getOrdersByUserId, getOrders, updateOrder}

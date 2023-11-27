@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import OrderInterface, { OrderStatusEnum, OrderEnum } from '../types/Order.js';
+import mongoose from "mongoose";
+import OrderInterface, { OrderEnum, OrderStatusEnum } from "../types/Order.js";
 
 const orderSchema = new mongoose.Schema<OrderInterface>(
     {
@@ -8,16 +8,20 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
                 productId: String,
                 name: String,
                 description: String,
-                price: Number,
+                salePrice: Number,
                 quantity: Number,
+                discount: Number,
+                image: {
+                    url: String,
+                },
             },
         ],
         userId: String,
+        orderTime: Date,
         userName: String,
         userEmail: String,
-        orderTime: Date,
         status: {
-            type: String, 
+            type: String,
             enum: Object.values(OrderStatusEnum),
         },
         totalPrice: Number,
@@ -26,21 +30,21 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
                 country: String,
                 city: String,
                 street: String,
-                celPhone: Number,
                 zipCode: Number,
             },
             contactNumber: String,
             orderType: {
-                type: String, 
+                type: String,
                 enum: Object.values(OrderEnum),
             },
         },
+        contactNumber: String,
     },
     {
         strict: false,
     }
 );
 
-const orderModel: mongoose.Model<OrderInterface> = mongoose.model<OrderInterface>('orders', orderSchema);
+const orderModel = mongoose.model<OrderInterface>('orders', orderSchema);
 
 export default orderModel;
