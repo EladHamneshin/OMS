@@ -1,6 +1,6 @@
 import { AdminUser } from "../types/admin";
 
-const API_URI = import.meta.env.VITE_API_URI
+const API_URI = import.meta.env.VITE_API_URI + '/api'
 
 export async function register(user: AdminUser) {
   try {
