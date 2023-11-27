@@ -8,30 +8,32 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
-import './style/formStyle.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { login } from '../api/usersAPI';
-import {  useNavigate } from 'react-router-dom';
+import { AdminUser } from '../types/admin';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-
   const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const user: any = {
-      email: formData.get('email') ,
-      password: formData.get('password') 
+    const user: Partial<AdminUser> = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
     };
+
     try {
       await login(user);
-      console.log("successful login");
+      toast.success('Successful login');
       navigate('/dashboard');
     } catch (error) {
-
       console.error('Login failed:', error);
+      toast.error('Login failed. Please check your credentials.');
     }
   };
 
@@ -82,14 +84,15 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link to={"/login"}>
-                    {"Don't have an account? Sign Up"}
+                  <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {"Don't have an account? register"}
                   </Link>
                 </Grid>
               </Grid>
             </Box>
           </Box>
         </div>
+        <ToastContainer />
       </Container>
     </ThemeProvider>
   );

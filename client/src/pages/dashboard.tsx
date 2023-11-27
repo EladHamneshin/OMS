@@ -58,15 +58,12 @@ const rows = [
 export default function Dashboard() {
     
         const navigate = useNavigate();
-      
         useEffect(() => {
-          
           const isAdmin = localStorage.getItem('admin') ;
-    
           if (!isAdmin) {
             navigate('/login'); 
           }
-        }, [navigate]);
+        }, []);
     return (
 
         <>

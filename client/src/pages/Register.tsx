@@ -5,8 +5,9 @@ import { toastError, toastSuccess } from '../utils/toastUtils';
 import { Container, Avatar, Typography, Box, Grid, TextField, Button, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './style/formStyle.css'
+import { AdminUser } from '../types/admin';
 
 
 
@@ -100,11 +101,13 @@ const SignUp = () => {
         try {
             setIsLoading(true);
 
-            const data : any= {
+            const data: AdminUser = {
                 email,
                 password,
                 first_name,
-                last_name,}
+                last_name,
+                isAdmin: false
+            }
             await register(data);
 
             setIsLoading(false);
@@ -129,9 +132,6 @@ const SignUp = () => {
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5">
-                    Register
-                </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>

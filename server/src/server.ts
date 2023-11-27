@@ -28,10 +28,9 @@ const port = process.env.PORT || 3000 ;
 
 
 app.listen(port, async () => {
-    const a = new orderModel()
-
+const a = new orderModel()
   await connectToDatabase();
-  // await connectToPg();
+  await connectToPg();
   console.log(`Server is running at port ${port}`);
 });
 
