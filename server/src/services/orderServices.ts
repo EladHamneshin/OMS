@@ -36,7 +36,7 @@ const addOrder = async (order: OrderInterface) => {
         // if (response) {
         //     const result = await orderDal.addOrder(order)
         if (!result) {
-            throw new RequestError('Something went wrong while placing the order, please try again', STATUS_CODES.INTERNAL_SERVER_RRROR)
+            throw new RequestError('Something went wrong while placing the order, please try again', STATUS_CODES.INTERNAL_SERVER_ERROR)
         }
         else {
             return result;
@@ -63,7 +63,7 @@ const getOrders = async () => {
     const result = await orderDal.getOrders()
 
     if (!Object.keys(result).length) {
-        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     else {
         return result;
