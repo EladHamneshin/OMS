@@ -39,6 +39,7 @@ interface ShippingDetails {
 }
 
 interface OrderInterface {
+    _id?: string
     cartItems: Product[];
     userId: string;
     orderTime: Date;

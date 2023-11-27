@@ -35,7 +35,7 @@ app.listen(port, async () => {
   const a = new orderModel()
 
   await connectToDatabase();
-  // await connectToPg();
+  await connectToPg();
   console.log(`Server is running at port ${port}`);
 });
 
