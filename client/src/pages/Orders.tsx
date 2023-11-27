@@ -4,9 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import order from '../types/order';
+import order from "../types/orderType";
 import ordersApi from '../api/ordersApi';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 200 },
@@ -15,7 +16,7 @@ const columns: GridColDef[] = [
   { field: 'totalPrice', headerName: 'Total Price', width: 150, type: 'number' },
 ];
 
-const OrderDetails = ({ selectedOrder, onClose }: { selectedOrder: order, onClose: () => void }) => (
+const OrderDetails = ({ selectedOrder }: { selectedOrder: order, onClose: () => void }) => (
   <>
     <DialogTitle>Order Details</DialogTitle>
     <DialogContent>
@@ -91,6 +92,13 @@ const OrdersComponent = () => {
     const selectedRow = rows.find((row) => row._id === params.id);
     setSelectedOrder(selectedRow!);
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+      const isAdmin = localStorage.getItem('admin');
+      if (!isAdmin) {
+          navigate('/login');
+      }
+  }, []);
 
   return (
     <Box sx={{ height: 400, width: '100%' }}>

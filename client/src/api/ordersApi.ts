@@ -1,6 +1,6 @@
-import OrderInterface from "../types/order";
+import OrderInterface from "../types/orderType";
 
-const API_URI = import.meta.env.VITE_API_URI
+const API_URI = import.meta.env.VITE_API_URI +'/api'
 
 async function getAllOrders() {
     try {

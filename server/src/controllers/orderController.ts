@@ -55,7 +55,7 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
 
     const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
     if (!response) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     res.status(STATUS_CODES.OK).json(response)
 
