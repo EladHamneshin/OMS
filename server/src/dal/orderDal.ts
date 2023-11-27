@@ -5,6 +5,7 @@ import OrderInterface, {  OrderEnum, OrderStatusEnum } from "../types/Order.js"
 
 const addOrder = async (order: OrderInterface) => {
     const res = await orderModel.create(order);
+
     console.log(res.shippingDetails.orderType !== OrderEnum.SelfCollection);
 
     if (res.shippingDetails.orderType !== OrderEnum.SelfCollection) {
@@ -32,6 +33,7 @@ const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
         return 15000;
     }
     return 20000;
+
 }
 
 
