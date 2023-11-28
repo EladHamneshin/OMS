@@ -5,10 +5,10 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-
     "test": "jest --coverage .",
     "dev": "tsc && nodemon .",
-    "build": "babel src -d dist",
+    "buildtest": "babel src -d dist",
+    "build": "tsc",
     "start": "node ."
   },
   "keywords": [],
@@ -53,17 +53,14 @@
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.4",
     "typescript": "^5.3.2"
   },
   "jest": {
     "testEnvironment": "node",
     "testRegex": "dist/__tests__/server\\.test\\.js$",
-
-    
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
-
-
     },
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
