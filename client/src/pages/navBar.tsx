@@ -1,7 +1,8 @@
-// import React from 'react'
+import React from 'react'
+
 import './style/navBarStyle.css'
 
-export default function NavBar() {
+export default function NavBar(){
     return (
         <div className='navFather'>
             <nav>
