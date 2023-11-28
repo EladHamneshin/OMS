@@ -7,6 +7,8 @@ import Home from './pages/home';
 import OrdersComponent from './pages/Orders';
 // import Logout from './components/Logout';
 import Register from './pages/Register';
+import Geography from './scenes/geography';
+
 
 function App() {
   return (
@@ -19,7 +21,13 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/orders" element={<OrdersComponent />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/orders" element={<OrdersComponent />} />
+          <Route path="/geography" element={<Geography />} />
+
+          {/* <Route path="/logout" element={<Logout />} /> */}
+
+          {/* <Route path="/logout" element={<Logout />} /> */}
+
+
         </Routes>
       </>
     </BrowserRouter>
