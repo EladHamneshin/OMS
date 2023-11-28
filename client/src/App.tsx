@@ -8,6 +8,7 @@ import OrdersComponent from './pages/Orders';
 // import Logout from './components/Logout';
 import Register from './pages/Register';
 import Orders from './pages/Orders';
+import Geography from './scenes/geography';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           {/* <Route path="/order" element={<Order/>} /> */}
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<OrdersComponent />} />
+          <Route path="/geography" element={<Geography />} />
 
           {/* <Route path="/logout" element={<Logout />} /> */}
 

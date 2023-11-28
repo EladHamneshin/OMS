@@ -2,14 +2,27 @@ import { useTheme } from "@mui/material";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoFeatures } from "../data/mockGeoFeatures";
 import { tokens } from "../theme/theme";
-import { mockGeographyData as data } from "../data/mockData";
+import { useState, useEffect } from "react";
+import { CountByIsoCountryCode, countCountriesInOrders } from "../functions/countCountries";
+import ordersApi from "../api/ordersApi";
+import order from "../types/orderType";
 
 const GeographyChart = ({ isDashboard = false }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    
+
+    const [data, setData] = useState<CountByIsoCountryCode[]>()
+
+    useEffect(() => {
+        const getOrders = async () => {
+            const orders: order[] = await ordersApi.getAllOrders()
+            setData(countCountriesInOrders(orders))
+        }
+        getOrders()
+    }, [])
+
     return (
-        <ResponsiveChoropleth
+        <> {data && <ResponsiveChoropleth
             data={data}
             theme={{
                 axis: {
@@ -41,7 +54,7 @@ const GeographyChart = ({ isDashboard = false }) => {
             }}
             features={geoFeatures.features}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-            domain={[0, 1000000]}
+            domain={[0, 10]}
             unknownColor="#666666"
             label="properties.name"
             valueFormat=".2s"
@@ -79,7 +92,9 @@ const GeographyChart = ({ isDashboard = false }) => {
                     ]
                     : undefined
             }
-        />
+        />}
+
+        </>
     );
 };
 
