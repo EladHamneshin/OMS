@@ -4,6 +4,7 @@ import { userService } from "../services/userService.js"
 import { createToken } from "../middlewares/token.js"
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
+import { UUID } from "crypto";
 
 
 
@@ -34,21 +35,21 @@ const validateLogin = async (email: string, password: string) => {
 }
 
 const loginController = asyncHandler(async (req: Request, res: Response) => {
- 
-        const { email, password } = req.body;
-        //   validate
-        const user = await validateLogin(email, password);
-        if (!user) {
+
+    const { email, password } = req.body;
+    //   validate
+    const user = await validateLogin(email, password);
+    if (!user) {
         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
-        //   create token
-        const userEmail = req.body.email;
+    //   create token
+    const userEmail = req.body.email;
 
-        const userAdmin = user[0].is_admin
+    const userAdmin = user[0].is_admin
 
-        const token = createToken(userEmail, userAdmin);
-        res.cookie('token', token, { httpOnly: true });
-        res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
+    const token = createToken(userEmail, userAdmin);
+    res.cookie('token', token, { httpOnly: true });
+    res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
 })
 
 
@@ -63,9 +64,35 @@ const logoutController = async (req: Request, res: Response) => {
     }
 };
 
+const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
+
+    const reg = await userService.getAllUsers()
+    if (!reg) {
+        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+
+    }
+    res.status(STATUS_CODES.OK).json(reg)
+}
+)
+
+const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
+
+    const user_id = req.params.user_id as unknown as UUID
+
+    const reg = await userService.deleteUserById(user_id)
+    if (!reg) {
+        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+
+    }
+    res.status(STATUS_CODES.OK).json(reg)
+}
+)
+
 export const userController = {
     registerUser,
     loginController,
-    logoutController
+    logoutController,
+    getAllUsers,
+    deleteUserById
 }
 

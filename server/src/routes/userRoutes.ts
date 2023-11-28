@@ -10,4 +10,8 @@ userRouter.post("/login", userController.loginController);
 
 userRouter.post("/logout",userController.logoutController)
 
+userRouter.get("/",userController.getAllUsers)
+
+userRouter.delete("/:user_id",userController.deleteUserById)
+
 export default userRouter;

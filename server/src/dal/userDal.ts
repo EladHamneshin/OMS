@@ -2,16 +2,17 @@ import { AdminUser } from "../types/admin.js";
 import bcrypt from 'bcrypt';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
-import pkg from 'pg';
+import pkg, { QueryResult } from 'pg';
+import { UUID } from "crypto";
 const { Pool } = pkg;
 
-const sendQueryToDatabase = async (query: string, values: any[]): Promise<any> => {
-    const pool = new Pool({connectionString: process.env.PG_URI});
+const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
+    const pool = new Pool({ connectionString: process.env.PG_URI });
     const res = await pool.connect()
     res.release()
     const data = await res.query(query, values).catch(err => console.log(err));
     return data
-  }
+}
 
 const addUser = async (user: AdminUser) => {
 
@@ -52,6 +53,31 @@ const getUserByEmail = async (email: string) => {
     return result.rows;
 };
 
+const getAllUsers = async () => {
+
+    const query = `SELECT * FROM admin_users`;
+    const result = await sendQueryToDatabase(query);
+    if (!result) {
+        throw new RequestError("Error while getting all users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
+    }
+    return result.rows;
+};
+
+const deleteUserById = async (user_id: UUID): Promise<string> => {
+
+    const query = `DELETE FROM your_table_name WHERE user_id = $1 RETURNING user_id'`;
+    const result: QueryResult = await sendQueryToDatabase(query, [user_id]);
+    if (!result) {
+        throw new RequestError("Error while getting all users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
+    }
+    if (result.rowCount! > 0) {
+        return `User with user_id ${user_id} has been deleted successfully.`;
+
+    } else {
+        throw new RequestError(`User with user_id ${user_id} not found.`, STATUS_CODES.BAD_REQUEST);
+    }
+};
+
 const validatePassword = async (password: string, hashedPassword: string) => {
 
     const bcryptPassword = await bcrypt.compare(password, hashedPassword);
@@ -72,6 +98,8 @@ const logoutDal = async () => {
 export const userDal = {
     addUser,
     getUserByEmail,
+    getAllUsers,
+    deleteUserById,
     validatePassword,
     logoutDal
 };
