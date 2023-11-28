@@ -37,6 +37,8 @@ const getOrders = asyncHandler(async (req: Request, res: Response) => {
     if (!orders) {
         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
+    console.log(orders);
+    
     res.status(STATUS_CODES.OK).json(orders)
 })
 
