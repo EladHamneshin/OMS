@@ -13,7 +13,7 @@ interface OrderDetailsProps {
   onClose: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder}) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState(selectedOrder);
 
