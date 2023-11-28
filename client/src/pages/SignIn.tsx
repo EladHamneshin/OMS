@@ -31,7 +31,7 @@ export default function SignIn() {
     try {
       await login(user);
       console.log("successful login");
-       
+
     } catch (error) {
 
       console.error('Login failed:', error);
