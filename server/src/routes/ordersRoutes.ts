@@ -8,9 +8,10 @@ const ordersRoutes = express.Router();
 
 
 ordersRoutes.post("/", orderController.addOrder);
-ordersRoutes.get("/:userId", orderController.getOrdersByUserId);
-ordersRoutes.get("/", orderController.getOrders);
 
+ordersRoutes.get("/:userId", orderController.getOrdersByUserId);
+
+ordersRoutes.get("/", orderController.getOrders);
 
 ordersRoutes.put("/:orderId",autoToken, orderController.updateOrder);
 

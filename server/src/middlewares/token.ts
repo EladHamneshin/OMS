@@ -25,7 +25,7 @@ export const autoToken = asyncHandler( async (req, _res, next) => {
   try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) ;
       
-      req.isAdmin = (decoded as JwtPayload).isAdmin;
+      req.body.isAdmin = (decoded as JwtPayload).isAdmin;
       
       next();
   } catch (err) {

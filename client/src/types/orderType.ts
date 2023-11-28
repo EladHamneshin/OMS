@@ -17,11 +17,12 @@ interface Product {
     };
 }
 
+
 export enum OrderStatusEnum {
     Waiting = 'Waiting',
     Sent = 'Sent',
     Received = 'Received',
-    Canceled = 'Canceled'
+    Canceled = 'Canceled',
 }
 
 export const OrderEnum = {
@@ -39,6 +40,7 @@ interface ShippingDetails {
 }
 
 interface OrderInterface {
+    // id: string;
     _id?: string
     cartItems: Product[];
     userId: string;

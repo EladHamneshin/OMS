@@ -37,8 +37,6 @@ const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
 }
 
 
-
-
 const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]> => {
     const res = await orderModel.find({ 'order.userId': userId })
     return res
@@ -50,8 +48,9 @@ const getOrders = async () => {
 }
 
 
-
-const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => {
+const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => { 
+    console.log(updatedFields);
+       
     const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });
     return updatedOrder;
 };
