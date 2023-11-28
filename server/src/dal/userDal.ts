@@ -6,10 +6,10 @@ import pkg from 'pg';
 const { Pool } = pkg;
 
 const sendQueryToDatabase = async (query: string, values: any[]): Promise<any> => {
-    const pool = new Pool()
+    const pool = new Pool({connectionString: process.env.PG_URI});
     const res = await pool.connect()
-    const data = await res.query(query, values).catch(err => console.log(err));
     res.release()
+    const data = await res.query(query, values).catch(err => console.log(err));
     return data
   }
 

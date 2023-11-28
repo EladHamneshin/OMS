@@ -1,8 +1,8 @@
-export interface AdminUser {
+export interface User {
     id?: number;
     first_name: string;
     last_name: string;
     email: string; 
     password: string;
-    isAdmin? :boolean;
+    is_admin? :boolean;
   }
