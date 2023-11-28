@@ -48,6 +48,7 @@ export default function NavBar() {
                     value="logout"
                     icon={<ExitToApp />} />
             </BottomNavigation>
+
         </div>
     );
 }

@@ -34,21 +34,20 @@ const validateLogin = async (email: string, password: string) => {
 }
 
 const loginController = asyncHandler(async (req: Request, res: Response) => {
- 
-        const { email, password } = req.body;
-        //   validate
-        const user = await validateLogin(email, password);
-        if (!user) {
+    const { email, password } = req.body;
+    //   validate
+    const user = await validateLogin(email, password);
+    if (!user) {
         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
-        //   create token
-        const userEmail = req.body.email;
+    //   create token
+    const userEmail = req.body.email;
 
-        const userAdmin = user[0].is_admin
+    const userAdmin = user[0].is_admin
 
-        const token = createToken(userEmail, userAdmin);
-        res.cookie('token', token, { httpOnly: true });
-        res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
+    const token = createToken(userEmail, userAdmin);
+    res.cookie('token', token, { httpOnly: true });
+    res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
 })
 
 

@@ -1,10 +1,10 @@
 import { AdminUser } from "../types/admin";
 
-const API_URI = import.meta.env.VITE_API_URI + '/api'
+const API_URI = import.meta.env.VITE_API_URI 
 
 export async function register(user: AdminUser) {
   try {
-    const response = await fetch(`${API_URI}/users/register`, {
+    const response = await fetch(`/api/users/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -22,7 +22,7 @@ export async function register(user: AdminUser) {
 
 export async function login(user: Partial<AdminUser>) {
   try {
-    const response = await fetch(`${API_URI}/users/login`, {
+    const response = await fetch(`/api/users/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -44,7 +44,7 @@ export async function login(user: Partial<AdminUser>) {
 
 export async function logOutApi() {
   try {
-    const response = await fetch(`${API_URI}/users/logout`,
+    const response = await fetch(`/api/users/logout`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

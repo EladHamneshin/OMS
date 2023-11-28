@@ -17,50 +17,49 @@ const addOrder = asyncHandler(async (req: Request, res: Response) => {
 
 // Get all orders by userId order Controller func
 const getOrdersByUserId = asyncHandler(async (req: Request, res: Response) => {
-
-    const userId = req.params.userId
+  
+    const userId = req.params.userId;
     if (!userId) {
-        throw new RequestError("userId is required", STATUS_CODES.BAD_REQUEST)
+        throw new RequestError("userId is required", STATUS_CODES.BAD_REQUEST);
     }
 
-    const orders = await orderServices.getOrdersByUserId(userId)
+    const orders = await orderServices.getOrdersByUserId(userId);
     if (!orders) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
-    res.status(STATUS_CODES.OK).json(orders)
+    res.status(STATUS_CODES.OK).json(orders);
 })
 
 // Get all orders Controller func
 const getOrders = asyncHandler(async (req: Request, res: Response) => {
 
-    const orders = await orderServices.getOrders()
+    const orders = await orderServices.getOrders();
     if (!orders) {
         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
+    console.log(orders);
+    
     res.status(STATUS_CODES.OK).json(orders)
 })
 
 // Update order Controller func
 const updateOrder = asyncHandler(async (req: Request, res: Response) => {
-    const orderId = req.params.orderId
+    const orderId = req.params.orderId;
     if (!orderId) {
         throw new RequestError("orderId params is required", STATUS_CODES.BAD_REQUEST)
     }
-    const changeOrderBody = req.body
+    const changeOrderBody = req.body;
     if (!changeOrderBody) {
         throw new RequestError("Body is required", STATUS_CODES.BAD_REQUEST)
     }
-    const isAdmin = req.body.isAdmin
-
-
+    const isAdmin = req.body.isAdmin;
     const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
     if (!response) {
-        throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
+        throw new RequestError("Server error, please try again", STATUS_CODES.BAD_REQUEST)
+
     }
     res.status(STATUS_CODES.OK).json(response)
-
 })
-
 
 export default { addOrder, getOrdersByUserId, getOrders, updateOrder }
 
