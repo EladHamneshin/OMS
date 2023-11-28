@@ -48,7 +48,6 @@ const getOrders = async () => {
 
 const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => {    
     const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });   
-    console.log(updateOrder);
      
     return updatedOrder;
 };
