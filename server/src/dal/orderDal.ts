@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 import orderModel from "../models/OrderModel.js";
 import OrderInterface, {  OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import { log } from "console";
 // import ProductsQuantities, { Action } from "../types/ProductsQuantities.js";
 
 const addOrder = async (order: OrderInterface) => {
     const res = await orderModel.create(order);
-
-    console.log(res.shippingDetails.orderType !== OrderEnum.SelfCollection);
 
     if (res.shippingDetails.orderType !== OrderEnum.SelfCollection) {
         setTimeout(async () => {
@@ -33,7 +32,6 @@ const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
         return 15000;
     }
     return 20000;
-
 }
 
 
@@ -48,10 +46,10 @@ const getOrders = async () => {
 }
 
 
-const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => { 
-    console.log(updatedFields);
-       
-    const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });
+const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterface>) => {    
+    const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { $set: updatedFields }, { new: true });   
+    console.log(updateOrder);
+     
     return updatedOrder;
 };
 

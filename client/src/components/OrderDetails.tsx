@@ -31,10 +31,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
         try {
             // Save the edited values
             setIsEditMode(false);
-            // console.log(editedOrder.status);
-        //    const status = editedOrder.status
-            const updatedOrder = await updateOrder(selectedOrder._id!,editedOrder.status);
-            console.log('Order updated successfully:', updatedOrder);
+            const updatedOrder = await updateOrder(selectedOrder._id!, {status: editedOrder.status,});
+                        console.log('Order updated successfully:', updatedOrder);
         } catch (error) {
             console.error('Failed to update order:', error);
         }
@@ -70,7 +68,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
                     Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Status: {isEditMode && (adminTrue || admin) ? (
+                    status: {isEditMode && (adminTrue || admin) ? (
                         <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
                             <option value={OrderStatusEnum.Waiting}>Waiting</option>
                             {/* <option value={OrderStatusEnum.Sent}>Sent</option> */}

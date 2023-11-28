@@ -71,9 +71,8 @@ const getOrders = async () => {
 }
 const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInterface>): void => {
     const allowedFields = ['status', 'address', 'country', 'city', 'street', 'celPhone', 'zipCode', 'contactNumber'];
-
     if (!isAdmin) {
-        if (!updatedFields.status || updatedFields.status !== 'Canceled') {
+        if (updatedFields.status === 'Canceled') {
             throw new RequestError('Invalid update for non-admin user', STATUS_CODES.BAD_REQUEST);
         }
     } else {
@@ -82,7 +81,6 @@ const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInter
                 throw new RequestError(`Field '${field}' is not allowed for admin update`, STATUS_CODES.BAD_REQUEST);
             }
         }
-
         if (updatedFields.status && updatedFields.status !== 'Canceled') {
             throw new RequestError('Admin can only update status to "canceled"', STATUS_CODES.BAD_REQUEST);
         }

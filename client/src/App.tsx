@@ -17,17 +17,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
+          {/* <Route path="/register" element={<SignUp />} /> */}
           <Route path="/orders" element={<OrdersComponent />} />
-          <Route path="/order" element={<Order/>} />
-
-
+          {/* <Route path="/order" element={<Order/>} /> */}
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<OrdersComponent />} />
 
           {/* <Route path="/logout" element={<Logout />} /> */}
 
-          <Route path="/logout" element={<Logout />} />
+          {/* <Route path="/logout" element={<Logout />} /> */}
 
 
         </Routes>
