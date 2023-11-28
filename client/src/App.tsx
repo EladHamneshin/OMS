@@ -13,8 +13,6 @@ function App() {
     <BrowserRouter>
       <>
         <NavBar />
-    <>
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />

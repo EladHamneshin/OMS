@@ -1,4 +1,5 @@
 import { AdminUser } from "../types/admin";
+import { User } from "../types/user";
 
 const API_URI = import.meta.env.VITE_API_URI
 
@@ -20,7 +21,7 @@ export async function register(user: AdminUser) {
   }
 }
 
-export async function login(user: Partial<AdminUser>) {
+export async function login(user: Partial<AdminUser>): Promise<User>{
   try {
     const response = await fetch(`${API_URI}/users/login`, {
       method: 'POST',
@@ -31,11 +32,9 @@ export async function login(user: Partial<AdminUser>) {
       throw new Error(await response.text());
     }
     const res = await response.json();
+    const adminResponse = res.user[0]
 
-    const adminResponse = res.user[0].is_admin
-
-    localStorage.setItem("admin", adminResponse)
-
+    return adminResponse
   } catch (error) {
     console.error('Login failed:', error);
     throw error;
