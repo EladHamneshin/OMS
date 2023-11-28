@@ -51,16 +51,13 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
         throw new RequestError("Body is required", STATUS_CODES.BAD_REQUEST)
     }
     const isAdmin = req.body.isAdmin
-
-
+    console.log(isAdmin);
     const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
     if (!response) {
         throw new RequestError("Server error, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     res.status(STATUS_CODES.OK).json(response)
-
 })
-
 
 export default { addOrder, getOrdersByUserId, getOrders, updateOrder }
 

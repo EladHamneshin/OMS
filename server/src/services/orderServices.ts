@@ -76,11 +76,13 @@ const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInter
         }
     } else {
         const allowedFields = ['status', 'address', 'country', 'city', 'street', 'celPhone', 'zipCode', 'contactNumber'];
-        for (const field in updatedFields) {
-            if (!allowedFields.includes(field)) {
-                throw new RequestError(`Field '${field}' is not allowed for admin update`, STATUS_CODES.BAD_REQUEST);
+         const updateKey = Object.keys(updatedFields)[0]
+         console.log(updateKey);
+         
+            if (!allowedFields.includes(updateKey)) {
+                throw new RequestError(`Field '${updateKey}' is not allowed for admin update`, STATUS_CODES.BAD_REQUEST);
             }
-        }
+        
     }
 };
 

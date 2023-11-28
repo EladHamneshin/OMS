@@ -5,7 +5,7 @@ import NavBar from './pages/navBar';
 import Home from './pages/home';
 // import Dashboard from './pages/dashboard';
 import OrdersComponent from './pages/Orders';
-import Logout from './components/Logout';
+// import Logout from './components/Logout';
 import Register from './pages/Register';
 import Orders from './pages/Orders';
 
@@ -21,7 +21,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<OrdersComponent />} />
-          <Route path="/logout" element={<Logout />} />
+          {/* <Route path="/logout" element={<Logout />} /> */}
         </Routes>
       </>
     </BrowserRouter>
