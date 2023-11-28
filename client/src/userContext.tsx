@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { User } from './types/user';
+import { User } from './types/userAdmin';
 import { logOutApi, login } from './api/usersAPI';
 
 
@@ -26,10 +26,8 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
 
     const loginUser = async (email: string, password: string) => {
         const loggedUser = await login({ email, password });
-
-        const adminResponse = loggedUser.isAdmin
+        const adminResponse = loggedUser.is_admin
         localStorage.setItem("admin", JSON.stringify(adminResponse))
-        localStorage.setItem('admin', JSON.stringify(adminResponse));
         setUserInfo(loggedUser);
         return loggedUser;
     }

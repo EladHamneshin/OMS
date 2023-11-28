@@ -5,7 +5,6 @@ import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
 
 const register = async (userInput: AdminUser) => {
-console.log(userInput);
 
     // Validate email format
     validate.validateEmail(userInput.email);

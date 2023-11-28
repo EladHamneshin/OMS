@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,89 +11,153 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { login } from '../api/usersAPI';
+import { UserContext } from '../userContext';
 import { AdminUser } from '../types/admin';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const userContext = useContext(UserContext);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const user: Partial<AdminUser> = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
+    React.useEffect(() => {
+        if (userContext !== null) {
+            setTimeout(() => {
+                navigate('/orders')
+            }, 2000)
+        }
+    }, [userContext?.userInfo]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const userEmail = formData.get('email') as string | undefined;
+        const userPassword = formData.get('password') as string | undefined;
+
+        if (userEmail !== undefined && userPassword !== undefined) {
+            const user: Partial<AdminUser> = {
+                email: userEmail,
+                password: userPassword,
+            };
+
+            try {
+                if (user.email !== undefined && user.password !== undefined) {
+                    await userContext?.loginUser(user.email, user.password);
+                    toast.success('Successful login');
+                    navigate('/orders');
+                } else {
+                    throw new Error('Email and password cannot be empty');
+                }
+            } catch (error) {
+                console.error('Login failed:', error);
+                toast.error('Login failed. Please check your credentials.');
+            }
+        } else {
+            console.error('Email or password is undefined');
+        }
     };
 
-    try {
-      await login(user);
-      toast.success('Successful login');
-      navigate('/orders');
-    } catch (error) {
-      console.error('Login failed:', error);
-      toast.error('Login failed. Please check your credentials.');
+    if (userContext !== null) {
+        return (
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className="form">
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Box
+                            sx={{
+                                mt: 3,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <h2>You are already logged in!</h2>
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={() => navigate('/orders')}
+                            >
+                                Go to Orders
+                            </Button>
+                        </Box>
+                    </Box>
+                </div>
+                <ToastContainer />
+            </Container>
+        );
     }
-  };
 
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className='form'>
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item>
-                  <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {"Don't have an account? register"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-        </div>
-        <ToastContainer />
-      </Container>
-    </ThemeProvider>
-  );
+    // אחרת, אם אין מידע, הצג את טופס ההתחברות
+    return (
+        <ThemeProvider theme={defaultTheme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className="form">
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item>
+                                    <Link
+                                        to="/register"
+                                        style={{ textDecoration: 'none', color: 'inherit' }}
+                                    >
+                                        {"Don't have an account? register"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Box>
+                </div>
+                <ToastContainer />
+            </Container>
+        </ThemeProvider>
+    );
 }
