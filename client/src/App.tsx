@@ -7,22 +7,20 @@ import Home from './pages/home';
 import OrdersComponent from './pages/Orders';
 // import Logout from './components/Logout';
 import Register from './pages/Register';
-import Orders from './pages/Orders';
 import Geography from './scenes/geography';
+
 
 function App() {
   return (
     <BrowserRouter>
       <>
         <NavBar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<SignIn />} />
-          {/* <Route path="/register" element={<SignUp />} /> */}
           <Route path="/orders" element={<OrdersComponent />} />
-          {/* <Route path="/order" element={<Order/>} /> */}
           <Route path="/register" element={<Register />} />
-          <Route path="/orders" element={<OrdersComponent />} />
           <Route path="/geography" element={<Geography />} />
 
           {/* <Route path="/logout" element={<Logout />} /> */}

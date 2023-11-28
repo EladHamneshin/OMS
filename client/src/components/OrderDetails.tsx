@@ -2,136 +2,183 @@ import * as React from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import OrderInterface, { OrderStatusEnum, OrderEnum } from '../types/orderType';  // Import the enum
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/base';
 import { useState, useEffect } from 'react';
-import {updateOrder} from '../api/ordersApi'
+import { updateOrder } from '../api/ordersApi';
+import OrderInterface, { OrderStatusEnum } from '../types/orderType';
 
 interface OrderDetailsProps {
-    selectedOrder: OrderInterface;
-    onClose: () => void;
+  selectedOrder: OrderInterface;
+  onClose: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [editedOrder, setEditedOrder] = useState(selectedOrder);
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedOrder, setEditedOrder] = useState(selectedOrder);
 
-    useEffect(() => {
-        if (isEditMode) {
-            setEditedOrder(selectedOrder);
-        }
-    }, [isEditMode, selectedOrder]);
+  useEffect(() => {
+    if (isEditMode) {
+      setEditedOrder(selectedOrder);
+    }
+  }, [isEditMode, selectedOrder]);
 
-    const handleEdit = () => {
-        setIsEditMode(true);
-    };
+  const handleEdit = () => {
+    setIsEditMode(true);
+  };
 
-    const handleSave = async () => {
-        try {
-            // Save the edited values
-            setIsEditMode(false);
-            const updatedOrder = await updateOrder(selectedOrder._id!, {status: editedOrder.status,});
-                        console.log('Order updated successfully:', updatedOrder);
-        } catch (error) {
-            console.error('Failed to update order:', error);
-        }
-    };
-    
+  const handleSave = async () => {
+    try {
+      setIsEditMode(false);
 
-    const admin = localStorage.getItem('admin')
-    const adminTrue = localStorage.getItem('admin') === 'true';
-    const orderType = selectedOrder.shippingDetails.orderType === "SelfCollection" 
+      if (!selectedOrder._id) {
+        throw new Error('No order ID');
+      }
 
-    const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // console.log(e.target.value);
+      const updatedOrder = await updateOrder(selectedOrder._id, editedOrder);
 
-        // Assuming OrderStatusEnum is an enum, parse the input value to the enum type
-        setEditedOrder({ ...editedOrder, status: e.target.value as OrderStatusEnum });
-    };
+      // Update the selectedOrder state to reflect the changes
+      setEditedOrder(updatedOrder);
 
-    const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditedOrder({
-            ...editedOrder,
-            shippingDetails: {
-                ...editedOrder.shippingDetails,
-                address: { ...editedOrder.shippingDetails?.address, street: e.target.value, city: e.target.value },
-            },
-        });
-    };
+      console.log('Order updated successfully:', updatedOrder);
+    } catch (error) {
+      console.error('Failed to update order:', error);
+    }
+  };
 
-    return (
-        <>
-            <DialogTitle>Order Details</DialogTitle>
-            <DialogContent>
-                <Typography variant="body2" color="text.secondary">
-                    Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    status: {isEditMode && (adminTrue || admin) ? (
-                        <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
-                            <option value={OrderStatusEnum.Waiting}>Waiting</option>
-                            {/* <option value={OrderStatusEnum.Sent}>Sent</option> */}
-                            {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
-                            {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
-                        </select>
-                    ) : (
-                        selectedOrder?.status
-                    )}
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setEditedOrder({
+      ...editedOrder,
+      status: e.target.value as OrderStatusEnum,
+    });
+  };
+
+  const handleAddressChange = (field: string, value: string) => {
+    setEditedOrder({
+      ...editedOrder,
+      shippingDetails: {
+        ...editedOrder.shippingDetails,
+        address: {
+          ...editedOrder.shippingDetails?.address,
+          [field]: field === 'zipCode' ? parseInt(value) : value,
+        },
+      },
+    });
+  };
+
+  return (
+    <>
+      <DialogTitle>Order Details</DialogTitle>
+      <DialogContent style={{ minWidth: '500px', maxWidth: '800px', overflowY: 'auto', maxHeight: '50vh' }}>
+        <Typography variant="body2" color="text.secondary">
+          Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Status: {isEditMode ? (
+            <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
+              <option value={OrderStatusEnum.Waiting}>Waiting</option>
+              <option value={OrderStatusEnum.Sent}>Sent</option>
+              <option value={OrderStatusEnum.Received}>Received</option>
+              <option value={OrderStatusEnum.Canceled}>Cancel</option>
+            </select>
+          ) : (
+            selectedOrder?.status
+          )}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Total Price: {selectedOrder?.totalPrice}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Shipping Address:{' '}
+          {isEditMode && (
+            <>
+              <input
+                type="text"
+                value={editedOrder.shippingDetails?.address?.country || ''}
+                placeholder="Country"
+                onChange={(e) => handleAddressChange('country', e.target.value)}
+              />
+              <input
+                type="text"
+                value={editedOrder.shippingDetails?.address?.city || ''}
+                placeholder="City"
+                onChange={(e) => handleAddressChange('city', e.target.value)}
+              />
+              <input
+                type="text"
+                value={editedOrder.shippingDetails?.address?.street || ''}
+                placeholder="Street"
+                onChange={(e) => handleAddressChange('street', e.target.value)}
+              />
+              <input
+                type="number"
+                value={editedOrder.shippingDetails?.address?.zipCode || ''}
+                placeholder="Zipcode"
+                onChange={(e) => handleAddressChange('zipCode', e.target.value)}
+              />
+            </>
+          )}
+          {!isEditMode && (
+            <>
+              {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
+            </>
+          )}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Contact Number: {selectedOrder?.contactNumber}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Order Type: {selectedOrder?.shippingDetails?.orderType}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          User Name: {selectedOrder?.userName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          User Email: {selectedOrder?.userEmail}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Cart Items:
+        </Typography>
+        {selectedOrder?.cartItems?.map((item, index) => (
+          <div key={index}>
+            <Typography variant="body2" color="text.secondary">
+              Product ID: {item.productId}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Total Price: {selectedOrder?.totalPrice}
+              Name: {item.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Shipping Address: {isEditMode && admin ? (
-                    <input
-                        type="text"
-                        value={[editedOrder.shippingDetails?.address?.street, editedOrder.shippingDetails?.address?.city, editedOrder.shippingDetails?.address?.country]}
-                        onChange={handleAddressChange}
-                    />
-                ) : (
-                    `${selectedOrder?.shippingDetails?.address?.street}, ${selectedOrder?.shippingDetails?.address?.city}, ${selectedOrder?.shippingDetails?.address?.country}`
-                )}
+              Description: {item.description}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Contact Number: {selectedOrder?.shippingDetails?.contactNumber}
+              Price: {item.salePrice}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Order Type: {selectedOrder?.shippingDetails?.orderType}
+              Quantity: {item.quantity}
             </Typography>
-            {isEditMode && (
-                <Button onClick={handleSave}>
-                    Save
-                </Button>
-            )}
-            <Button onClick={handleEdit}>
-                <EditIcon />
-            </Button>
+            <Typography variant="body2" color="text.secondary">
+              Discount: {item.discount}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Image URL: {item.image.url}
+            </Typography>
             <hr />
-            <Typography variant="h6">Cart Items:</Typography>
-            {selectedOrder?.cartItems?.map((item, index) => (
-                <div key={index}>
-                    <Typography variant="body2" color="text.secondary">
-                        Product ID: {item.productId}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Name: {item.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Description: {item.description}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Price: {item.salePrice}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Quantity: {item.quantity}
-                    </Typography>
-                    <hr />
-                </div>
-            ))}
-        </DialogContent >
-        </>
-    );
+          </div>
+        ))}
+        {isEditMode && (
+          <>
+            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={() => setIsEditMode(false)}>Cancel</Button>
+          </>
+        )}
+        {!isEditMode && (
+          <Button onClick={handleEdit}>
+            <EditIcon />
+          </Button>
+        )}
+      </DialogContent>
+    </>
+  );
 };
 
 export default OrderDetails;

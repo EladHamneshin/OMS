@@ -8,7 +8,6 @@ import MiddlewareError from '../types/errors/MiddlewareError.js';
 const notFound = (req: Request, res: Response, next: NextFunction) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(STATUS_CODES.NOT_FOUND);
-  console.log('not found');
   next(error);
 };
 
