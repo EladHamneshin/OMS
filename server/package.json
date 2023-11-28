@@ -8,8 +8,8 @@
 
     "test": "jest --coverage .",
     "dev": "tsc && nodemon .",
-    "build": "babel src -d dist"
-
+    "build": "babel src -d dist",
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
