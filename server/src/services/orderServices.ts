@@ -86,6 +86,7 @@ const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInter
         if (updatedFields.status && updatedFields.status !== 'Canceled') {
             throw new RequestError('Admin can only update status to "canceled"', STATUS_CODES.BAD_REQUEST);
         }
+
     }
 };
 

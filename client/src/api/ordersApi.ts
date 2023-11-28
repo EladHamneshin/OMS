@@ -1,6 +1,6 @@
-import OrderInterface from "../types/order";
+import OrderInterface from "../types/orderType";
 
-const API_URI = import.meta.env.VITE_API_URI
+const API_URI = import.meta.env.VITE_API_URI +'/api'
 
 async function getAllOrders() {
     try {
@@ -44,7 +44,7 @@ async function getOrdersById(id: string) {
 //         throw error;
 //     }
 // }
-async function updateOrder(id: string, updatedOrder: OrderInterface) {
+export async function updateOrder(id: string, updatedOrder: OrderInterface) {
     try {
         const response = await fetch(`${API_URI}/orders/${id}`, {
             method: 'PUT',
@@ -62,4 +62,4 @@ async function updateOrder(id: string, updatedOrder: OrderInterface) {
         throw error;
     }
 }
-export default { getAllOrders, getOrdersById, updateOrder }
+export default { getAllOrders, getOrdersById }
