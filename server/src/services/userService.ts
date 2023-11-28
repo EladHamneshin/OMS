@@ -6,7 +6,7 @@ import { userDal } from '../dal/userDal.js'
 import { UUID } from "crypto";
 
 const register = async (userInput: AdminUser) => {
-  console.log(userInput);
+console.log(userInput);
 
   // Validate email format
   validate.validateEmail(userInput.email);

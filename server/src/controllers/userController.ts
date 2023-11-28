@@ -35,11 +35,11 @@ const validateLogin = async (email: string, password: string) => {
 }
 
 const loginController = asyncHandler(async (req: Request, res: Response) => {
-
-    const { email, password } = req.body;
-    //   validate
-    const user = await validateLogin(email, password);
-    if (!user) {
+ 
+        const { email, password } = req.body;
+        //   validate
+        const user = await validateLogin(email, password);
+        if (!user) {
         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     //   create token

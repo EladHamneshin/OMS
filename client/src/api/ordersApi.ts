@@ -1,10 +1,9 @@
 import OrderInterface from "../types/orderType";
 
-const API_URI = import.meta.env.VITE_API_URI + '/api'
 
 async function getAllOrders() {
     try {
-        const response = await fetch(`${API_URI}/orders`);
+        const response = await fetch(`/api/orders`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -16,7 +15,7 @@ async function getAllOrders() {
 }
 async function getOrdersById(id: string) {
     try {
-        const response = await fetch(`${API_URI}/orders/${id}`);
+        const response = await fetch(`/api/orders/${id}`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -44,27 +43,22 @@ async function getOrdersById(id: string) {
 //         throw error;
 //     }
 // }
-export async function updateOrder(id: string, orderToUpdated: Partial<OrderInterface>) {
+export async function updateOrder(id: string, updatedOrder: Partial<OrderInterface>) {
     try {
-        console.log(orderToUpdated);
-        
-        const response = await fetch(`${API_URI}/orders/${id}`, {
+        const response = await fetch(`/api/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: orderToUpdated
+            body: JSON.stringify(updatedOrder)
         });
-
         if (!response.ok) {
             throw new Error('Failed to update order');
         }
-
         return await response.json();
     } catch (error) {
         console.error('Updating order failed', error);
         throw error;
     }
 }
-
 export default { getAllOrders, getOrdersById }
