@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import './style/navBarStyle.css'
 
 export default function NavBar() {
@@ -7,7 +7,8 @@ export default function NavBar() {
             <nav>
                 <a href='/login'>Sign In</a>
                 <a href='/register'>Sign Up</a>
-                <a href='/dashboard'>Dashboard</a>
+                <a href='/orders'>orders</a>
+                <a href='/logout'>Logout</a>
                 <div className='animation start-home'></div>
             </nav>
         </div>

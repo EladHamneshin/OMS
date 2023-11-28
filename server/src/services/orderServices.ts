@@ -1,10 +1,9 @@
-import OrderInterface, { ChangeOrderBody, ChangeStatusBody, OrderEnum, OrderStatusEnum } from "../types/Order.js"
+import OrderInterface, { OrderEnum, OrderStatusEnum } from "../types/Order.js"
 import orderDal from '../dal/orderDal.js'
 // import serverCheckOrder from "./serverCheckOrder.js"
 // import ProductsQuantities from "../types/ProductsQuantities.js"
 import mongoose from "mongoose"
 import isEnumValue from "./isEnumValue.js"
-import { ProductQuantity } from "../types/ProductsQuantities.js"
 import RequestError from "../utils/RequestError.js"
 import STATUS_CODES from "../utils/StatusCodes.js"
 
@@ -37,7 +36,7 @@ const addOrder = async (order: OrderInterface) => {
         // if (response) {
         //     const result = await orderDal.addOrder(order)
         if (!result) {
-            throw new RequestError('Something went wrong while placing the order, please try again', STATUS_CODES.INTERNAL_SERVER_RRROR)
+            throw new RequestError('Something went wrong while placing the order, please try again', STATUS_CODES.INTERNAL_SERVER_ERROR)
         }
         else {
             return result;
@@ -64,11 +63,34 @@ const getOrders = async () => {
     const result = await orderDal.getOrders()
 
     if (!Object.keys(result).length) {
-        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_RRROR)
+        throw new RequestError("Something went wrong with the request, please try again", STATUS_CODES.INTERNAL_SERVER_ERROR)
     }
     else {
         return result;
     }
+}
+const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInterface>): void => {
+    if (!isAdmin) {
+        if (Object.keys(updatedFields).length !== 1 || !updatedFields.hasOwnProperty('status')) {
+            throw new RequestError('Invalid update for non-admin user', STATUS_CODES.BAD_REQUEST);
+        }
+    } else {
+        const allowedFields = ['status', 'address', 'country', 'city', 'street', 'celPhone', 'zipCode', 'contactNumber'];
+        for (const field in updatedFields) {
+            if (!allowedFields.includes(field)) {
+                throw new RequestError(`Field '${field}' is not allowed for admin update`, STATUS_CODES.BAD_REQUEST);
+            }
+        }
+    }
+};
+
+const updateOrder = async (orderId: string, isAdmin: boolean, updatedFields: Partial<OrderInterface>) => {
+    validateOrderUpdate(isAdmin, updatedFields);
+    const updatedOrder = await orderDal.updateOrder(orderId, updatedFields);
+    if (updatedOrder) {
+        return updatedOrder
+    }
+    throw new RequestError(`Field  to update`, STATUS_CODES.NO_CONTENT);
 }
 
 // const updateOrders = async (
@@ -87,4 +109,4 @@ const getOrders = async () => {
 // }
 
 
-export default { addOrder, getOrdersByUserId, getOrders }
+export default { addOrder, getOrdersByUserId, getOrders, updateOrder }

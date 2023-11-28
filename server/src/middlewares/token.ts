@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import RequestError from "../types/RequestError.js";
+import RequestError from "../types/errors/RequestError.js";
 
 
 
@@ -26,13 +26,13 @@ export const autoToken = asyncHandler( async (req, _res, next) => {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) ;
       
       req.isAdmin = (decoded as JwtPayload).isAdmin;
-      console.log(req.isAdmin);
       
       next();
   } catch (err) {
     throw new RequestError('Not authorized, token failed', 403);
   }
 });
+
 
 
 

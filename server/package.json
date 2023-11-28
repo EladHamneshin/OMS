@@ -6,7 +6,9 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "jest --coverage",
-    "dev": "tsc && nodemon ."
+    "dev": "tsc && nodemon .",
+    "build": "tsc",
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
