@@ -1,14 +1,13 @@
-import React from 'react';
 import { shallow } from 'enzyme';
-import navBar from '../pages/navBar';
+import NavBar from '../pages/navBar';
 
 describe('NavBar component', () => {
   it('renders without crashing', () => {
-    shallow(<navBar />);
+    shallow(<NavBar />);
   });
 
   it('renders all navigation links', () => {
-    const wrapper = shallow(<navBar />);
+    const wrapper = shallow(<NavBar />);
     expect(wrapper.find('a[href="/login"]')).toHaveLength(1);
     expect(wrapper.find('a[href="/register"]')).toHaveLength(1);
     expect(wrapper.find('a[href="/orders"]')).toHaveLength(1);

@@ -1,17 +1,18 @@
-// import React from "react";
+import  { useContext } from "react";
 import Button from '@mui/material/Button';
-import { logOutApi } from "../api/usersAPI";
+import   { UserContext }  from "../userContext"; // Update the path accordingly
+import { useNavigate } from "react-router";
 
 function Logout() {
+    const userContext = useContext(UserContext);
+    const navigate = useNavigate();
+
     const handleClick = async () => {
         try {
-            // Assuming you have a user object to pass to the API function
-            // const user = /* your user object here */;
-            await logOutApi();
-            // Redirect or handle other logic after successful logout if needed
+            await userContext?.logoutUser();
+            navigate('/')
         } catch (error) {
             console.error('Logout failed:', error);
-            // Handle error (e.g., show an error message to the user)
         }
     }
 
