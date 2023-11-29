@@ -13,33 +13,27 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../userContext';
 import { AdminUser } from '../types/admin';
-
 const defaultTheme = createTheme();
-
 export default function SignIn() {
     const navigate = useNavigate();
     const userContext = useContext(UserContext);
-
     React.useEffect(() => {
-        if (userContext !== null) {
+        if (userContext?.userInfo ) {
             setTimeout(() => {
                 navigate('/orders')
             }, 2000)
         }
-    }, [userContext?.userInfo]);
-
+    }, [userContext]);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const userEmail = formData.get('email') as string | undefined;
         const userPassword = formData.get('password') as string | undefined;
-
         if (userEmail !== undefined && userPassword !== undefined) {
             const user: Partial<AdminUser> = {
                 email: userEmail,
                 password: userPassword,
             };
-
             try {
                 if (user.email !== undefined && user.password !== undefined) {
                     await userContext?.loginUser(user.email, user.password);
@@ -56,8 +50,7 @@ export default function SignIn() {
             console.error('Email or password is undefined');
         }
     };
-
-    if (userContext !== null) {
+    if (userContext?.userInfo ) {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -96,8 +89,6 @@ export default function SignIn() {
             </Container>
         );
     }
-
-    // אחרת, אם אין מידע, הצג את טופס ההתחברות
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">

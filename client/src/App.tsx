@@ -5,8 +5,8 @@ import SignIn from './pages/SignIn';
 import NavBar from './pages/navBar';
 import Home from './pages/home';
 import OrdersComponent from './pages/Orders';
-// import Logout from './components/Logout';
 import Register from './pages/Register';
+import Logout from './components/Logout';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
           <Route path="/orders" element={<OrdersComponent />} />
           <Route path="/register" element={<Register />} />
           <Route path="/orders" element={<OrdersComponent />} />
+          <Route path="/logout" element={<Logout/>}/>
         </Routes>
       </>
     </BrowserRouter>
