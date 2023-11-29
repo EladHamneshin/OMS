@@ -6,6 +6,8 @@ import ordersApi from '../api/ordersApi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
+import Graph from './graphs';
+import './style/graphStyle.css'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 200 },
@@ -30,38 +32,41 @@ const OrdersComponent = () => {
         cart: order.cartItems,
         userName: order.userName,
       }));
-      
+
       setRows(formattedData);
-      
+
       // Check if the user is an login
       const isAdmin = localStorage.getItem('admin');
       if (!isAdmin) {
         navigate('/login');
       }
     };
-    
+
     fetchDataAndCheckAdmin();
   }, [navigate]);
-  
+
   const handleRowClick = (params: GridRowParams<order>) => {
     const selectedRow = rows.find((row) => row._id === params.id);
     setSelectedOrder(selectedRow!);
   };
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        onRowClick={handleRowClick}
-        getRowId={(row) => row._id}
-        checkboxSelection
-        disableRowSelectionOnClick
-      />
-      <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
-        {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
-      </Dialog>
-    </Box>
+    <div className='content'>
+      <Box sx={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          onRowClick={handleRowClick}
+          getRowId={(row) => row._id}
+          checkboxSelection
+          disableRowSelectionOnClick
+        />
+        <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
+          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
+        </Dialog>
+      </Box>
+      <Graph/>
+    </div>
   );
 };
 
