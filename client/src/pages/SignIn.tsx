@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,6 +17,7 @@ const defaultTheme = createTheme();
 export default function SignIn() {
     const navigate = useNavigate();
     const userContext = useContext(UserContext);
+
     React.useEffect(() => {
         if (userContext?.userInfo ) {
             setTimeout(() => {

@@ -106,7 +106,7 @@ const SignUp = () => {
                 password,
                 first_name,
                 last_name,
-                isAdmin: false
+                isAdmin: true
             }
             await register(data);
 
