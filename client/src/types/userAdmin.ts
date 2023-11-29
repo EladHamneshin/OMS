@@ -4,5 +4,5 @@ export interface User {
     last_name: string;
     email: string; 
     password: string;
-    isAdmin? :boolean;
+    is_admin? :boolean;
   }
