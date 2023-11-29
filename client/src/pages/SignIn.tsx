@@ -21,12 +21,12 @@ export default function SignIn() {
     const userContext = useContext(UserContext);
 
     React.useEffect(() => {
-        if (userContext !== null) {
+        if (userContext?.userInfo ) {
             setTimeout(() => {
                 navigate('/orders')
             }, 2000)
         }
-    }, [userContext?.userInfo]);
+    }, [userContext]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -57,7 +57,7 @@ export default function SignIn() {
         }
     };
 
-    if (userContext !== null) {
+    if (userContext?.userInfo ) {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -97,7 +97,6 @@ export default function SignIn() {
         );
     }
 
-    // אחרת, אם אין מידע, הצג את טופס ההתחברות
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -161,3 +160,4 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+

@@ -13,7 +13,7 @@ interface UserContextType {
     logoutUser: () => Promise<void>;
 }
 
-export const UserContext = createContext<UserContextType | null>(null);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
     const initialUserInfo = localStorage.getItem('admin')
@@ -38,6 +38,7 @@ const logoutUser = async () => {
     await logOutApi();
     localStorage.removeItem('admin');
     setUserInfo(undefined);
+    
 }
 
 return (
