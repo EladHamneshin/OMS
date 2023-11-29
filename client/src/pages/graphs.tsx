@@ -31,6 +31,17 @@ export default function Graph() {
                     series={series
                         .slice(0, seriesNb)
                         .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))}
+                // skipAnimation={skipAnimation}
+                />
+                {/* <FormControlLabel
+                checked={skipAnimation}
+                control={
+                    <Checkbox onChange={(event) => setSkipAnimation(event.target.checked)} />
+                }
+                label="skipAnimation"
+                labelPlacement="end"
+            /> */}
+
 
                 {/* <Typography id="input-item-number" gutterBottom>
                 Number of items
