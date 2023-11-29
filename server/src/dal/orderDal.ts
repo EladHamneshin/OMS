@@ -12,7 +12,7 @@ const addOrder = async (order: OrderInterface) => {
                 res._id,
                 { $set: { status: OrderStatusEnum.Sent } },
             );
-        }, 10000);
+        }, 1000000);
         const delayToArrivedMilliseconds = getDelayToArrivedMilliseconds(order.shippingDetails.orderType);
         setTimeout(async () => {
             const arrivedOrder = await orderModel.findByIdAndUpdate(
@@ -28,9 +28,9 @@ const addOrder = async (order: OrderInterface) => {
 
 const getDelayToArrivedMilliseconds = (orderType: OrderEnum) => {
     if (OrderEnum.Express) {
-        return 15000;
+        return 15000000;
     }
-    return 20000;
+    return 20000000;
 }
 
 
@@ -50,63 +50,5 @@ const updateOrder = async (orderId: string, updatedFields: Partial<OrderInterfac
      
     return updatedOrder;
 };
-
-// const updateOrderStatus = async (orderId: string, newStatus: OrderStatusEnum): Promise<OrderInterface | null> => {
-//     try {
-//         const updatedOrder = await orderModel.findByIdAndUpdate(
-//             orderId,
-//             { $set: { status: newStatus } },
-//             { new: true }
-//         );
-
-//         return updatedOrder;
-//     } catch (error) {
-//         console.error(`Error updating order status: ${error}`);
-//         return null;
-//     }
-// };
-
-// const updateOrders = async (
-//     orderId: mongoose.Types.ObjectId,
-//     changeOrderBody: ChangeOrderBody
-// ): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
-
-
-//     const immutableStatuses: string[] = ["Sent", "Received", "Canceled"]
-
-//     const existingOrder = await orderModel.findById({ _id: orderId, new: true })
-//     if (!existingOrder) {
-//         return null;
-//     }
-
-//     const orderStatus = existingOrder.status
-
-//     if (immutableStatuses.includes(orderStatus)) {
-//         throw new Error('This order cannot be edited, as it has been processed')
-//     }
-
-//     if (changeOrderBody.status === "Canceled") {
-
-//         const productsQuantitiesInterface: ProductsQuantities = {
-//             productsArray: productQuantityArray,
-//             action: Action.return
-//         }
-//         const res = await serverCheckOrder.getAndSetQuantity(productsQuantitiesInterface)
-//         return res
-
-//     }
-//     if (changeOrderBody.status) {
-//         existingOrder.status = changeOrderBody.status;
-//     }
-//     if (changeOrderBody.celPhone) {
-//         existingOrder.cartItems = changeOrderBody.celPhone;
-//     }
-//     if (changeOrderBody.address) {
-//         existingOrder.shippingDetails.address = changeOrderBody.address;
-//     }
-
-//     const updatedOrder = await existingOrder.save();
-//     return updatedOrder;
-// }
 
 export default { addOrder, getOrdersByUserId, getOrders, updateOrder}
