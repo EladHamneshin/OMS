@@ -22,7 +22,6 @@ const OrdersComponent = () => {
 
   useEffect(() => {
     const fetchDataAndCheckAdmin = async () => {
-      // Fetch orders
       const data: order[] = await ordersApi.getAllOrders();
       const formattedData = data.map((order) => ({
         ...order,
