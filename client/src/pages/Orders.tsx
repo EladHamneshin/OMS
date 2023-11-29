@@ -12,7 +12,10 @@ const columns: GridColDef[] = [
   { field: 'userName', headerName: 'User Name', width: 150 },
   { field: 'status', headerName: 'Status', width: 150 },
   { field: 'totalPrice', headerName: 'Total Price', width: 150, type: 'number' },
+  { field: 'orderTime', headerName: 'order time', width: 150, type:"string" },
+
 ];
+
 
 const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
