@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +25,9 @@ export default function SignIn() {
             }, 2000)
         }
     }, [userContext]);
+ 
+
+ 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -51,6 +54,9 @@ export default function SignIn() {
             console.error('Email or password is undefined');
         }
     };
+ 
+
+
     if (userContext?.userInfo ) {
         return (
             <Container component="main" maxWidth="xs">
@@ -89,7 +95,10 @@ export default function SignIn() {
                 <ToastContainer />
             </Container>
         );
-    }
+    } 
+
+ 
+ 
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -153,3 +162,4 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+

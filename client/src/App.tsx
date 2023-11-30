@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import SignIn from './pages/SignIn';
@@ -12,11 +11,14 @@ import Logout from './components/Logout';
 
 import Graph from './pages/graphs';
 
+
+ 
 function App() {
-  return (
-    <BrowserRouter>
-      <>
-        <NavBar />
+	return (
+		<BrowserRouter>
+			<>
+				<NavBar />
+
 
         <Routes>
           <Route path="/" element={<Home />} />

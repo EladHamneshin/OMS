@@ -48,7 +48,6 @@ export async function logOutApi() {
         headers: { 'Content-Type': 'application/json' },
         // body: JSON.stringify(user)
       })
-      localStorage.removeItem("admin");
     if (!response.ok) {
       throw new Error(await response.text());
     }
