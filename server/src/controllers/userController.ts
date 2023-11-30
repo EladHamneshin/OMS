@@ -38,9 +38,7 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
     const userEmail = req.body.email;
 
     const userAdmin = user[0].is_admin
-    console.log(userAdmin);
     
-
     const token = createToken(userEmail, userAdmin);
     res.cookie('token', token, { httpOnly: true });
     res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
@@ -54,13 +52,25 @@ const logoutController = async (req: Request, res: Response) => {
         res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         console.error('Logout failed:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error . controller logout' });
     }
 };
+
+const getAllUsers = async (req: Request, res: Response) =>{
+    try{
+        const users = await userService.allUsers()
+        res.status(200).json({ message: 'gating all users successful',users });
+    }catch(error){
+        console.error('gating all users failed:', error);
+        res.status(500).json({ error: 'Internal server error . controller get all' });
+    }
+}
+
 
 export const userController = {
     registerUser,
     loginController,
-    logoutController
+    logoutController,
+    getAllUsers
 }
 

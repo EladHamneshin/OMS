@@ -43,7 +43,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
       setEditedOrder(updatedOrder);
       
       console.log('Order updated successfully:', updatedOrder);
-      window.location.reload()
+      // window.location.reload()
     } catch (error) {
       console.error('Failed to update order:', error);
     }
