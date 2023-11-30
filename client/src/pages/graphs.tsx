@@ -65,7 +65,7 @@ export default function Graph() {
                         allOrdersCounter[i].data[0] = + 1
                         console.log('counter', allOrdersCounter);
 
-                    } else (data[i].status === '') {
+                    } if (data[i].status === '') {
                         console.log('bbbb');
                     };
                 };
