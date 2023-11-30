@@ -1,23 +1,180 @@
-// import React from "react";
-import Button from '@mui/material/Button';
-import { logOutApi } from "../api/usersAPI";
+// // import  { useContext } from "react";
+// // import Card from '@mui/material/Card';
+// // import CardActions from '@mui/material/CardActions';
+// // import CardContent from '@mui/material/CardContent';
+// // import Button from '@mui/material/Button';
+// // import Typography from '@mui/material/Typography';
+// // import   { UserContext }  from "../userContext"; // Update the path accordingly
+// // function Logout() {
+// //     const userContext = useContext(UserContext);
+// //     const handleClick = async () => {
+// //         try {
+// //             await userContext?.logoutUser();
+// //             // Redirect or handle other logic after successful logout if needed
+// //         } catch (error) {
+// //             console.error('Logout failed:', error);
+// //             // Handle error (e.g., show an error message to the user)
+// //         }
+// //     }
+// //     return (
+// //         <>
+// //             {(userContext?.userInfo) ? (
+// //                 <Card sx={{ minWidth: 275 }}>
+// //                     <CardContent>
+// //                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+// //                             user info:
+// //                         </Typography>
+// //                         <Typography variant="h5" component="div">
+// //                             {`name: ${ userContext?.userInfo.first_name}`},
+// //                              {userContext?.userInfo.email}
+// //                         </Typography>
+// //                         {/* Additional user information can be displayed here */}
+// //                     </CardContent>
+// //                     <CardActions>
+// //                          <Button onClick={handleClick} variant="contained">Logout</Button>
+// //                     </CardActions>
+// //                 </Card>
+// //             ) : (
+// //                 <Button onClick={handleClick} variant="contained">Logout</Button>
+// //             )}
+// //         </>
+// //     );
+// // }
+// // export default Logout;
+// import { useContext } from "react";
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
+// import Button from "@mui/material/Button";
+// import Typography from "@mui/material/Typography";
+// import { UserContext } from "../userContext"; // Update the path accordingly
+
+// function Logout() {
+// 	const userContext = useContext(UserContext);
+
+// 	const handleClick = async () => {
+// 		try {
+// 			await userContext?.logoutUser();
+// 			// Redirect or handle other logic after successful logout if needed
+// 		} catch (error) {
+// 			console.error("Logout failed:", error);
+// 			// Handle error (e.g., show an error message to the user)
+// 		}
+// 	};
+
+// 	return (
+// 		<>
+// 			{userContext?.userInfo 
+// 				<Card
+// 					style={{
+// 						minWidth: 275,
+// 						maxWidth: 400,
+// 						margin: "auto",
+// 						marginTop: 20,
+// 					}}
+// 				>
+// 					<CardContent>
+// 						<Typography
+// 							style={{ fontSize: 30 }}
+// 							color="text.secondary"
+// 							gutterBottom
+// 						>
+// 							User Info:
+// 						</Typography>
+// 						<Typography variant="h5" component="div">
+// 							{`first Name: ${userContext?.userInfo.first_name} ${userContext?.userInfo.last_name}`}
+// 						</Typography>
+// 						<Typography color="text.secondary" style={{ marginBottom: 12 }}>
+// 							last name: {userContext?.userInfo.last_name}
+// 						</Typography>
+// 						<Typography color="text.secondary" style={{ marginBottom: 12 }}>
+// 							Email: {userContext?.userInfo.email}
+// 						</Typography>
+// 					</CardContent>
+// 					<CardActions>
+// 						<Button
+// 							onClick={handleClick}
+// 							variant="contained"
+// 							style={{ marginTop: 10 }}
+// 						>
+// 							Logout
+// 						</Button>
+// 					</CardActions>
+// 				</Card>
+// 		</>
+// }	
+// 	);
+
+// }
+// export default Logout;
+import { useContext } from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { UserContext } from "../userContext"; // Update the path accordingly
+import { useNavigate } from "react-router-dom";
 
 function Logout() {
+    const userContext = useContext(UserContext);
+    const navigate = useNavigate();
+
+
+
     const handleClick = async () => {
+
         try {
-            // Assuming you have a user object to pass to the API function
-            // const user = /* your user object here */;
-            await logOutApi();
-            // Redirect or handle other logic after successful logout if needed
+            await userContext?.logoutUser();
+            setTimeout(() => {
+            }, 2000)            // Redirect or handle other logic after successful logout if needed
+            navigate('/')
         } catch (error) {
-            console.error('Logout failed:', error);
+            console.error("Logout failed:", error);
             // Handle error (e.g., show an error message to the user)
         }
-    }
+    };
 
     return (
         <>
-            <Button onClick={handleClick} variant="contained">Logout</Button>
+            {userContext?.userInfo && (
+                <Card
+                    style={{
+                        minWidth: 275,
+                        maxWidth: 400,
+                        margin: "auto",
+                        marginTop: 20,
+                    }}
+                >
+                    <CardContent>
+                        <Typography
+                            style={{ fontSize: 30 }}
+                            color="text.secondary"
+                            gutterBottom
+                        >
+                            User Info:
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            {`First Name: ${userContext?.userInfo.first_name} ${userContext?.userInfo.last_name}`}
+                        </Typography>
+                        <Typography color="text.secondary" style={{ marginBottom: 12 }}>
+                            Last Name: {userContext?.userInfo.last_name}
+                        </Typography>
+                        <Typography color="text.secondary" style={{ marginBottom: 12 }}>
+                            Email: {userContext?.userInfo.email}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            onClick={handleClick}
+                            variant="contained"
+                            style={{ marginTop: 10 }}
+                        >
+                            Logout
+                        </Button>
+                    </CardActions>
+                </Card>
+            )}
         </>
     );
 }

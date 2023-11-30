@@ -8,14 +8,16 @@ import { useState, useEffect } from 'react';
 import { updateOrder } from '../api/ordersApi';
 import OrderInterface, { OrderStatusEnum } from '../types/orderType';
 
+
 interface OrderDetailsProps {
   selectedOrder: OrderInterface;
   onClose: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState(selectedOrder);
+ 
 
   useEffect(() => {
     if (isEditMode) {
@@ -30,22 +32,23 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
   const handleSave = async () => {
     try {
       setIsEditMode(false);
-
+  
       if (!selectedOrder._id) {
         throw new Error('No order ID');
       }
-
-      const updatedOrder = await updateOrder(selectedOrder._id, editedOrder);
-
+      const {  status, shippingDetails } = editedOrder;
+  
+      const updatedOrder = await updateOrder(editedOrder._id!, { status, shippingDetails });
       // Update the selectedOrder state to reflect the changes
       setEditedOrder(updatedOrder);
-
+      
       console.log('Order updated successfully:', updatedOrder);
+      window.location.reload()
     } catch (error) {
       console.error('Failed to update order:', error);
     }
   };
-
+  
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEditedOrder({
       ...editedOrder,
@@ -60,12 +63,16 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
         ...editedOrder.shippingDetails,
         address: {
           ...editedOrder.shippingDetails?.address,
+          
           [field]: field === 'zipCode' ? parseInt(value) : value,
         },
       },
     });
   };
-
+  const admin = localStorage.getItem('admin')
+  const adminTrue = localStorage.getItem('admin') === 'true';
+  const orderType = selectedOrder.shippingDetails.orderType === "SelfCollection"
+  const modeShipping = selectedOrder.status === "Waiting"
   return (
     <>
       <DialogTitle>Order Details</DialogTitle>
@@ -74,12 +81,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
           Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Status: {isEditMode ? (
+          status: {isEditMode && modeShipping && (adminTrue || admin) ? (
             <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
               <option value={OrderStatusEnum.Waiting}>Waiting</option>
-              <option value={OrderStatusEnum.Sent}>Sent</option>
-              <option value={OrderStatusEnum.Received}>Received</option>
-              <option value={OrderStatusEnum.Canceled}>Cancel</option>
+              {/* <option value={OrderStatusEnum.Sent}>Sent</option> */}
+              {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
+              {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
             </select>
           ) : (
             selectedOrder?.status
@@ -118,7 +125,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
               />
             </>
           )}
-          {!isEditMode && (
+          {!isEditMode && modeShipping &&(
             <>
               {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
             </>

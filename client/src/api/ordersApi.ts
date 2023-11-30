@@ -13,6 +13,7 @@ async function getAllOrders() {
         throw error;
     }
 }
+
 async function getOrdersById(id: string) {
     try {
         const response = await fetch(`/api/orders/${id}`);
@@ -43,14 +44,16 @@ async function getOrdersById(id: string) {
 //         throw error;
 //     }
 // }
-export async function updateOrder(id: string, updatedOrder: Partial<OrderInterface>) {
+export async function updateOrder(id: string, updatedOrders: Partial<OrderInterface>) {
     try {
+        console.log("api",id,updatedOrders);
+        
         const response = await fetch(`/api/orders/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedOrder)
+            body: JSON.stringify(updatedOrders)
         });
         if (!response.ok) {
             throw new Error('Failed to update order');
