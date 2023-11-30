@@ -32,7 +32,7 @@ app.use(errorHandler)
 
 const port = process.env.PORT || 3000;
 
-
+if(process.env.NODE_ENV !== "test"){
 app.listen(port, async () => {
   const a = new orderModel()
 
@@ -40,5 +40,5 @@ app.listen(port, async () => {
   await connectToPg();
   console.log(`Server is running at port ${port}`);
 });
-
+}
 export default app;

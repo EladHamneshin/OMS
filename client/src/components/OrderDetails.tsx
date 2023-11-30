@@ -13,7 +13,7 @@ interface OrderDetailsProps {
   onClose: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState(selectedOrder);
 
@@ -65,7 +65,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
       },
     });
   };
-
+  const admin = localStorage.getItem('admin')
+  const adminTrue = localStorage.getItem('admin') === 'true';
+  const orderType = selectedOrder.shippingDetails.orderType === "SelfCollection"
+  const modeShipping = selectedOrder.status === "Waiting"
   return (
     <>
       <DialogTitle>Order Details</DialogTitle>
@@ -74,12 +77,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, onClose }) =
           Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Status: {isEditMode ? (
+          status: {isEditMode && modeShipping && (adminTrue || admin) ? (
             <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
               <option value={OrderStatusEnum.Waiting}>Waiting</option>
-              <option value={OrderStatusEnum.Sent}>Sent</option>
-              <option value={OrderStatusEnum.Received}>Received</option>
-              <option value={OrderStatusEnum.Canceled}>Cancel</option>
+              {/* <option value={OrderStatusEnum.Sent}>Sent</option> */}
+              {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
+              {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
             </select>
           ) : (
             selectedOrder?.status

@@ -31,7 +31,6 @@ export async function login(user: Partial<AdminUser>): Promise<User> {
       if (!response.ok) {
         throw new Error(await response.text());
       }
-  
       const res = await response.json();
       const adminResponse = res.user[0];      
       return adminResponse;

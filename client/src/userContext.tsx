@@ -2,7 +2,6 @@ import React, { createContext, useState } from 'react';
 import { User } from './types/userAdmin';
 import { logOutApi, login } from './api/usersAPI';
 
-
 interface UserContextProviderProps {
     children: React.ReactNode;
 }
@@ -22,8 +21,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
 
     const [userInfo, setUserInfo] = useState<User | undefined>(initialUserInfo);
 
-
-
     const loginUser = async (email: string, password: string) => {
         const loggedUser = await login({ email, password });
         const adminResponse = loggedUser.is_admin
@@ -31,8 +28,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
         setUserInfo(loggedUser);
         return loggedUser;
     }
-
-
 
 const logoutUser = async () => {
     await logOutApi();
