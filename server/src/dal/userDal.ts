@@ -8,8 +8,8 @@ const { Pool } = pkg;
 const sendQueryToDatabase = async (query: string, values: any[]): Promise<any> => {
     const pool = new Pool({connectionString: process.env.PG_URI});
     const res = await pool.connect()
-    res.release()
     const data = await res.query(query, values).catch(err => console.log(err));
+    res.release()
     return data
   }
 
@@ -28,7 +28,7 @@ const addUser = async (user: AdminUser) => {
         user.last_name,
         user.email,
         user.password,
-        user.isAdmin
+        user.isAdmin = false
     ];
 
     const query = `INSERT INTO admin_users (first_name, last_name, email, password, is_admin)

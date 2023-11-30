@@ -51,11 +51,10 @@ const updateOrder = asyncHandler(async (req: Request, res: Response) => {
     if (!changeOrderBody) {
         throw new RequestError("Body is required", STATUS_CODES.BAD_REQUEST)
     }
-    const isAdmin = req.body.isAdmin;
-    const response = await orderServices.updateOrder(orderId, isAdmin, changeOrderBody)
+    const isAdmin = req.isAdmin;
+    const response = await orderServices.updateOrder(orderId, isAdmin!, changeOrderBody)
     if (!response) {
         throw new RequestError("Server error, please try again", STATUS_CODES.BAD_REQUEST)
-
     }
     res.status(STATUS_CODES.OK).json(response)
 })

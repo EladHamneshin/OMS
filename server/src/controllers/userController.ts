@@ -6,22 +6,16 @@ import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
 
 
-
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
-
     const reg = await userService.register(req.body)
     if (!reg) {
         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
-
     }
     res.status(STATUS_CODES.OK).json(reg)
-}
-)
-
+})
 
 const validateLogin = async (email: string, password: string) => {
     const user = await userService.getUserByEmailService(email);
-
     if (!user) {
         throw new RequestError("User not found", STATUS_CODES.UNAUTHORIZED);
     }
@@ -44,6 +38,8 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
     const userEmail = req.body.email;
 
     const userAdmin = user[0].is_admin
+    console.log(userAdmin);
+    
 
     const token = createToken(userEmail, userAdmin);
     res.cookie('token', token, { httpOnly: true });

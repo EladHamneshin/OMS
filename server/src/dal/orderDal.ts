@@ -41,7 +41,7 @@ const getOrdersByUserId = async (userId: string): Promise<OrderInterface[]> => {
 
 const getOrders = async () => {
     const res = await orderModel.find({})
-    return res
+        return res
 }
 
 

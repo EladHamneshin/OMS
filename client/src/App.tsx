@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Logout from './components/Logout';
 
 import Geography from './scenes/geography';
+import Kidnapped from './components/Kidnapped';
 
 
 
@@ -25,8 +26,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout/>}/>
           <Route path="/geography" element={<Geography />} />
-
         </Routes>
+        <Kidnapped/>
       </>
     </BrowserRouter>
   );
