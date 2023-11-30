@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { updateOrder } from '../api/ordersApi';
 import OrderInterface, { OrderStatusEnum } from '../types/orderType';
 
+
 interface OrderDetailsProps {
   selectedOrder: OrderInterface;
   onClose: () => void;
@@ -16,6 +17,7 @@ interface OrderDetailsProps {
 const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState(selectedOrder);
+ 
 
   useEffect(() => {
     if (isEditMode) {
@@ -30,22 +32,23 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   const handleSave = async () => {
     try {
       setIsEditMode(false);
-
+  
       if (!selectedOrder._id) {
         throw new Error('No order ID');
       }
-
-      const updatedOrder = await updateOrder(selectedOrder._id, editedOrder);
-
+      const {  status, shippingDetails } = editedOrder;
+  
+      const updatedOrder = await updateOrder(editedOrder._id!, { status, shippingDetails });
       // Update the selectedOrder state to reflect the changes
       setEditedOrder(updatedOrder);
-
+      
       console.log('Order updated successfully:', updatedOrder);
+      window.location.reload()
     } catch (error) {
       console.error('Failed to update order:', error);
     }
   };
-
+  
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEditedOrder({
       ...editedOrder,
@@ -60,6 +63,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
         ...editedOrder.shippingDetails,
         address: {
           ...editedOrder.shippingDetails?.address,
+          
           [field]: field === 'zipCode' ? parseInt(value) : value,
         },
       },
@@ -121,7 +125,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
               />
             </>
           )}
-          {!isEditMode && (
+          {!isEditMode && modeShipping &&(
             <>
               {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
             </>
