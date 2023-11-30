@@ -8,8 +8,7 @@ import OrdersComponent from "./pages/Orders";
 import Register from "./pages/Register";
 import Logout from "./components/Logout";
 
-import Geography from "./scenes/geography";
-
+ 
 function App() {
 	return (
 		<BrowserRouter>
@@ -22,7 +21,6 @@ function App() {
 					<Route path="/orders" element={<OrdersComponent />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/logout" element={<Logout />} />
-					<Route path="/geography" element={<Geography />} />
 				</Routes>
 			</>
 		</BrowserRouter>
