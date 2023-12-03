@@ -80,7 +80,7 @@ const deleteUser = async (id: string) => {
 
 const getAllDal = async () => {
     const query = `SELECT * FROM admin_users`
-    const result = await sendQueryToDatabase(query,[])
+    const result = await sendQueryToDatabase(query)
     if (!result) {
         throw new RequestError("Error while getting users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
