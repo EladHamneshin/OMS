@@ -41,7 +41,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh,clos
       // Update the selectedOrder state to reflect the changes
       setEditedOrder(updatedOrder);
       console.log('Order updated successfully:', updatedOrder);
-     
+      Refresh()
+      close()
     } catch (error) {
       console.error('Failed to update order:', error);
     }
