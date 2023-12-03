@@ -76,3 +76,21 @@ export async function getAllUsers() {
     throw error;
   }
 }
+
+export async function deleteUsers(id:string) {
+  try {
+    const response = await fetch(`/api/users${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      // body: JSON.stringify(user)
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
+  }
+}
