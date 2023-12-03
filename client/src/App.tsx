@@ -26,10 +26,11 @@ function App() {
           <Route path="/logout" element={<Logout/>}/>
           <Route path="/graph" element={<Graph/>}/>
           <Route path="/users" element={<Users/>}/>
+          <Route path={'*'} element={<h1>404 Not Found</h1>} />
           {/* <Route path="/geography" element={<Geography />} /> */}
+
         </Routes>
         <Kidnapped/>
-        
       </>
     </BrowserRouter>
   );

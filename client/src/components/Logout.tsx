@@ -11,15 +11,13 @@ function Logout() {
     const userContext = useContext(UserContext);
     const navigate = useNavigate();
 
-
-
     const handleClick = async () => {
-
         try {
             await userContext?.logoutUser();
             setTimeout(() => {
-            }, 2000)            // Redirect or handle other logic after successful logout if needed
-            navigate('/')
+                // Redirect or handle other logic after successful logout if needed
+                navigate('/');
+            }, 2000);
         } catch (error) {
             console.error("Logout failed:", error);
             // Handle error (e.g., show an error message to the user)
@@ -28,7 +26,7 @@ function Logout() {
 
     return (
         <>
-            {userContext?.userInfo && (
+            {userContext?.userInfo ? (
                 <Card
                     style={{
                         minWidth: 275,
@@ -65,6 +63,11 @@ function Logout() {
                         </Button>
                     </CardActions>
                 </Card>
+            ) : (
+                <Card>
+                <Typography variant="h5" component="div" style={{ textAlign: "center", marginTop: 20 }}>
+                    You are logged out
+                </Typography></Card>
             )}
         </>
     );

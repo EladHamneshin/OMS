@@ -41,8 +41,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh,clos
       // Update the selectedOrder state to reflect the changes
       setEditedOrder(updatedOrder);
       console.log('Order updated successfully:', updatedOrder);
-      Refresh();
-      close();
+     
     } catch (error) {
       console.error('Failed to update order:', error);
     }
@@ -126,12 +125,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh,clos
           )}
           {!isEditMode && (
             <>
-              {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
+              {selectedOrder.shippingDetails.address.country}, {selectedOrder.shippingDetails.address.city}, {selectedOrder.shippingDetails.address.street}, {selectedOrder.shippingDetails.address.zipCode}
             </>
           )}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Contact Number: {selectedOrder?.contactNumber}
+          Contact Number: {selectedOrder?.shippingDetails.contactNumber}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Order Type: {selectedOrder?.shippingDetails?.orderType}

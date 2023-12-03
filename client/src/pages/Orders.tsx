@@ -3,10 +3,11 @@ import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
 import order from "../types/orderType";
 import ordersApi from '../api/ordersApi';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
 import Graph from './graphs';
+import { UserContext } from '../userContext';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 200 },
@@ -21,6 +22,8 @@ const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<order | null>(null);
   const [refresh,setRefresh]=useState(false);
+  const userContext = useContext(UserContext);
+
   
   const navigate = useNavigate()
 
@@ -36,15 +39,13 @@ const OrdersComponent = () => {
 
       setRows(formattedData);
 
-      // Check if the user is an login
-      const isAdmin = localStorage.getItem('admin');
-      if (!isAdmin) {
+      if (!userContext?.userInfo) {
         navigate('/login');
       }
     };
 
     fetchDataAndCheckAdmin();
-  }, [navigate,refresh]);
+  }, [navigate, refresh, userContext?.userInfo]);
 
   function refreshFunc()
   {
