@@ -38,7 +38,6 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
                 enum: Object.values(OrderEnum),
             },
         },
-        contactNumber: String,
     },
     {
         strict: false,

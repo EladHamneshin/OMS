@@ -127,12 +127,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
           )}
           {!isEditMode && modeShipping &&(
             <>
-              {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
+              {selectedOrder.shippingDetails.address.country}, {selectedOrder.shippingDetails.address.city}, {selectedOrder.shippingDetails.address.street}, {selectedOrder.shippingDetails.address.zipCode}
             </>
           )}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Contact Number: {selectedOrder?.contactNumber}
+          Contact Number: {selectedOrder?.shippingDetails.contactNumber}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Order Type: {selectedOrder?.shippingDetails?.orderType}
