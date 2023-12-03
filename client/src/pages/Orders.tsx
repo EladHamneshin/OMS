@@ -36,7 +36,6 @@ const OrdersComponent = () => {
 
       setRows(formattedData);
 
-      // Check if the user is an login
       const isAdmin = localStorage.getItem('admin');
       if (!isAdmin) {
         navigate('/login');

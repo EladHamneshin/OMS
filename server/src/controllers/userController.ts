@@ -36,9 +36,8 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
     }
     //   create token
     const userEmail = req.body.email;
-
     const userAdmin = user[0].is_admin
-    
+
     const token = createToken(userEmail, userAdmin);
     res.cookie('token', token, { httpOnly: true });
     res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
@@ -47,7 +46,6 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
 
 const logoutController = async (req: Request, res: Response) => {
     try {
-        await userService.logout();
         res.clearCookie('token');
         res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
@@ -66,11 +64,24 @@ const getAllUsers = async (req: Request, res: Response) =>{
     }
 }
 
+const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id
+    if (!req.isAdmin){
+        throw new RequestError("Only admin can delete", STATUS_CODES.BAD_REQUEST)
+    }
+    const response = await userService.deleteUser(id)
+    if (!response) {
+        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+    }
+    res.status(STATUS_CODES.OK).json(response)
+})
+
 
 export const userController = {
     registerUser,
     loginController,
     logoutController,
-    getAllUsers
+    getAllUsers,
+    deleteUser
 }
 
