@@ -15,7 +15,7 @@ interface OrderDetailsProps {
   close: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh,close }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, close }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState(selectedOrder);
 
@@ -69,7 +69,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh,clos
     });
   };
   const admin = localStorage.getItem('admin')
-  const adminTrue = localStorage.getItem('admin') === 'true';
+  const storedAdmin = JSON.parse(localStorage.getItem('admin')!);
+  const adminTrue = storedAdmin && storedAdmin.is_admin === true;
   const orderType = selectedOrder.shippingDetails.orderType === "SelfCollection"
   const modeShipping = selectedOrder.status === "Waiting"
   return (
