@@ -9,10 +9,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../userContext';
 import { AdminUser } from '../types/admin';
+import { toastError, toastSuccess } from '../utils/toastUtils';
+import { ToastContainer } from 'react-toastify';
+
 const defaultTheme = createTheme();
 export default function SignIn() {
     const navigate = useNavigate();
@@ -41,14 +42,14 @@ export default function SignIn() {
             try {
                 if (user.email !== undefined && user.password !== undefined) {
                     await userContext?.loginUser(user.email, user.password);
-                    toast.success('Successful login');
+                    toastSuccess('Successful login');
                     navigate('/orders');
                 } else {
                     throw new Error('Email and password cannot be empty');
                 }
             } catch (error) {
                 console.error('Login failed:', error);
-                toast.error('Login failed. Please check your credentials.');
+                toastError('Login failed. Please check your credentials.');
             }
         } else {
             console.error('Email or password is undefined');

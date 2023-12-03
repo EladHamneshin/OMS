@@ -59,7 +59,6 @@ describe('POST /api/orders', () => {
           contactNumber: "123456789",
           orderType: "SelfCollection",
         },
-        contactNumber: "123456789",
       }
       );
 

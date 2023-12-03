@@ -26,7 +26,6 @@ const errorHandler = (error: MiddlewareError ,_req: Request, res: Response, _nex
     message = 'Invalid data';
   }
 
-  // If Mongoose not found error, set to 404 and change message
   if (error instanceof MongooseError.CastError && error.kind === 'ObjectId') {
     statusCode = STATUS_CODES.NOT_FOUND;
     message = 'Resource not found';

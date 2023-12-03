@@ -37,7 +37,6 @@ const port = process.env.PORT || 3000;
 if(process.env.NODE_ENV !== "test"){
 app.listen(port, async () => {
   const a = new orderModel()
-
   await connectToDatabase();
   await connectToPg();
   console.log(`Server is running at port ${port}`);
