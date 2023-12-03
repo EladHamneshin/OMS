@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Logout from './components/Logout';
 import Kidnapped from './components/Kidnapped';
 import Graph from './pages/graphs';
+import Users from './pages/Users';
 
 function App() {
   return (
@@ -19,13 +20,17 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/orders" element={<OrdersComponent />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/graph" element={<Graph />} />
-          {/* 404 Not Found route should be inside the <Routes> element */}
-          <Route path="*" element={<h1>404 Not Found</h1>} />
+  
+ 
+          <Route path="/logout" element={<Logout/>}/>
+          <Route path="/graph" element={<Graph/>}/>
+          <Route path="/users" element={<Users/>}/>
+          <Route path={'*'} element={<h1>404 Not Found</h1>} />
+          {/* <Route path="/geography" element={<Geography />} /> */}
+
         </Routes>
-        <Kidnapped />
-      </>
+        <Kidnapped/>
+       </>
     </BrowserRouter>
   );
 }

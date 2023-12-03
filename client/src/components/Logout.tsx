@@ -1,32 +1,34 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { UserContext } from "../userContext"; // Update the path accordingly
+import { UserContext } from "../userContext";
 import { useNavigate } from "react-router-dom";
 
 function Logout() {
     const userContext = useContext(UserContext);
     const navigate = useNavigate();
+    useEffect(() => {
+        if (!userContext?.userInfo) {
+            navigate('/');
+        }
+    }, [userContext?.userInfo])
 
     const handleClick = async () => {
+
         try {
             await userContext?.logoutUser();
-            setTimeout(() => {
-                // Redirect or handle other logic after successful logout if needed
-                navigate('/');
-            }, 2000);
+            
         } catch (error) {
             console.error("Logout failed:", error);
-            // Handle error (e.g., show an error message to the user)
         }
     };
 
     return (
         <>
-            {userContext?.userInfo ? (
+            {userContext?.userInfo && (
                 <Card
                     style={{
                         minWidth: 275,
@@ -63,11 +65,11 @@ function Logout() {
                         </Button>
                     </CardActions>
                 </Card>
-            ) : (
-                <Card>
-                <Typography variant="h5" component="div" style={{ textAlign: "center", marginTop: 20 }}>
-                    You are logged out
-                </Typography></Card>
+                // ) : (
+                //     <Card>
+                //     <Typography variant="h5" component="div" style={{ textAlign: "center", marginTop: 20 }}>
+                //         You are logged out
+                //     </Typography></Card>
             )}
         </>
     );

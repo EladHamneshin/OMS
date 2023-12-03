@@ -8,11 +8,19 @@ const { Pool } = pkg;
 
 const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
     const pool = new Pool({connectionString: process.env.PG_URI});
-    const res = await pool.connect()
-    const data = await res.query(query, values).catch(err => console.log(err));
-    res.release()
-    return data
+    const res = await pool.connect();
+    try {
+        const data = await res.query(query, values);
+        return data;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        res.release();
+    }
 }
+
+
 
 const addUser = async (user: AdminUser) => {
 
@@ -80,7 +88,7 @@ const deleteUser = async (id: string) => {
 
 const getAllDal = async () => {
     const query = `SELECT * FROM admin_users`
-    const result = await sendQueryToDatabase(query,[])
+    const result = await sendQueryToDatabase(query)
     if (!result) {
         throw new RequestError("Error while getting users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
