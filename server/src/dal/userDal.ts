@@ -5,8 +5,9 @@ import STATUS_CODES from "../utils/StatusCodes.js";
 import pkg from 'pg';
 const { Pool } = pkg;
 
-const sendQueryToDatabase = async (query: string, values: any[]): Promise<any> => {
-    const pool = new Pool({ connectionString: process.env.PG_URI });
+
+const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
+    const pool = new Pool({connectionString: process.env.PG_URI});
     const res = await pool.connect()
     const data = await res.query(query, values).catch(err => console.log(err));
     res.release()
@@ -77,9 +78,20 @@ const deleteUser = async (id: string) => {
 
 
 
+const getAllDal = async () => {
+    const query = `SELECT * FROM admin_users`
+    const result = await sendQueryToDatabase(query,[])
+    if (!result) {
+        throw new RequestError("Error while getting users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
+    }
+    return result.rows;
+}
+
+
 export const userDal = {
     addUser,
     getUserByEmail,
     validatePassword,
-    deleteUser
+    deleteUser,
+    getAllDal
 };

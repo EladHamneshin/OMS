@@ -49,9 +49,16 @@ const deleteUser = async (id:string) => {
 
 
 
+const allUsers =  async () => {
+  const data = await userDal.getAllDal();
+  if (data!) return data
+  throw new RequestError("error getting all users .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
+};
+
 export const userService = {
     register,
     getUserByEmailService,
     validatePasswordService,
-    deleteUser
+    deleteUser,
+    allUsers
 }

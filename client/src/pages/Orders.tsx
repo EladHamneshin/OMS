@@ -20,7 +20,8 @@ const columns: GridColDef[] = [
 const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<order | null>(null);
-
+  const [refresh,setRefresh]=useState(false);
+  
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -42,7 +43,13 @@ const OrdersComponent = () => {
     };
 
     fetchDataAndCheckAdmin();
-  }, [navigate]);
+  }, [navigate,refresh]);
+
+  function refreshFunc()
+  {
+    setRefresh(!refresh);
+  }
+ 
 
   const handleRowClick = (params: GridRowParams<order>) => {
     const selectedRow = rows.find((row) => row._id === params.id);
@@ -61,7 +68,7 @@ const OrdersComponent = () => {
           disableRowSelectionOnClick
         />
         <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
-          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
+          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} close={() => setSelectedOrder(null)} Refresh={refreshFunc} />}
         </Dialog>
       </Box>
       <Graph/>
