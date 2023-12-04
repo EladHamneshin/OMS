@@ -73,13 +73,13 @@ const validatePassword = async (password: string, hashedPassword: string) => {
 
 
 const deleteUser = async (id: string) => {
-    const userExistsQuery = 'SELECT * FROM admin_users WHERE id = $1';
+    const userExistsQuery = 'SELECT * FROM admin_users WHERE user_id = $1';
     const existingUser = await sendQueryToDatabase(userExistsQuery, [id]);
 
     if (existingUser.rows.length === 0) {
         throw new RequestError("User not found", STATUS_CODES.NOT_FOUND);
     }
-    const deleteQuery = 'DELETE FROM admin_users WHERE id = $1';
+    const deleteQuery = 'DELETE FROM admin_users WHERE user_id = $1';
     await sendQueryToDatabase(deleteQuery, [id]);
     return `User with ID ${id} deleted successfully.`;
 }
