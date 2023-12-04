@@ -6,8 +6,6 @@ import ordersApi from '../api/ordersApi';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
-import Graph from './graphs';
-import './style/graphStyle.css'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 200 },
@@ -50,22 +48,19 @@ const OrdersComponent = () => {
   };
 
   return (
-    <div className='content'>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          onRowClick={handleRowClick}
-          getRowId={(row) => row._id}
-          checkboxSelection
-          disableRowSelectionOnClick
-        />
-        <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
-          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
-        </Dialog>
-      </Box>
-      <Graph/>
-    </div>
+    <Box sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        onRowClick={handleRowClick}
+        getRowId={(row) => row._id}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+      <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
+        {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
+      </Dialog>
+    </Box>
   );
 };
 

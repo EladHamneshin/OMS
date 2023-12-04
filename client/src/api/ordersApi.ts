@@ -13,6 +13,7 @@ async function getAllOrders() {
         throw error;
     }
 }
+
 async function getOrdersById(id: string) {
     try {
         const response = await fetch(`/api/orders/${id}`);
