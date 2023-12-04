@@ -6,12 +6,11 @@ import Home from './pages/home';
 import OrdersComponent from './pages/Orders';``
 import Register from './pages/Register';
 import Logout from './components/Logout';
+
 import Kidnapped from './components/Kidnapped';
-// import Geography from './scenes/geography';
-import Graph from './pages/graphs';
 import Users from './pages/Users';
 
- 
+
 function App() {
 	return (
 		<BrowserRouter>
@@ -24,11 +23,9 @@ function App() {
           <Route path="/orders" element={<OrdersComponent />} />
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout/>}/>
-          <Route path="/graph" element={<Graph/>}/>
+
           <Route path="/users" element={<Users/>}/>
           <Route path={'*'} element={<h1>404 Not Found</h1>} />
-          {/* <Route path="/geography" element={<Geography />} /> */}
-
         </Routes>
         <Kidnapped/>
       </>
