@@ -10,7 +10,6 @@ import { AdminUser } from '../types/admin';
 import './style/formStyle.css'
 
 
-
 const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isEmailError, setEmailError] = useState(false);
