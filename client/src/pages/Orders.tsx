@@ -6,7 +6,8 @@ import ordersApi from '../api/ordersApi';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
-import Graph from './graphs';
+import Graph from './graph';
+import './style/ordersStyle.css'
 import { UserContext } from '../userContext';
 
 const columns: GridColDef[] = [
@@ -59,7 +60,7 @@ const OrdersComponent = () => {
   };
 
   return (
-    <div>
+    <div className='ordersGrid'>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={rows}
@@ -72,8 +73,10 @@ const OrdersComponent = () => {
         <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
           {selectedOrder && <OrderDetails selectedOrder={selectedOrder} close={() => setSelectedOrder(null)} Refresh={refreshFunc} />}
         </Dialog>
+        <div className='ordersGraph'>
+          <Graph />
+        </div>
       </Box>
-      <Graph/>
     </div>
   );
 };
