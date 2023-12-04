@@ -8,11 +8,11 @@ import Register from './pages/Register';
 import Logout from './components/Logout';
 
 import Kidnapped from './components/Kidnapped';
-
-import Graph from './pages/graphs';
-
+import 'react-toastify/dist/ReactToastify.css';
+// import Geography from './scenes/geography';
 
 import Users from './pages/Users';
+import Graph from './pages/graph';
 
 
 
@@ -22,15 +22,13 @@ function App() {
       <>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/orders" element={<OrdersComponent />} />
-          <Route path="/register" element={<Register />} />
-  
- 
-          <Route path="/logout" element={<Logout/>}/>
-
-          <Route path="/users" element={<Users/>}/>
+          <Route path="/oms" element={<Home />} />
+          <Route path="/oms/login" element={<SignIn />} />
+          <Route path="/oms/orders" element={<OrdersComponent />} />
+          <Route path="/oms/register" element={<Register />} />
+          <Route path="/oms/logout" element={<Logout/>}/>
+          <Route path="/oms/graph" element={<Graph/>}/>
+          <Route path="/oms/users" element={<Users/>}/>
           <Route path={'*'} element={<h1>404 Not Found</h1>} />
         </Routes>
         <Kidnapped/>

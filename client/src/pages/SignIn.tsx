@@ -20,15 +20,15 @@ export default function SignIn() {
     const userContext = useContext(UserContext);
 
     React.useEffect(() => {
-        if (userContext?.userInfo ) {
+        if (userContext?.userInfo) {
             setTimeout(() => {
-                navigate('/orders')
+                navigate('/oms/orders')
             }, 2000)
         }
     }, [userContext]);
- 
 
- 
+
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -43,22 +43,21 @@ export default function SignIn() {
                 if (user.email !== undefined && user.password !== undefined) {
                     await userContext?.loginUser(user.email, user.password);
                     toastSuccess('Successful login');
-                    navigate('/orders');
+                    navigate('/oms/orders');
                 } else {
                     throw new Error('Email and password cannot be empty');
                 }
             } catch (error) {
-                console.error('Login failed:', error);
                 toastError('Login failed. Please check your credentials.');
             }
         } else {
             console.error('Email or password is undefined');
         }
     };
- 
 
 
-    if (userContext?.userInfo ) {
+
+    if (userContext?.userInfo) {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -96,10 +95,10 @@ export default function SignIn() {
                 <ToastContainer />
             </Container>
         );
-    } 
+    }
 
- 
- 
+
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">

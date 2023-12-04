@@ -25,7 +25,7 @@ export default function NavBar() {
                             key="orders"
                             className='button'
                             component={Link}
-                            to="/orders"
+                            to="/oms/orders"
                             label="Orders"
                             value="orders"
                             icon={<ShoppingCart />}
@@ -34,7 +34,7 @@ export default function NavBar() {
                             key="users"
                             className='button'
                             component={Link}
-                            to="/users"
+                            to="/oms/users"
                             label="Users"
                             value="users"
                             icon={<PeopleAltIcon />}
@@ -43,7 +43,7 @@ export default function NavBar() {
                             key="logout"
                             className='button'
                             component={Link}
-                            to="/logout"
+                            to="/oms/logout"
                             label="Logout"
                             value="logout"
                             icon={<ExitToApp />}
@@ -55,7 +55,7 @@ export default function NavBar() {
                             key="signIn"
                             className='button'
                             component={Link}
-                            to="/login"
+                            to="/oms/login"
                             label="Sign In"
                             value="sign in"
                             icon={<Person />}
@@ -64,7 +64,7 @@ export default function NavBar() {
                             key="signUp"
                             className='button'
                             component={Link}
-                            to="/register"
+                            to="/oms/register"
                             label="Sign Up"
                             value="sign up"
                             icon={<PersonAdd />}

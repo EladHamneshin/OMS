@@ -24,7 +24,7 @@ export const OrderEnum = {
 } as const;
 
 export default function Graph() {
-    const [data, setData] = useState<order[]>([]);
+    const [, setData] = useState<order[]>([]);
     const [allOrdersCounter, setAllOrdersCounter] = useState([
         {
             label: 'All orders',
@@ -53,15 +53,15 @@ export default function Graph() {
     ]);
 
     const [seriesNb, setSeriesNb] = React.useState(6);
-    const [itemNb, setItemNb] = React.useState(7);
+    const [itemNb] = React.useState(7);
 
-    const handleItemNbChange = (event: Event, newValue: number | number[]) => {
-        if (typeof newValue === 'number') {
-            setItemNb(newValue);
-        }
-    };
+    // const handleItemNbChange = (event: Event, newValue: number | number[]) => {
+    //     if (typeof newValue === 'number') {
+    //         setItemNb(newValue);
+    //     }
+    // };
 
-    const handleSeriesNbChange = (event: Event, newValue: number | number[]) => {
+    const handleSeriesNbChange = (_event: Event, newValue: number | number[]) => {
         if (typeof newValue === 'number') {
             setSeriesNb(newValue);
         }
