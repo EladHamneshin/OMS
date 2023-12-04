@@ -3,7 +3,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import RequestError from "../types/errors/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
-import { log } from "console";
 
 
 
