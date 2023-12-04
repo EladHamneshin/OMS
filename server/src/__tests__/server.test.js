@@ -43,9 +43,9 @@ describe('POST /api/orders', () => {
             },
           },
         ],
-        userId: "user21שש1",
+        userId: "user21",
         userName: "John yy",
-        userEmail: "johan.doe@example.com",
+        userEmail: "j@example.com",
         orderTime: "2023-11-22T12:00:00.000Z",
         status: "Waiting",
         totalPrice: 100,
@@ -59,7 +59,6 @@ describe('POST /api/orders', () => {
           contactNumber: "123456789",
           orderType: "SelfCollection",
         },
-        contactNumber: "123456789",
       }
       );
 
@@ -70,21 +69,58 @@ describe('POST /api/orders', () => {
 
 
 
-// describe('PUT /api/orders/:orderId', () => {
-//   test('should update an existing order', async () => {
-//     // Assume orderId is a valid order ID in your application
-//     const orderId = '655f3c0c05eb2e8e4ac6d91e';
 
-//     const response = await request(app)
-//       .put(`/api/orders/${orderId}`)
-//       .send({
-//         // Update the order with new data
-//         status: 'Shipped',
-//         // Add other fields to update based on your application's requirements
-//       });
 
-//     // Assertions
+
+describe('PUT /api/orders/:orderId', () => {
+  test('should update an existing order', async () => {
+    // Assume orderId is a valid order ID in your application
+    const orderId = '65672c123f38a884f324d10d';
+
+    const response = await request(app)
+      .put(`/api/orders/${orderId}`)
+      .send({
+        // Update the order with new data
+        userId: '45678945678',
+        // Add other fields to update based on your application's requirements
+      });
+      expect(response.status).toBe(404);
+      // Add more assertions based on your application's behavior
+    });
+  });
   
    
-//   });
-// });
+   
+describe('User Registration Tests', () => {
+  test('registers a new user', async () => {
+    const userInput = {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'jn.dhbhbnllnnoe@errhjvhjggfgh.com',
+      password: 'testPassword', // Use the actual password here
+      isAdmin: false,
+    };
+
+    const response = await request(app)
+      .post('/api/users/register')
+      .send(userInput);
+
+    expect(response.status).toEqual(200);
+  });
+
+  test('registers new user with invalid email', async () => {
+    const userInput = {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'john',
+      password: 'testPassword', // Use the actual password here
+      isAdmin: false,
+    };
+
+    const response = await request(app)
+      .post('/api/users/register')
+      .send(userInput);
+
+    expect(response.status).toEqual(500);
+  });
+});

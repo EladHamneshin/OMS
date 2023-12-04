@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "test": "jest --coverage .",
+    "test": "jest --forceExit",
     "dev": "tsc && nodemon .",
     "buildtest": "babel src -d dist",
     "build": "tsc",
