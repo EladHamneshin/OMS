@@ -40,7 +40,7 @@ const OrdersComponent = () => {
       setRows(formattedData);
 
       if (!userContext?.userInfo) {
-        navigate('/login');
+        navigate('/oms/login');
       }
     };
 

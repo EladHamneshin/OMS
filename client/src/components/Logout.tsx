@@ -12,7 +12,7 @@ function Logout() {
     const navigate = useNavigate();
     useEffect(() => {
         if (!userContext?.userInfo) {
-            navigate('/');
+            navigate('/oms');
         }
     }, [userContext?.userInfo])
 

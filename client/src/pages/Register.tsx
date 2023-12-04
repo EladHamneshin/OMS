@@ -112,7 +112,7 @@ const SignUp = () => {
 
             setIsLoading(false);
             toastSuccess('Registration successful');
-            navigate('/login');
+            navigate('/oms/login');
         } catch (err) {
             setIsLoading(false);
             toastError((err as Error).message);

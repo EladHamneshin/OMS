@@ -3,6 +3,7 @@ import STATUS_CODES from "../utils/StatusCodes.js";
 import { validate } from '../utils/validate.js';
 import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
+import { log } from "console";
 
 const register = async (userInput: AdminUser) => {
 
@@ -26,7 +27,9 @@ const register = async (userInput: AdminUser) => {
 
 
 const getUserByEmailService = async (email: string) => {
+    
     const data = await userDal.getUserByEmail(email);
+    
     if (data) return data
     throw new RequestError("error getting .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
 }

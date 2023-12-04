@@ -19,15 +19,19 @@ const app = express();
 dotenv.config();
 
 
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization');
+    next();
+  });
+  
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
 app.use(cookieParser());
 
-app.use('/api/users', userRoutes);
-app.use('/api/orders', ordersRoutes);
+app.use('/users', userRoutes);
+app.use('/orders', ordersRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
