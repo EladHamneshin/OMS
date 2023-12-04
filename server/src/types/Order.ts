@@ -47,7 +47,6 @@ interface OrderInterface {
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: ShippingDetails;
-    contactNumber: string;
 }
 
 

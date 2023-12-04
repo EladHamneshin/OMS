@@ -40,7 +40,6 @@ interface ShippingDetails {
 }
 
 interface OrderInterface {
-    // id: string;
     _id?: string
     cartItems: Product[];
     userId: string;
@@ -50,7 +49,6 @@ interface OrderInterface {
     status: OrderStatusEnum;
     totalPrice: number;
     shippingDetails: ShippingDetails;
-    contactNumber: string;
 }
 
 

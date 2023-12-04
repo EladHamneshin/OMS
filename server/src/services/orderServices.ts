@@ -69,22 +69,26 @@ const getOrders = async () => {
         return result;
     }
 }
+
 const validateOrderUpdate = (isAdmin: boolean, updatedFields: Partial<OrderInterface>): void => {
-    const allowedFields = ['status', 'address', 'country', 'city', 'street', 'celPhone', 'zipCode', 'contactNumber'];
-    if (!isAdmin) {
-        if (updatedFields.status === 'Canceled') {
-            throw new RequestError('Invalid update for non-admin user', STATUS_CODES.BAD_REQUEST);
+    const allowedFields= ['status', 'shippingDetails'];
+    if (!isAdmin && updatedFields.status === 'Canceled') {
+        throw new Error('Invalid update for non-admin user');
+    }
+    for (const field in updatedFields) {
+        if (!allowedFields.includes(field)) {
+            throw new Error(`Field '${field}' is not allowed for admin update`);
         }
-    } else {
-        for (const field in updatedFields) {
-            if (!allowedFields.includes(field)) {
-                throw new RequestError(`Field '${field}' is not allowed for admin update`, STATUS_CODES.BAD_REQUEST);
+        if (field === 'shippingDetails' && updatedFields[field]) {
+            const subFields = Object.keys((updatedFields[field]!).address);
+            const allowedSubFields = ['country', 'city', 'street', 'zipCode'];
+
+            for (const subField of subFields) {
+                if (!allowedSubFields.includes(subField)) {
+                    throw new Error(`Field 'shippingDetails.${subField}' is not allowed for admin update`);
+                }
             }
         }
-        if (updatedFields.status && updatedFields.status !== 'Canceled') {
-            throw new RequestError('Admin can only update status to "canceled"', STATUS_CODES.BAD_REQUEST);
-        }
-
     }
 };
 
@@ -97,21 +101,5 @@ const updateOrder = async (orderId: string, isAdmin: boolean, updatedFields: Par
     }
     throw new RequestError(`Field  to update`, STATUS_CODES.NO_CONTENT);
 }
-
-// const updateOrders = async (
-//     orderId: mongoose.Types.ObjectId,
-//     changeOrderBody: ChangeOrderBody
-// ): Promise<OrderInterface | OrderInterface[] | null | ProductQuantity[] | undefined> => {
-
-//     const result = await orderDal.updateOrders(orderId, changeOrderBody)
-
-//     if (!Object.keys(result!).length) {
-//         throw new Error("Something went wrong with the request, please try again")
-//     }
-//     else {
-//         return result;
-//     }
-// }
-
 
 export default { addOrder, getOrdersByUserId, getOrders, updateOrder }

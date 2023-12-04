@@ -37,17 +37,28 @@ const validatePasswordService = async (password: string, hashedPassword: string)
     throw new RequestError("error validate Password .service", STATUS_CODES.UNAUTHORIZED)
 }
 
-const logout = async () => {
-    try {
-      await userDal.logoutDal();
-    } catch (error) {
-      throw new Error('Logout service failed:',error!);
+
+
+const deleteUser = async (id:string) => {
+    const user = await userDal.deleteUser(id);
+    if (!user) {
+        throw new RequestError("error delete user", STATUS_CODES.NOT_FOUND)
     }
-  };
+    return user
+};
+
+
+
+const allUsers =  async () => {
+  const data = await userDal.getAllDal();
+  if (data!) return data
+  throw new RequestError("error getting all users .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
+};
 
 export const userService = {
     register,
     getUserByEmailService,
     validatePasswordService,
-    logout
+    deleteUser,
+    allUsers
 }

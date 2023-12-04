@@ -48,7 +48,6 @@ export async function logOutApi() {
         headers: { 'Content-Type': 'application/json' },
         // body: JSON.stringify(user)
       })
-      localStorage.removeItem("admin");
     if (!response.ok) {
       throw new Error(await response.text());
     }
@@ -56,6 +55,42 @@ export async function logOutApi() {
     return res
   } catch (error) {
     console.error('Login failed:', error);
+    throw error;
+  }
+}
+
+export async function getAllUsers() {
+  try {
+    const response = await fetch(`/api/users`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      // body: JSON.stringify(user)
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
+  }
+}
+
+export async function deleteUsers(id: string) {
+  try {
+    const response = await fetch(`/api/users/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Deletion failed:', error);
     throw error;
   }
 }
