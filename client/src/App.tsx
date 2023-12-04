@@ -11,7 +11,6 @@ import Kidnapped from './components/Kidnapped';
 import 'react-toastify/dist/ReactToastify.css';
 // import Geography from './scenes/geography';
 
-
 import Users from './pages/Users';
 import Graph from './pages/graph';
 
