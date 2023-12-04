@@ -17,51 +17,60 @@ export default function NavBar() {
     };
 
     return (
-
         <div className='navFather'>
             <BottomNavigation sx={{ width: 350 }} value={value} onChange={handleChange} className='nav'>
-
                 {userContext?.userInfo ? (
-                    <>
-                    <BottomNavigationAction
-                        className='button'
-                        component={Link}
-                        to="/orders"
-                        label="Orders"
-                        value="orders"
-                        icon={<ShoppingCart />} />
-                            <BottomNavigationAction
-                                className='button'
-                                component={Link}
-                                to="/users"
-                                label="users"
-                                value="users"
-                                icon={<PeopleAltIcon />} />
+                    [
                         <BottomNavigationAction
+                            key="orders"
+                            className='button'
+                            component={Link}
+                            to="/orders"
+                            label="Orders"
+                            value="orders"
+                            icon={<ShoppingCart />}
+                        />,
+                        <BottomNavigationAction
+                            key="users"
+                            className='button'
+                            component={Link}
+                            to="/users"
+                            label="Users"
+                            value="users"
+                            icon={<PeopleAltIcon />}
+                        />,
+                        <BottomNavigationAction
+                            key="logout"
                             className='button'
                             component={Link}
                             to="/logout"
                             label="Logout"
                             value="logout"
-                            icon={<ExitToApp />} />
-                            </>
-                ) :
-                    <>
-                    <BottomNavigationAction
-                        className='button'
-                        component={Link}
-                        to="/login"
-                        label="Sign In"
-                        value="sign in"
-                        icon={<Person />} /><BottomNavigationAction
+                            icon={<ExitToApp />}
+                        />,
+                    ]
+                ) : (
+                    [
+                        <BottomNavigationAction
+                            key="signIn"
+                            className='button'
+                            component={Link}
+                            to="/login"
+                            label="Sign In"
+                            value="sign in"
+                            icon={<Person />}
+                        />,
+                        <BottomNavigationAction
+                            key="signUp"
                             className='button'
                             component={Link}
                             to="/register"
                             label="Sign Up"
                             value="sign up"
-                            icon={<PersonAdd />} />
-                            </>
-                }
+                            icon={<PersonAdd />}
+                        />,
+                    ]
+                )}
             </BottomNavigation>
         </div>
     );
