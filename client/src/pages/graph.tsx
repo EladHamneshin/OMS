@@ -14,7 +14,6 @@ export enum OrderStatusEnum {
     Received = 'Received',
     Canceled = 'Canceled',
     AwaitingPayment = 'Awaiting payment', 
-    HeldByAdmin = 'Held by an admin', 
 }
 
 export const OrderEnum = {
@@ -43,17 +42,13 @@ export default function Graph() {
             data: Array(Object.keys(OrderStatusEnum).length).fill(0),
         },
         {
-            label: 'Waiting', // Updated label from 'Awaiting payment' to 'Waiting'
-            data: Array(Object.keys(OrderStatusEnum).length).fill(0),
-        },
-        {
-            label: 'Held by an admin',
+            label: 'Waiting', 
             data: Array(Object.keys(OrderStatusEnum).length).fill(0),
         },
     ]);
 
     const [seriesNb, setSeriesNb] = React.useState(6);
-    const [itemNb, setItemNb] = React.useState(7);
+    const [itemNb, setItemNb] = React.useState(4);
 
     const handleItemNbChange = (event: Event, newValue: number | number[]) => {
         if (typeof newValue === 'number') {
@@ -92,10 +87,6 @@ export default function Graph() {
                     },
                     {
                         label: 'Waiting',
-                        data: Array(Object.keys(OrderStatusEnum).length).fill(0),
-                    },
-                    {
-                        label: 'Held by an admin',
                         data: Array(Object.keys(OrderStatusEnum).length).fill(0),
                     },
                 ];
