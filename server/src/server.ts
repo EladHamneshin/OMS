@@ -18,7 +18,6 @@ const app = express();
 
 dotenv.config();
 
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Expose-Headers', 'Authorization');
     next();
