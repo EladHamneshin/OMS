@@ -8,16 +8,16 @@ import app from "../../dist/server";
 
 
 
-test('use spi/orders and get 200 status', async () => {
-    const res = await request(app).get('/api/orders');
+test('use orders and get 200 status', async () => {
+    const res = await request(app).get('/orders');
     expect(res.status).toEqual(200);
 }, 10000);
 
  
-describe('GET /api/orders/:userId', () => {
+describe('GET /orders/:userId', () => {
   test('should get orders by user ID and return 200 status', async () => {
     const userId = "65554a49d6dce586149ec6b8";
-    const response = await request(app).get(`/api/orders/${userId}`);
+    const response = await request(app).get(`/orders/${userId}`);
 
     expect(response.status).toEqual(200);
     // Add more assertions based on your specific response structure and data
@@ -26,9 +26,9 @@ describe('GET /api/orders/:userId', () => {
 
 
 
-describe('POST /api/orders', () => {
+describe('POST /orders', () => {
   test('It should create a new order', async () => {
-    const response = await request(app).post('/api/orders')
+    const response = await request(app).post('/orders')
       .send({
         cartItems: [
           {
@@ -59,7 +59,6 @@ describe('POST /api/orders', () => {
           contactNumber: "123456789",
           orderType: "SelfCollection",
         },
-        contactNumber: "123456789",
       }
       );
 
@@ -73,13 +72,13 @@ describe('POST /api/orders', () => {
 
 
 
-describe('PUT /api/orders/:orderId', () => {
+describe('PUT /orders/:orderId', () => {
   test('should update an existing order', async () => {
     // Assume orderId is a valid order ID in your application
     const orderId = '65672c123f38a884f324d10d';
 
     const response = await request(app)
-      .put(`/api/orders/${orderId}`)
+      .put(`/orders/${orderId}`)
       .send({
         // Update the order with new data
         userId: '45678945678',
@@ -103,7 +102,7 @@ describe('User Registration Tests', () => {
     };
 
     const response = await request(app)
-      .post('/api/users/register')
+      .post('/users/register')
       .send(userInput);
 
     expect(response.status).toEqual(200);
@@ -119,7 +118,7 @@ describe('User Registration Tests', () => {
     };
 
     const response = await request(app)
-      .post('/api/users/register')
+      .post('/users/register')
       .send(userInput);
 
     expect(response.status).toEqual(500);

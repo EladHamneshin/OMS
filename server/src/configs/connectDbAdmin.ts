@@ -2,7 +2,8 @@ import { config } from 'dotenv';
 import pkg from 'pg';
 const { Pool } = pkg;
 config()
-const pool = new Pool({connectionString:process.env.PG_URI});
+
+const pool = new Pool();
 
 export const connectToPg = async () => {
     try {

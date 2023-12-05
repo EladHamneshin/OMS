@@ -10,7 +10,6 @@ import { AdminUser } from '../types/admin';
 import './style/formStyle.css'
 
 
-
 const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isEmailError, setEmailError] = useState(false);
@@ -112,7 +111,7 @@ const SignUp = () => {
 
             setIsLoading(false);
             toastSuccess('Registration successful');
-            navigate('/login');
+            navigate('/oms/login');
         } catch (err) {
             setIsLoading(false);
             toastError((err as Error).message);

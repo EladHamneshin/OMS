@@ -3,21 +3,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button } from '@mui/base';
+import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
 import { updateOrder } from '../api/ordersApi';
 import OrderInterface, { OrderStatusEnum } from '../types/orderType';
 
-
 interface OrderDetailsProps {
   selectedOrder: OrderInterface;
-  onClose: () => void;
+  Refresh: () => void;
+  close: () => void;
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, close }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedOrder, setEditedOrder] = useState(selectedOrder);
- 
+  const [editedOrder, setEditedOrder] = useState<OrderInterface>(selectedOrder);
 
   useEffect(() => {
     if (isEditMode) {
@@ -32,23 +31,20 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
   const handleSave = async () => {
     try {
       setIsEditMode(false);
-  
       if (!selectedOrder._id) {
         throw new Error('No order ID');
       }
-      const {  status, shippingDetails } = editedOrder;
-  
+      const { status, shippingDetails } = editedOrder;
       const updatedOrder = await updateOrder(editedOrder._id!, { status, shippingDetails });
-      // Update the selectedOrder state to reflect the changes
       setEditedOrder(updatedOrder);
-      
       console.log('Order updated successfully:', updatedOrder);
-      window.location.reload()
+      Refresh();
+      close();
     } catch (error) {
       console.error('Failed to update order:', error);
     }
   };
-  
+
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEditedOrder({
       ...editedOrder,
@@ -63,16 +59,18 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
         ...editedOrder.shippingDetails,
         address: {
           ...editedOrder.shippingDetails?.address,
-          
           [field]: field === 'zipCode' ? parseInt(value) : value,
         },
       },
     });
   };
-  const admin = localStorage.getItem('admin')
-  const adminTrue = localStorage.getItem('admin') === 'true';
-  const orderType = selectedOrder.shippingDetails.orderType === "SelfCollection"
-  const modeShipping = selectedOrder.status === "Waiting"
+
+  const admin = localStorage.getItem('admin');
+  const storedAdmin = JSON.parse(localStorage.getItem('admin')!);
+  const adminTrue = storedAdmin && storedAdmin.is_admin === true;
+  const orderType = selectedOrder.shippingDetails.orderType === 'SelfCollection';
+  const modeShipping = selectedOrder.status === 'Waiting';
+
   return (
     <>
       <DialogTitle>Order Details</DialogTitle>
@@ -84,7 +82,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
           status: {isEditMode && modeShipping && (adminTrue || admin) ? (
             <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
               <option value={OrderStatusEnum.Waiting}>Waiting</option>
-              {/* <option value={OrderStatusEnum.Sent}>Sent</option> */}
               {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
               {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
             </select>
@@ -97,7 +94,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Shipping Address:{' '}
-          {isEditMode && (
+          {isEditMode && modeShipping && (
             <>
               <input
                 type="text"
@@ -125,14 +122,14 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder }) => {
               />
             </>
           )}
-          {!isEditMode && modeShipping &&(
+          {!isEditMode && (
             <>
               {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
             </>
           )}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Contact Number: {selectedOrder?.contactNumber}
+          Contact Number: {selectedOrder?.shippingDetails.contactNumber}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Order Type: {selectedOrder?.shippingDetails?.orderType}
