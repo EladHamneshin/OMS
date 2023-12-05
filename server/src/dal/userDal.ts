@@ -2,12 +2,11 @@ import { AdminUser } from "../types/admin.js";
 import bcrypt from 'bcrypt';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
-import pkg from 'pg';
-const { Pool } = pkg;
+import { config } from "dotenv";
+import pool from "../configs/connectDbAdmin.js"
+config();
 
-
-const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
-    const pool = new Pool({connectionString: process.env.PG_URI});
+const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => { 
     const res = await pool.connect();
     try {
         const data = await res.query(query, values);
