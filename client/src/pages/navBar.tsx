@@ -2,14 +2,13 @@ import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, ExitToApp, Person, PersonAdd } from '@mui/icons-material'
-import './style/navBarStyle.css'
-
+import { ShoppingCart, ExitToApp, Person, PersonAdd } from '@mui/icons-material';
+import './style/navBarStyle.css';
 
 export default function NavBar() {
     const [value, setValue] = React.useState('recents');
 
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const handleChange = (_event: React.SyntheticEvent<Element>, newValue: string) => {
         setValue(newValue);
     };
 
@@ -17,7 +16,7 @@ export default function NavBar() {
         <div className='navFather'>
             <BottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange} className='nav'>
                 <BottomNavigationAction
-                className='button'
+                    className='button'
                     component={Link}
                     to="/login"
                     label="Sign In"
@@ -25,7 +24,7 @@ export default function NavBar() {
                     icon={<Person />}
                 />
                 <BottomNavigationAction
-                className='button'
+                    className='button'
                     component={Link}
                     to="/register"
                     label="Sign Up"
@@ -33,7 +32,7 @@ export default function NavBar() {
                     icon={<PersonAdd />}
                 />
                 <BottomNavigationAction
-                className='button'
+                    className='button'
                     component={Link}
                     to="/orders"
                     label="Orders"
@@ -41,14 +40,14 @@ export default function NavBar() {
                     icon={<ShoppingCart />}
                 />
                 <BottomNavigationAction
-                className='button'
+                    className='button'
                     component={Link}
                     to="/logout"
                     label="Logout"
                     value="logout"
-                    icon={<ExitToApp />} />
+                    icon={<ExitToApp />}
+                />
             </BottomNavigation>
-
         </div>
     );
 }

@@ -1395,11 +1395,11 @@ export const isoCountriesCodes: Countries[] = [
   },
   {
     code: "BOL",
-    name: "Bolivia, Plurinational State of",
+    name: "Bolivia",
   },
   {
     code: "BES",
-    name: "Bonaire, Sint Eustatius and Saba",
+    name: "Bonaire",
   },
   {
     code: "BIH",
@@ -2019,7 +2019,7 @@ export const isoCountriesCodes: Countries[] = [
   },
   {
     code: "RUS",
-    name: "Russian Federation",
+    name: "Russia",
   },
   {
     code: "RWA",

@@ -3,7 +3,6 @@ import STATUS_CODES from "../utils/StatusCodes.js";
 import { validate } from '../utils/validate.js';
 import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
-import { UUID } from "crypto";
 
 const register = async (userInput: AdminUser) => {
 console.log(userInput);
@@ -33,17 +32,21 @@ const getUserByEmailService = async (email: string) => {
   throw new RequestError("error getting .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
 }
 
-const getAllUsers = async () => {
-  const data = await userDal.getAllUsers();
-  if (data) return data
-  throw new RequestError("error getting service", STATUS_CODES.INTERNAL_SERVER_ERROR)
-}
+const deleteUser = async (id:string) => {
+  const user = await userDal.deleteUser(id);
+  if (!user) {
+      throw new RequestError("error delete user", STATUS_CODES.NOT_FOUND)
+  }
+  return user
+};
 
-const deleteUserById = async (user_id  : UUID) => {
-  const res = await userDal.deleteUserById(user_id);
-  if (res) return res
-  throw new RequestError("error getting service", STATUS_CODES.INTERNAL_SERVER_ERROR)
-}
+
+
+const allUsers =  async () => {
+const data = await userDal.getAllDal();
+if (data!) return data
+throw new RequestError("error getting all users .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
+};
 
 const validatePasswordService = async (password: string, hashedPassword: string) => {
   const data = await userDal.validatePassword(password, hashedPassword);
@@ -52,18 +55,18 @@ const validatePasswordService = async (password: string, hashedPassword: string)
 }
 
 const logout = async () => {
-  try {
-    await userDal.logoutDal();
-  } catch (error) {
-    throw new Error('Logout service failed:', error!);
-  }
-};
+    try {
+      await userDal.logoutDal();
+    } catch (error) {
+      throw new Error('Logout service failed:',error!);
+    }
+  };
 
 export const userService = {
-  register,
-  getUserByEmailService,
-  getAllUsers,
-  deleteUserById,
-  validatePasswordService,
-  logout
+    register,
+    getUserByEmailService,
+    validatePasswordService,
+    logout,
+    deleteUser,
+    allUsers
 }

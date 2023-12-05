@@ -6,8 +6,8 @@ import { Container, Avatar, Box, Grid, TextField, Button, Link } from '@mui/mate
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import './style/formStyle.css'
 import { AdminUser } from '../types/admin';
+import './style/formStyle.css'
 
 
 
@@ -106,7 +106,7 @@ const SignUp = () => {
                 password,
                 first_name,
                 last_name,
-                isAdmin: false
+                isAdmin: true
             }
             await register(data);
 
@@ -121,106 +121,108 @@ const SignUp = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                onBlur={handleEmailBlur}
-                                onChange={handleEmailChange}
-                                required
-                                fullWidth
-                                error={isEmailError}
-                                helperText={isEmailError ? 'Email must be a valid email address' : ''}
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
+            <div className='form2'>
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onBlur={handleEmailBlur}
+                                    onChange={handleEmailChange}
+                                    required
+                                    fullWidth
+                                    error={isEmailError}
+                                    helperText={isEmailError ? 'Email must be a valid email address' : ''}
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onBlur={handlePasswordBlur}
+                                    onChange={handlePasswordChange}
+                                    required
+                                    fullWidth
+                                    error={isPasswordError}
+                                    helperText={
+                                        isPasswordError
+                                            ? 'Password must be at least 7 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character'
+                                            : ''
+                                    }
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    type="password"
+                                    id="confirmPassword"
+                                    autoComplete="new-password"
+                                    onChange={handleConfirmPasswordChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="first_name"
+                                    label="First Name"
+                                    id="first_name"
+                                    onChange={handleFirstNameChange}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="last_name"
+                                    label="Last Name"
+                                    id="last_name"
+                                    onChange={handleLastNameChange}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                onBlur={handlePasswordBlur}
-                                onChange={handlePasswordChange}
-                                required
-                                fullWidth
-                                error={isPasswordError}
-                                helperText={
-                                    isPasswordError
-                                        ? 'Password must be at least 7 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character'
-                                        : ''
-                                }
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="new-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="confirmPassword"
-                                label="Confirm Password"
-                                type="password"
-                                id="confirmPassword"
-                                autoComplete="new-password"
-                                onChange={handleConfirmPasswordChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="first_name"
-                                label="First Name"
-                                id="first_name"
-                                onChange={handleFirstNameChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="last_name"
-                                label="Last Name"
-                                id="last_name"
-                                onChange={handleLastNameChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        disabled={isLoading}
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Register
-                    </Button>
+                        <Button
+                            disabled={isLoading}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Register
+                        </Button>
 
-                    {isLoading && <p>Loading...</p>}
+                        {isLoading && <p>Loading...</p>}
 
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Link href={'/login'} variant="body2">
-                                Already have an account? Login
-                            </Link>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <Link href={'/login'} variant="body2">
+                                    Already have an account? Login
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
-            </Box>
+            </div>
         </Container>
     );
 };

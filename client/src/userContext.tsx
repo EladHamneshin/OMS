@@ -2,7 +2,6 @@ import React, { createContext, useState } from 'react';
 import { User } from './types/userAdmin';
 import { logOutApi, login } from './api/usersAPI';
 
-
 interface UserContextProviderProps {
     children: React.ReactNode;
 }
@@ -13,7 +12,7 @@ interface UserContextType {
     logoutUser: () => Promise<void>;
 }
 
-export const UserContext = createContext<UserContextType | null>(null);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
     const initialUserInfo = localStorage.getItem('admin')
@@ -21,8 +20,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
         : undefined
 
     const [userInfo, setUserInfo] = useState<User | undefined>(initialUserInfo);
-
-
 
     const loginUser = async (email: string, password: string) => {
         const loggedUser = await login({ email, password });
@@ -32,12 +29,11 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
         return loggedUser;
     }
 
-
-
 const logoutUser = async () => {
     await logOutApi();
     localStorage.removeItem('admin');
     setUserInfo(undefined);
+    
 }
 
 return (
