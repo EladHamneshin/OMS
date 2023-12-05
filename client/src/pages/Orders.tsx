@@ -3,10 +3,12 @@ import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
 import order from "../types/orderType";
 import ordersApi from '../api/ordersApi';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
-import Graph from './graphs';
+import Graph from './graph';
+import './style/ordersStyle.css'
+import { UserContext } from '../userContext';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 200 },
@@ -20,7 +22,10 @@ const columns: GridColDef[] = [
 const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<order | null>(null);
+  const [refresh,setRefresh]=useState(false);
+  const userContext = useContext(UserContext);
 
+  
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -35,15 +40,19 @@ const OrdersComponent = () => {
 
       setRows(formattedData);
 
-      // Check if the user is an login
-      const isAdmin = localStorage.getItem('admin');
-      if (!isAdmin) {
-        navigate('/login');
+      if (!userContext?.userInfo) {
+        navigate('/oms/login');
       }
     };
 
     fetchDataAndCheckAdmin();
-  }, [navigate]);
+  }, [navigate, refresh, userContext?.userInfo]);
+
+  function refreshFunc()
+  {
+    setRefresh(!refresh);
+  }
+ 
 
   const handleRowClick = (params: GridRowParams<order>) => {
     const selectedRow = rows.find((row) => row._id === params.id);
@@ -51,7 +60,7 @@ const OrdersComponent = () => {
   };
 
   return (
-    <div>
+    <div className='ordersGrid'>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={rows}
@@ -62,10 +71,12 @@ const OrdersComponent = () => {
           disableRowSelectionOnClick
         />
         <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
-          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} onClose={() => setSelectedOrder(null)} />}
+          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} close={() => setSelectedOrder(null)} Refresh={refreshFunc} />}
         </Dialog>
+        <div className='ordersGraph'>
+          <Graph />
+        </div>
       </Box>
-      <Graph/>
     </div>
   );
 };

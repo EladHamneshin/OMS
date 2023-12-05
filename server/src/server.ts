@@ -19,15 +19,19 @@ const app = express();
 dotenv.config();
 
 
-
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization');
+    next();
+  });
+  
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
 app.use(cookieParser());
 
-app.use('/api/users', userRoutes);
-app.use('/api/orders', ordersRoutes);
+app.use('/users', userRoutes);
+app.use('/orders', ordersRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
@@ -36,8 +40,7 @@ const port = process.env.PORT || 3000;
 
 if(process.env.NODE_ENV !== "test"){
 app.listen(port, async () => {
-  const a = new orderModel()
-
+  const a = new orderModel();
   await connectToDatabase();
   await connectToPg();
   console.log(`Server is running at port ${port}`);
