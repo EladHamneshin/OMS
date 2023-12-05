@@ -16,9 +16,11 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 
 const validateLogin = async (email: string, password: string) => {
     const user = await userService.getUserByEmailService(email);
+
     if (!user) {
         throw new RequestError("User not found", STATUS_CODES.UNAUTHORIZED);
     }
+    
     const hash = user[0]
     const isPasswordValid = await userService.validatePasswordService(password, hash.password)
     if (!isPasswordValid) {
@@ -27,7 +29,7 @@ const validateLogin = async (email: string, password: string) => {
     return user;
 }
 
-const loginController = asyncHandler(async (req: Request, res: Response) => {
+const loginController = asyncHandler(async (req: Request, res: Response) => {    
     const { email, password } = req.body;
     //   validate
     const user = await validateLogin(email, password);
@@ -39,8 +41,9 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
     const userAdmin = user[0].is_admin
 
     const token = createToken(userEmail, userAdmin);
-    res.cookie('token', token, { httpOnly: true });
-    res.status(STATUS_CODES.OK).json({ token, user, message: "Login successful" });
+    res.setHeader('Authorization',token);
+    
+    res.status(STATUS_CODES.OK).json({ user, message: "Login successful" });
 })
 
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect} from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -12,67 +12,62 @@ function Logout() {
     const navigate = useNavigate();
     useEffect(() => {
         if (!userContext?.userInfo) {
-            navigate('/');
+            navigate('/oms');
         }
     }, [userContext?.userInfo])
 
-    const handleClick = async () => {
+	const handleClick = async () => {
+		try {
+			await userContext?.logoutUser();
+		} catch (error) {
+			console.error("Logout failed:", error);
+		}
+	};
 
-        try {
-            await userContext?.logoutUser();
-            
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
-    };
-
-    return (
-        <>
-            {userContext?.userInfo && (
-                <Card
-                    style={{
-                        minWidth: 275,
-                        maxWidth: 400,
-                        margin: "auto",
-                        marginTop: 20,
-                    }}
-                >
-                    <CardContent>
-                        <Typography
-                            style={{ fontSize: 30 }}
-                            color="text.secondary"
-                            gutterBottom
-                        >
-                            User Info:
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                            {`First Name: ${userContext?.userInfo.first_name} ${userContext?.userInfo.last_name}`}
-                        </Typography>
-                        <Typography color="text.secondary" style={{ marginBottom: 12 }}>
-                            Last Name: {userContext?.userInfo.last_name}
-                        </Typography>
-                        <Typography color="text.secondary" style={{ marginBottom: 12 }}>
-                            Email: {userContext?.userInfo.email}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button
-                            onClick={handleClick}
-                            variant="contained"
-                            style={{ marginTop: 10 }}
-                        >
-                            Logout
-                        </Button>
-                    </CardActions>
-                </Card>
-                // ) : (
-                //     <Card>
-                //     <Typography variant="h5" component="div" style={{ textAlign: "center", marginTop: 20 }}>
-                //         You are logged out
-                //     </Typography></Card>
-            )}
-        </>
-    );
+	return (
+		<>
+			{!userContext?.userInfo ? (
+				<h1>You are logged out</h1>
+			) : (
+				<Card
+					style={{
+						minWidth: 275,
+						maxWidth: 400,
+						margin: "auto",
+						marginTop: 20,
+					}}
+				>
+					<CardContent>
+						<Typography
+							style={{ fontSize: 30 }}
+							color="text.secondary"
+							gutterBottom
+						>
+							User Info:
+						</Typography>
+						<Typography variant="h5" component="div">
+							{`First Name: ${userContext?.userInfo.first_name} ${userContext?.userInfo.last_name}`}
+						</Typography>
+						<Typography color="text.secondary" style={{ marginBottom: 12 }}>
+							Last Name: {userContext?.userInfo.last_name}
+						</Typography>
+						<Typography color="text.secondary" style={{ marginBottom: 12 }}>
+							Email: {userContext?.userInfo.email}
+						</Typography>
+					</CardContent>
+					<CardActions>
+						<Button
+							onClick={handleClick}
+							variant="contained"
+							style={{ marginTop: 10 }}
+						>
+							Logout
+						</Button>
+					</CardActions>
+				</Card>
+			)}
+		</>
+	);
 }
 
 export default Logout;
