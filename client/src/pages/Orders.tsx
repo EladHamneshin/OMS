@@ -3,30 +3,63 @@ import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
 import order from "../types/orderType";
 import ordersApi from '../api/ordersApi';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
-import Graph from './graph';
-import './style/ordersStyle.css'
-import { UserContext } from '../userContext';
-
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 200 },
-  { field: 'userName', headerName: 'User Name', width: 150 },
-  { field: 'status', headerName: 'Status', width: 150 },
-  { field: 'totalPrice', headerName: 'Total Price', width: 150, type: 'number' },
-  { field: 'orderTime', headerName: 'order time', width: 150, type:'string' },
-
-];
+import { useTheme } from '@mui/material';
+import { tokens } from '../theme/theme';
 
 const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<order | null>(null);
-  const [refresh,setRefresh]=useState(false);
-  const userContext = useContext(UserContext);
+  const [refresh, setRefresh] = useState(false);
 
-  
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const navigate = useNavigate()
+
+  const getStatusBackgroundColor = (status: string): string => {
+
+    switch (status) {
+      case 'Waiting':
+        return colors.yellow[100]
+      case 'Sent':
+        return colors.teal[400]
+
+      case 'Received':
+        return colors.blueAccent[500]
+
+      case 'Canceled':
+        return colors.redAccent[500]
+
+      default:
+        return colors.grey[500]
+    }
+  }
+
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 200 },
+    { field: 'userName', headerName: 'User Name', width: 150 },
+    {
+      field: 'status', headerName: 'Order Status', width: 150, renderCell: (params) => (
+        <div
+          style={{
+            backgroundColor: getStatusBackgroundColor(params.value as string),
+            color: colors.primary[500],
+            padding: '8px',
+            borderRadius: '4px',
+            width: "100%"
+          }}
+        >
+          {params.value}
+        </div>
+      ),
+    },
+    { field: 'totalPrice', headerName: 'Total Price', width: 150, type: 'number' },
+    { field: 'orderTime', headerName: 'order time', width: 150, type: 'string' },
+
+  ];
 
   useEffect(() => {
     const fetchDataAndCheckAdmin = async () => {
@@ -40,45 +73,68 @@ const OrdersComponent = () => {
 
       setRows(formattedData);
 
-      if (!userContext?.userInfo) {
-        navigate('/oms/login');
+      const isAdmin = localStorage.getItem('admin');
+      if (!isAdmin) {
+        navigate('/login');
       }
     };
 
     fetchDataAndCheckAdmin();
-  }, [navigate, refresh, userContext?.userInfo]);
+  }, [navigate, refresh]);
 
-  function refreshFunc()
-  {
+  function refreshFunc() {
     setRefresh(!refresh);
   }
- 
 
-  const handleRowClick = (params: GridRowParams<order>) => {
-    const selectedRow = rows.find((row) => row._id === params.id);
-    setSelectedOrder(selectedRow!);
-  };
+const handleRowClick = (params: GridRowParams<order>) => {
+  const selectedRow = rows.find((row) => row._id === params.id);
+  setSelectedOrder(selectedRow!);
+};
 
-  return (
-    <div className='ordersGrid'>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          onRowClick={handleRowClick}
-          getRowId={(row) => row._id}
-          checkboxSelection
-          disableRowSelectionOnClick
-        />
-        <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
-          {selectedOrder && <OrderDetails selectedOrder={selectedOrder} close={() => setSelectedOrder(null)} Refresh={refreshFunc} />}
-        </Dialog>
-        <div className='ordersGraph'>
-          <Graph />
-        </div>
-      </Box>
-    </div>
-  );
+return (
+  <div>
+    <Box m="0px 0 0 0"
+      height="75vh"
+      sx={{
+        "& .MuiDataGrid-root": {
+          border: "none",
+        },
+        "& .MuiDataGrid-cell": {
+          borderBottom: "none",
+        },
+        "& .name-column--cell": {
+          color: colors.greenAccent[300],
+        },
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: colors.blueAccent[700],
+          borderBottom: "none",
+        },
+        "& .MuiDataGrid-virtualScroller": {
+          backgroundColor: colors.primary[400],
+        },
+        "& .MuiDataGrid-footerContainer": {
+          borderTop: "none",
+          backgroundColor: colors.blueAccent[700],
+        },
+        "& .MuiCheckbox-root": {
+          color: `${colors.greenAccent[200]} !important`,
+        },
+      }}
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        onRowClick={handleRowClick}
+        getRowId={(row) => row._id}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+      <Dialog open={!!selectedOrder} onClose={() => setSelectedOrder(null)}>
+        {selectedOrder && <OrderDetails selectedOrder={selectedOrder} close={() => setSelectedOrder(null)} Refresh={refreshFunc} />}
+      </Dialog>
+    </Box>
+  </div>
+);
 };
 
 export default OrdersComponent;
