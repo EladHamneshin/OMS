@@ -10,6 +10,8 @@ pipeline {
             steps {
                 script {
                     dir('server') {
+                         // Create the network if it doesn't exist
+                        sh 'docker network ls | grep -q app-network || docker network create app-network'
 
                         // Build the Docker image for Express.js server
                         sh 'docker build -t oms-end-test .'
