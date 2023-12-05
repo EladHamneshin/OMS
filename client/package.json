@@ -15,12 +15,13 @@
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.2",
         "@mui/icons-material": "^5.14.18",
-        "@mui/material": "^5.14.18",
+        "@mui/material": "^5.14.19",
         "@mui/x-charts": "^6.18.2",
         "@mui/x-data-grid": "^6.18.1",
         "@nivo/bar": "^0.84.0",
         "@nivo/geo": "^0.84.0",
-        "@nivo/line": "^0.84.0",
+        "@nivo/line": "^0.84.0",,
+        "enzyme": "^3.11.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-pro-sidebar": "^1.1.0-alpha.1",
@@ -44,6 +45,7 @@
         "jsdom": "^22.1.0",
         "msw": "^2.0.9",
         "typescript": "^5.0.2",
+
         "vite": "^4.4.5",
         "vitest": "^0.34.6"
     }

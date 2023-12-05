@@ -1,9 +1,10 @@
 import OrderInterface from "../types/orderType";
 
+const URL = import.meta.env.VITE_API_URI
 
 async function getAllOrders() {
     try {
-        const response = await fetch("/api/orders");
+        const response = await fetch(`${URL}/orders`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -16,7 +17,7 @@ async function getAllOrders() {
 
 async function getOrdersById(id: string) {
     try {
-        const response = await fetch(`/api/orders/${id}`);
+        const response = await fetch(`${URL}/orders/${id}`);
         if (!response.ok) {
             throw new Error(await response.text());
         }
@@ -45,23 +46,33 @@ async function getOrdersById(id: string) {
 //     }
 // }
 export async function updateOrder(id: string, updatedOrders: Partial<OrderInterface>) {
-    try {
-        console.log("api", id, updatedOrders);
 
-        const response = await fetch(`/api/orders/${id}`, {
+    try {        
+        const token = localStorage.getItem('omsToken');
+
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+        };
+
+        if (token !== null) {
+            headers['token'] = token;
+        }        
+        
+        const response = await fetch(`${URL}/orders/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedOrders)
+            headers: headers,
+            body: JSON.stringify(updatedOrders),
         });
+
         if (!response.ok) {
             throw new Error('Failed to update order');
         }
+
         return await response.json();
     } catch (error) {
         console.error('Updating order failed', error);
         throw error;
     }
 }
+
 export default { getAllOrders, getOrdersById }

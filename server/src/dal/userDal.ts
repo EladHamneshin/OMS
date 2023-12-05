@@ -6,13 +6,20 @@ import pkg, { QueryResult } from 'pg';
 const { Pool } = pkg;
 
 const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
-    const pool = new Pool({ connectionString: process.env.PG_URI });
-
-    const res = await pool.connect()
-    const data = await res.query(query, values).catch(err => console.log(err));
-    res.release()
-    return data
+    const pool = new Pool({connectionString: process.env.PG_URI});
+    const res = await pool.connect();
+    try {
+        const data = await res.query(query, values);
+        return data;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        res.release();
+    }
 }
+
+
 
 const addUser = async (user: AdminUser) => {
 
@@ -74,11 +81,10 @@ const deleteUser = async (id: string) => {
     if (result.rowCount! > 0) {
         return `User with user_id ${id} has been deleted successfully.`;
 
+
     } else {
         throw new RequestError(`User with user_id ${id} not found.`, STATUS_CODES.BAD_REQUEST);
     }
-}
-
 
 
 const getAllDal = async () => {

@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
         },
     },
     {
-        strict: false,
+        strict: true,
     }
 );
 

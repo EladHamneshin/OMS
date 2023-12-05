@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
 import order from "../types/orderType";
 import ordersApi from '../api/ordersApi';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import OrderDetails from '../components/OrderDetails';
 import { useTheme } from '@mui/material';
@@ -12,10 +12,10 @@ import { tokens } from '../theme/theme';
 const OrdersComponent = () => {
   const [rows, setRows] = useState<order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<order | null>(null);
-  const [refresh, setRefresh] = useState(false);
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [refresh,setRefresh]=useState(false);
+  const userContext = useContext(UserContext);
 
   const navigate = useNavigate()
 
@@ -72,14 +72,13 @@ const OrdersComponent = () => {
 
       setRows(formattedData);
 
-      const isAdmin = localStorage.getItem('admin');
-      if (!isAdmin) {
-        navigate('/login');
+      if (!userContext?.userInfo) {
+        navigate('/oms/login');
       }
     };
 
     fetchDataAndCheckAdmin();
-  }, [navigate, refresh]);
+  }, [navigate, refresh, userContext?.userInfo]);
 
   function refreshFunc() {
     setRefresh(!refresh);
@@ -134,6 +133,6 @@ return (
     </Box>
   </div>
 );
-};
+
 
 export default OrdersComponent;

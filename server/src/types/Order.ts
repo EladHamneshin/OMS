@@ -28,7 +28,7 @@ export const OrderEnum = {
     Express: 'Express',
     Regular: 'Regular',
     SelfCollection: 'SelfCollection'
-} as const;
+};
 
 export type OrderEnum = keyof typeof OrderEnum;
 
