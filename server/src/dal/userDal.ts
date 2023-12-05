@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import pool from "../configs/connectDbAdmin.js"
 config();
 
+
 const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => { 
     const res = await pool.connect();
     try {
