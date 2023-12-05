@@ -2,9 +2,8 @@ import { AdminUser } from "../types/admin.js";
 import bcrypt from 'bcrypt';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
-import pkg from 'pg';
+import pkg, { QueryResult } from 'pg';
 const { Pool } = pkg;
-
 
 const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
     const pool = new Pool({connectionString: process.env.PG_URI});
@@ -61,6 +60,7 @@ const getUserByEmail = async (email: string) => {
     return result.rows;
 };
 
+
 const validatePassword = async (password: string, hashedPassword: string) => {
 
     const bcryptPassword = await bcrypt.compare(password, hashedPassword);
@@ -73,22 +73,23 @@ const validatePassword = async (password: string, hashedPassword: string) => {
 
 
 const deleteUser = async (id: string) => {
-    const userExistsQuery = 'SELECT * FROM admin_users WHERE user_id = $1';
-    const existingUser = await sendQueryToDatabase(userExistsQuery, [id]);
-
-    if (existingUser.rows.length === 0) {
-        throw new RequestError("User not found", STATUS_CODES.NOT_FOUND);
+    const query = `DELETE FROM your_table_name WHERE user_id = $1 RETURNING user_id'`;
+    const result: QueryResult = await sendQueryToDatabase(query, [id]);
+    if (!result) {
+        throw new RequestError("Error while getting all users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
-    const deleteQuery = 'DELETE FROM admin_users WHERE user_id = $1';
-    await sendQueryToDatabase(deleteQuery, [id]);
-    return `User with ID ${id} deleted successfully.`;
-}
+    if (result.rowCount! > 0) {
+        return `User with user_id ${id} has been deleted successfully.`;
 
+
+    } else {
+        throw new RequestError(`User with user_id ${id} not found.`, STATUS_CODES.BAD_REQUEST);
+    }
 
 
 const getAllDal = async () => {
     const query = `SELECT * FROM admin_users`
-    const result = await sendQueryToDatabase(query)
+    const result = await sendQueryToDatabase(query, [])
     if (!result) {
         throw new RequestError("Error while getting users:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }

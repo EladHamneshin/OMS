@@ -11,9 +11,8 @@ userRouter.post("/login", userController.loginController);
 
 userRouter.post("/logout",userController.logoutController)
 
-userRouter.get("/",userController.getAllUsers)
+userRouter.get("/",userController.allUsers)
 
 userRouter.delete("/:id",autoToken,userController.deleteUser)
-
 
 export default userRouter;

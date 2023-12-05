@@ -25,13 +25,20 @@ export const countCountriesInOrders = (orders: OrderInterface[])
         value,
     }));
 
-    console.log(result);
-
-
     return result;
 }
 
 export const getCountryIsoCode = (countryName: string): string | undefined => {
-    const country = isoCountriesCodes.find((c) => c.name === countryName)
+
+    const country = isoCountriesCodes.find((c) => capitalizeWords(c.name) === capitalizeWords(countryName))
     return country ? country.code : undefined
+}
+
+const capitalizeWords = (sentence: string): string => {
+    const words: string[] = sentence.split(' ');
+    const capitalizedWords: string[] = words.map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+    const result: string = capitalizedWords.join(' ');
+    return result;
 }

@@ -4,7 +4,6 @@ const URL = import.meta.env.VITE_API_URI
 
 async function getAllOrders() {
     try {
-
         const response = await fetch(`${URL}/orders`);
         if (!response.ok) {
             throw new Error(await response.text());
@@ -47,6 +46,7 @@ async function getOrdersById(id: string) {
 //     }
 // }
 export async function updateOrder(id: string, updatedOrders: Partial<OrderInterface>) {
+
     try {        
         const token = localStorage.getItem('omsToken');
 

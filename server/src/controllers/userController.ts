@@ -57,19 +57,20 @@ const logoutController = async (req: Request, res: Response) => {
     }
 };
 
-const getAllUsers = async (req: Request, res: Response) =>{
-    try{
-        const users = await userService.allUsers()
-        res.status(200).json({ message: 'gating all users successful',users });
-    }catch(error){
-        console.error('gating all users failed:', error);
-        res.status(500).json({ error: 'Internal server error . controller get all' });
+const allUsers = asyncHandler(async (req: Request, res: Response) => {
+
+    const users = await userService.allUsers()
+    if (!users) {
+        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+
     }
+    res.status(STATUS_CODES.OK).json({ message: 'gating all users successful',users })
 }
+)
 
 const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id
-    if (!req.isAdmin){
+    if (!req.isAdmin) {
         throw new RequestError("Only admin can delete", STATUS_CODES.BAD_REQUEST)
     }
     const response = await userService.deleteUser(id)
@@ -79,12 +80,11 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     res.status(STATUS_CODES.OK).json(response)
 })
 
-
 export const userController = {
     registerUser,
     loginController,
     logoutController,
-    getAllUsers,
+    allUsers,
     deleteUser
 }
 
