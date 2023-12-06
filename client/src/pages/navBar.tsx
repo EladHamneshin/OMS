@@ -2,7 +2,7 @@ import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, ExitToApp, Person, PersonAdd } from '@mui/icons-material';
+import { Dashboard, ExitToApp, Person, PersonAdd } from '@mui/icons-material';
 import './style/navBarStyle.css';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useContext } from 'react';
@@ -25,10 +25,10 @@ export default function NavBar() {
                             key="orders"
                             className='button'
                             component={Link}
-                            to="/oms/orders"
+                            to="/oms/dashboard"
                             label="Orders"
                             value="orders"
-                            icon={<ShoppingCart />}
+                            icon={<Dashboard  />}
                         />,
                         <BottomNavigationAction
                             key="users"

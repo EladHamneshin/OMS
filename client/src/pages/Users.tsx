@@ -1,10 +1,13 @@
-import  { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../userContext';
 import { deleteUsers, getAllUsers } from '../api/usersAPI';
+import { Box, useTheme } from '@mui/material';
+import { tokens } from '../theme/theme';
+import TabelBox from '../components/tabelBox';
 
 function Users() {
   const navigate = useNavigate();
@@ -41,18 +44,18 @@ function Users() {
     { field: 'is_admin', headerName: 'Admin', width: 80 },
     ...(userContext?.userInfo?.is_admin
       ? [
-          {
-            field: 'delete',
-            headerName: 'Delete',
-            width: 100,
-            renderCell: (params: GridRenderCellParams) => (
-              <DeleteIcon
-                onClick={() => handleDeleteUser(params.row.user_id)}
-                style={{ cursor: 'pointer' }}
-              />
-            ),
-          },
-        ]
+        {
+          field: 'delete',
+          headerName: 'Delete',
+          width: 100,
+          renderCell: (params: GridRenderCellParams) => (
+            <DeleteIcon
+              onClick={() => handleDeleteUser(params.row.user_id)}
+              style={{ cursor: 'pointer' }}
+            />
+          ),
+        },
+      ]
       : []),
   ];
 
@@ -77,7 +80,9 @@ function Users() {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} checkboxSelection getRowId={(row) => row.user_id} />
+      <TabelBox >
+        <DataGrid rows={rows} columns={columns} checkboxSelection getRowId={(row) => row.user_id} />
+      </TabelBox>
     </div>
   );
 }

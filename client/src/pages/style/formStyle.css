@@ -8,14 +8,9 @@
 .form2 {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 15px;
-<<<<<<< HEAD
-    padding: 0 20px 30px 20px;
-    margin: -25px 0 30px 0;
-=======
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 25px;
     margin-top: -25px;
     margin-bottom: 30px;
->>>>>>> dev
 }
