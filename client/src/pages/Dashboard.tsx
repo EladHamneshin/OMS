@@ -189,7 +189,7 @@ const Dashboard = () => {
             p: "0px"
           }}
         >
-          <Orders />
+          <Orders isDashboard={true} />
         </Box>
 
         {/* ROW 3 */}
@@ -249,7 +249,7 @@ const Dashboard = () => {
         >
 
           <Box height="250px" width="100%" mt="20px" padding="50px">
-            <Graphs />
+            <Graphs isDashboard={true} />
           </Box>
         </Box>
         <Box

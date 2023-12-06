@@ -28,7 +28,7 @@ function App() {
           <Route path="/oms/logout" element={<Logout/>}/>
           <Route path="/oms/graph" element={<Graph/>}/>
           <Route path="/oms/users" element={<Users/>}/>
-          <Route path="/oms/dashbaord" element={<Dashboard/>}/>
+          <Route path="/oms/Dashboard" element={<Dashboard/>}/>
           <Route path="/oms/geography" element={<Geography/>}/>
           <Route path={'*'} element={<h1>404 Not Found</h1>} />
         </Routes>
