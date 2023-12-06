@@ -1,5 +1,6 @@
 import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material/styles";
+import { Theme, createTheme } from "@mui/material/styles";
+import React from "react";
 
 // color design tokens export
 export const tokens = (mode: any) => ({
@@ -77,26 +78,28 @@ export const tokens = (mode: any) => ({
         A700: "#00bfa5",
       },
       deepPurple: {
-        50: "#ede7f6",
-        100: "#d1c4e9",
-        200: "#b39ddb",
-        300: "#4db6ac",
-        400: "#9575cd",
-        500: "#673ab7",
-        600: "#5e35b1",
-        700: "#512da8",
-        800: "#4527a0",
-        900: "#311b92",
-        A100: "#b388ff",
-        A200: "#7c4dff",
-        A400: "#651fff",
-        A700: "#6200ea",
+        700: "#b388ff",
+        400: "#7c4dff",
+        200: "#651fff",
+        100: "#6200ea",
       },
       yellow: {
         100: "#ffff8d",
         200: "#ffff00",
         400: "#ffea00",
         700: "#ffd600",
+      },
+      lightBlue :{
+        100: "#0091ea",
+        200: "#00b0ff",
+        400: "#40c4ff",
+        700: "#80d8ff",
+      },
+      green :{
+        100: "#00c853",
+        200: "#00e676",
+        400: "#69f0ae",
+        700: "#b9f6ca",
       }
 
     }
@@ -173,26 +176,28 @@ export const tokens = (mode: any) => ({
         A100: "#00bfa5",
       },
       deepPurple: {
-        900: "#ede7f6",
-        800: "#d1c4e9",
-        700: "#b39ddb",
-        600: "#4db6ac",
-        500: "#9575cd",
-        400: "#673ab7",
-        300: "#5e35b1",
-        200: "#512da8",
-        100: "#4527a0",
-        50: "#311b92",
-        A700: "#b388ff",
-        A400: "#7c4dff",
-        A200: "#651fff",
-        A100: "#6200ea",
+        100: "#b388ff",
+        200: "#7c4dff",
+        400: "#651fff",
+        700: "#6200ea",
       },
       yellow: {
         700: "#ffff8d",
         400: "#ffff00",
         200: "#ffea00",
         100: "#ffd600",
+      },
+      lightBlue :{
+        700: "#0091ea",
+        400: "#00b0ff",
+        200: "#40c4ff",
+        100: "#80d8ff",
+      },
+      green :{
+        700: "#00c853",
+        400: "#00e676",
+        200: "#69f0ae",
+        100: "#b9f6ca",
       }
     }),
 });
@@ -271,11 +276,11 @@ export const themeSettings = (mode: any) => {
 };
 
 // context for color mode
-export const ColorModeContext = createContext({
+export const ColorModeContext = React.createContext<{ toggleColorMode: () => void } | undefined>({
   toggleColorMode: () => { },
 });
 
-export const useMode = () => {
+export const useMode = ():[Theme, { toggleColorMode: () => void }] => {
   const [mode, setMode] = useState("dark");
 
   const colorMode = useMemo(

@@ -16,7 +16,7 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ progress, size = "40" }
             sx={{
                 background: `radial-gradient(${colors.primary[400]} 55%, transparent 60%),
             conic-gradient(transparent 0deg ${angle}deg, ${colors.deepPurple[200]} ${angle}deg 360deg),
-            ${colors.teal[400]}`,
+            ${colors.green[200]}`,
                 borderRadius: "50%",
                 width: `${size}px`,
                 height: `${size}px`,
