@@ -18,7 +18,6 @@ const app = express();
 
 dotenv.config();
 
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Expose-Headers', 'Authorization');
     next();
@@ -40,7 +39,7 @@ const port = process.env.PORT || 3000;
 
 if(process.env.NODE_ENV !== "test"){
 app.listen(port, async () => {
-  const a = new orderModel()
+  const a = new orderModel();
   await connectToDatabase();
   await connectToPg();
   console.log(`Server is running at port ${port}`);

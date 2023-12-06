@@ -85,7 +85,7 @@ export default function SignIn() {
                             <Button
                                 variant="contained"
                                 fullWidth
-                                onClick={() => navigate('/orders')}
+                                onClick={() => navigate('oms/orders')}
                             >
                                 Go to Orders
                             </Button>
@@ -147,7 +147,7 @@ export default function SignIn() {
                             <Grid container>
                                 <Grid item>
                                     <Link
-                                        to="/register"
+                                        to="oms/register"
                                         style={{ textDecoration: 'none', color: 'inherit' }}
                                     >
                                         {"Don't have an account? register"}
