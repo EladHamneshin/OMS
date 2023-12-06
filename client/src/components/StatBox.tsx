@@ -16,14 +16,14 @@ const StatBox: React.FC<StatBoxProps> = ({ title, subtitle, icon, progress, incr
     const colors = tokens(theme.palette.mode);
 
     return (
-        <Box width="100%" m="0 10px">
+        <Box width="100%" m=" 10%">
             <Box display="flex" justifyContent="space-between">
                 <Box>
                     {icon}
                     <Typography
-                        variant="h4"
+                        variant="h3"
                         fontWeight="bold"
-                        sx={{ color: colors.grey[100] }}
+                        sx={{ color: colors.lightBlue[700] }}
                     >
                         {title}
                     </Typography>
@@ -33,13 +33,16 @@ const StatBox: React.FC<StatBoxProps> = ({ title, subtitle, icon, progress, incr
                 </Box>
             </Box>
             <Box display="flex" justifyContent="space-between" mt="2px">
-                <Typography variant="h6" sx={{ color: colors.teal[400] }}>
+                <Typography
+                variant="h5"
+                sx={{ color: colors.green[200] }}>
                     {subtitle}
                 </Typography>
                 <Typography
-                    variant="h6"
+                    variant="h4"
+                    fontWeight="bold"
                     fontStyle="italic"
-                    sx={{ color: colors.deepPurple[200] }}
+                    sx={{ color: colors.lightBlue[700] }}
                 >
                     {`${Number(parseFloat(increase).toFixed(2)).toString()}%`}
                 </Typography>

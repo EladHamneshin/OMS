@@ -23,12 +23,12 @@ const OrdersComponent = ({ isDashboard = false }) => {
 
     switch (status) {
       case 'Waiting':
-        return colors.yellow[100]
+        return colors.green[200]
       case 'Sent':
-        return colors.teal[400]
+        return colors.lightBlue[400]
 
       case 'Received':
-        return colors.blueAccent[500]
+        return colors.deepPurple[400]
 
       case 'Canceled':
         return colors.redAccent[500]
@@ -47,6 +47,7 @@ const OrdersComponent = ({ isDashboard = false }) => {
           style={{
             backgroundColor: getStatusBackgroundColor(params.value as string),
             color: colors.primary[500],
+            fontWeight: "bold",
             padding: '8px',
             borderRadius: '4px',
             width: "100%"

@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, CssBaseline, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme/theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import Header from "../components/Header";
@@ -108,7 +108,7 @@ const Dashboard = () => {
             increase={calculatePercentage(+getSumOrders()!, +getSumOrders('status', 'notCanceled')!).toString()}
             icon={
               <ShoppingCart
-                sx={{ color: colors.teal[400], fontSize: "26px" }}
+                sx={{ color: colors.green[200], fontSize: "26px" }}
               />
             }
           />
@@ -129,7 +129,7 @@ const Dashboard = () => {
             increase={calculatePercentage(+getSumOrders()!, +getSumOrders('status', 'Waiting')!).toString()}
             icon={
               <HourglassTop
-                sx={{ color: colors.teal[400], fontSize: "26px" }}
+                sx={{ color: colors.green[200], fontSize: "26px" }}
               />
             }
           />
@@ -150,7 +150,7 @@ const Dashboard = () => {
             increase={calculatePercentage(+getSumOrders()!, +getSumOrders('status', 'Sent')!).toString()}
             icon={
               <LocalShipping
-                sx={{ color: colors.teal[400], fontSize: "26px" }}
+                sx={{ color: colors.green[200], fontSize: "26px" }}
               />
             }
           />
@@ -171,7 +171,7 @@ const Dashboard = () => {
             increase={calculatePercentage(+getSumOrders()!, +getSumOrders('status', 'Received')!).toString()}
             icon={
               <Redeem
-                sx={{ color: colors.teal[400], fontSize: "26px" }}
+                sx={{ color: colors.green[200], fontSize: "26px" }}
               />
             }
           />
@@ -206,9 +206,14 @@ const Dashboard = () => {
             padding: "30px 30px 30px 30px"
           }}
         >
-          <Typography variant="h5" fontWeight="600" sx={{ mt: "10px", mb: "25px" }}>
+          <Typography
+            variant="h4"
+            fontWeight="600"
+            color={colors.grey[300]}
+            sx={{ mt: "10px", mb: "25px" }}>
             Products details
           </Typography>
+          <CssBaseline/>
           <Box
             display="flex"
             flexDirection="column"
@@ -216,18 +221,18 @@ const Dashboard = () => {
             justifyItems='center'
             m="2px"
           >
-            <Typography>Total products:</Typography>
+            <Typography color={colors.grey[300]}>Total products:</Typography>
             <Typography
-              variant="h5"
-              color={colors.teal[400]}
+              variant="h4"
+              color={colors.green[200]}
               sx={{ mb: "10px", mt: "5px" }}
             >
               {`${formatNumberWithCommas(+sumProducts()!)}`}
             </Typography>
-            <Typography>Sum products price:</Typography>
+            <Typography color={colors.grey[300]}>Sum products price:</Typography>
             <Typography
-              variant="h5"
-              color={colors.teal[400]}
+              variant="h4"
+              color={colors.green[200]}
               sx={{ mb: "10px", mt: "5px" }}
             >
               {`${formatNumberWithCommas(+sumProductsPrice()!)} $`}
