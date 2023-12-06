@@ -6,15 +6,15 @@ import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
 
 
-const registerUser = asyncHandler(async (req: Request, res: Response) => {
-    const reg = await userService.register(req.body)
-    if (!reg) {
-        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
-    }
-    res.status(STATUS_CODES.OK).json(reg)
-})
+// const registerUser = asyncHandler(async (req: Request, res: Response) => {
+//     const reg = await userService.register(req.body)
+//     if (!reg) {
+//         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+//     }
+//     res.status(STATUS_CODES.OK).json(reg)
+// })
 
-const validateLogin = async (email: string, password: string) => {
+export const validateLogin = async (email: string, password: string) => {
     const user = await userService.getUserByEmailService(email);
 
     if (!user) {
@@ -29,43 +29,33 @@ const validateLogin = async (email: string, password: string) => {
     return user;
 }
 
-const loginController = asyncHandler(async (req: Request, res: Response) => {    
-    const { email, password } = req.body;
-    //   validate
-    const user = await validateLogin(email, password);
-    if (!user) {
-        throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
-    }
-    //   create token
-    const userEmail = req.body.email;
-    const userAdmin = user[0].is_admin
+// const loginController = asyncHandler(async (req: Request, res: Response) => {    
+//     const { email, password } = req.body;
+//     //   validate
+//     const user = await validateLogin(email, password);
+//     if (!user) {
+//         throw new RequestError("An error occurred", STATUS_CODES.INTERNAL_SERVER_ERROR)
+//     }
+//     //   create token
+//     const userEmail = req.body.email;
+//     const userAdmin = user[0].is_admin
 
-    const token = createToken(userEmail, userAdmin);
-    res.setHeader('Authorization',token);
+//     const token = createToken(userEmail, userAdmin);
+//     res.setHeader('Authorization',token);
     
-    res.status(STATUS_CODES.OK).json({ user, message: "Login successful" });
-})
+//     res.status(STATUS_CODES.OK).json({ user, message: "Login successful" });
+// })
 
 
-const logoutController = async (req: Request, res: Response) => {
-    try {
-        res.clearCookie('token');
-        res.status(200).json({ message: 'Logout successful' });
-    } catch (error) {
-        console.error('Logout failed:', error);
-        res.status(500).json({ error: 'Internal server error . controller logout' });
-    }
-};
-
-const getAllUsers = async (req: Request, res: Response) =>{
-    try{
-        const users = await userService.allUsers()
-        res.status(200).json({ message: 'gating all users successful',users });
-    }catch(error){
-        console.error('gating all users failed:', error);
-        res.status(500).json({ error: 'Internal server error . controller get all' });
-    }
-}
+// const logoutController = async (req: Request, res: Response) => {
+//     try {
+//         res.clearCookie('token');
+//         res.status(200).json({ message: 'Logout successful' });
+//     } catch (error) {
+//         console.error('Logout failed:', error);
+//         res.status(500).json({ error: 'Internal server error . controller logout' });
+//     }
+// };
 
 const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id
@@ -81,10 +71,9 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
 
 
 export const userController = {
-    registerUser,
-    loginController,
-    logoutController,
-    getAllUsers,
+    // registerUser,
+    // loginController,
+    // logoutController,
     deleteUser
 }
 

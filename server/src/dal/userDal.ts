@@ -3,10 +3,11 @@ import bcrypt from 'bcrypt';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
 import pkg from 'pg';
+import { GraphQLError } from "graphql";
 const { Pool } = pkg;
 
 
-const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
+export const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
     const pool = new Pool({connectionString: process.env.PG_URI});
     const res = await pool.connect();
     try {
@@ -25,12 +26,12 @@ const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> 
 const addUser = async (user: AdminUser) => {
 
     // Check if the user already exists
-    const userExistsQuery = 'SELECT * FROM admin_users WHERE email = $1';
-    const existingUser = await sendQueryToDatabase(userExistsQuery, [user.email]);
+    // const userExistsQuery = 'SELECT * FROM admin_users WHERE email = $1';
+    // const existingUser = await sendQueryToDatabase(userExistsQuery, [user.email]);
 
-    if (existingUser.rows.length > 0) {
-        throw new RequestError("User already exists", STATUS_CODES.CONFLICT);
-    }
+    // if (existingUser.rows.length > 0) {
+    //     throw new GraphQLError("User already exists", {extensions:{http:{status:5}}});
+    // }
 
     const values = [
         user.first_name,

@@ -3,7 +3,6 @@ import STATUS_CODES from "../utils/StatusCodes.js";
 import { validate } from '../utils/validate.js';
 import { AdminUser } from '../types/admin.js';
 import { userDal } from '../dal/userDal.js'
-import { log } from "console";
 
 const register = async (userInput: AdminUser) => {
 
