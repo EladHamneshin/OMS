@@ -247,4 +247,5 @@ export const countries = [
     "Western Sahara",
     "Yemen",
     "Zambia",
-    "Zimba    "]
+    "Zimba"
+]

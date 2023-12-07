@@ -7,9 +7,14 @@ type HeaderProps = {
 }
 const Header = ({ title, subtitle }: HeaderProps) => {
     const theme = useTheme();
-    const colors = tokens(theme.palette.mode); 
+    const colors = tokens(theme.palette.mode);
+
     return (
-        <Box mb="30px">
+        <Box mb="30px" sx={{
+            backgroundColor: colors.primary[400],
+            p: "20px"
+        }}
+        >
             <Typography
                 variant="h2"
                 color={colors.green[200]}

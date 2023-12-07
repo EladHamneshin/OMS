@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { Box, Button, CssBaseline, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme/theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -19,6 +20,8 @@ import generatePDF from "../functions/generatePDF";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const navigate = useNavigate()
 
   const [data, setData] = useState<order[]>()
   const { setOrders } = useDataContext();
@@ -188,7 +191,7 @@ const Dashboard = () => {
           <Box
             sx={{
               gridColumn: "span 12",
-              gridRow: "span 2",
+              gridRow: "span 3",
               backgroundColor: colors.primary[400],
               overflow: "auto",
               m: "0px",
@@ -256,7 +259,7 @@ const Dashboard = () => {
               gridRow: "span 3",
               backgroundColor: colors.primary[400],
             }}
-
+            onClick={() => navigate("/oms/graph")}
           >
 
             <Box height="250px" width="100%" mt="20px" padding="50px">
@@ -287,7 +290,7 @@ const Dashboard = () => {
             <Box
               width="100%"
               height="250px"
-
+              onClick={() => navigate("/oms/geography")}
             >
               <GeographyChart isDashboard={true} />
             </Box>
