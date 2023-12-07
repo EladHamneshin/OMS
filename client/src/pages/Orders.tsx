@@ -46,7 +46,7 @@ const OrdersComponent = ({ isDashboard = false }) => {
         <div
           style={{
             backgroundColor: getStatusBackgroundColor(params.value as string),
-            color: colors.primary[100],
+            color: colors.primary[900],
             fontWeight: "bold",
             padding: '8px',
             borderRadius: '4px',

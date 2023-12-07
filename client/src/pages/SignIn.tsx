@@ -85,7 +85,7 @@ export default function SignIn() {
                             <Button
                                 variant="contained"
                                 fullWidth
-                                onClick={() => navigate('oms/orders')}
+                                onClick={() => navigate('oms/dashboard')}
                             >
                                 Go to Orders
                             </Button>
