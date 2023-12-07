@@ -20,9 +20,10 @@ import Graph from './pages/graph';
 function App() {
   const [theme, colorMode] = useMode();
   return (<DataProvider>
-    <BrowserRouter>
-      <ColorModeContext.Provider value={colorMode}>
+          <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
+    <BrowserRouter>
+
           <>
             <NavBar />
             <Routes>
@@ -39,9 +40,9 @@ function App() {
             </Routes>
             <Kidnapped />
           </>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
     </BrowserRouter>
+    </ThemeProvider>
+      </ColorModeContext.Provider>
   </DataProvider>
 
   );

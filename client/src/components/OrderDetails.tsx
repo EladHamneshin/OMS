@@ -1,5 +1,4 @@
 import * as React from 'react';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +18,12 @@ interface OrderDetailsProps {
   close: () => void;
 }
 
+// interface DetailsBoxProps {
+//   title: string;
+//   description: React.ReactNode;
+//   isCartItems?: boolean;
+// }
+
 const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, close }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState<OrderInterface>(selectedOrder);
@@ -26,7 +31,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
 
   useEffect(() => {
     if (isEditMode) {
@@ -64,7 +68,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
   };
 
   const handleAddressChange = (field: string, value: string) => {
-    
     setEditedOrder({
       ...editedOrder,
       shippingDetails: {
@@ -92,7 +95,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
       },
     }));
   };
-  
 
   const admin = localStorage.getItem('admin');
   const storedAdmin = JSON.parse(localStorage.getItem('admin')!);
@@ -110,16 +112,14 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
         <DetailsBox title='Status' description={isEditMode && modeShipping && (adminTrue || admin) ? (
           <select
             value={editedOrder.status}
-            onChange={handleStatusChange as unknown as OrderStatusEnum}>
+            onChange={(e) => handleStatusChange(e as React.ChangeEvent<{ value: OrderStatusEnum }>)}>
             <option value={OrderStatusEnum.Waiting}>Waiting</option>
             {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
             {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
           </select>
         ) : (
           selectedOrder?.status
-        )}>
-          
-        </DetailsBox>
+        )}></DetailsBox>
         <DetailsBox title='Total Price' description={selectedOrder?.totalPrice}></DetailsBox>
         <DetailsBox title='Shipping Address' description={isEditMode && modeShipping ? (
           <>
@@ -157,13 +157,13 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             />
           </>
         ) : (
-            <>
-              <DetailsBox title='Country' description={selectedOrder?.shippingDetails?.address?.country}></DetailsBox>
-              <DetailsBox title='City' description={selectedOrder?.shippingDetails?.address?.city}></DetailsBox>
-              <DetailsBox title='Street' description={selectedOrder?.shippingDetails?.address?.street}></DetailsBox>
-              <DetailsBox title='ZipCode' description={selectedOrder?.shippingDetails?.address?.zipCode}></DetailsBox>
-            </>
-          )}></DetailsBox>
+          <>
+            <DetailsBox title='Country' description={selectedOrder?.shippingDetails?.address?.country}></DetailsBox>
+            <DetailsBox title='City' description={selectedOrder?.shippingDetails?.address?.city}></DetailsBox>
+            <DetailsBox title='Street' description={selectedOrder?.shippingDetails?.address?.street}></DetailsBox>
+            <DetailsBox title='ZipCode' description={selectedOrder?.shippingDetails?.address?.zipCode}></DetailsBox>
+          </>
+        )}></DetailsBox>
         <DetailsBox title='Contact Number' description={selectedOrder?.shippingDetails.contactNumber}></DetailsBox>
         <DetailsBox title='Order Type' description={selectedOrder?.shippingDetails?.orderType}></DetailsBox>
         <DetailsBox title='User Name' description={selectedOrder?.userName}></DetailsBox>
@@ -173,7 +173,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             m="0px"
             sx={{
               p: "20px",
-              width:"100%"
+              width: "100%"
             }}
             key={index}>
             <DetailsBox title='Product ID' description={item.productId}></DetailsBox>
@@ -183,10 +183,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             <DetailsBox title='Quantity' description={item.quantity.toString()}></DetailsBox>
             <DetailsBox title='Discount' description={item.discount.toString()}></DetailsBox>
             <DetailsBox title=' Image URL' description={item.image.url}></DetailsBox>
-
-          </Box >
-        ))} isCartItems={true}>
-        </DetailsBox>
+          </Box>
+        ))} isCartItems={true}></DetailsBox>
         {isEditMode && (
           <>
             <Button sx={{ color: colors.lightBlue[700] }} onClick={handleSave}>Save</Button>

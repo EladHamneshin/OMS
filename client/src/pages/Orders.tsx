@@ -28,7 +28,7 @@ const OrdersComponent = ({ isDashboard = false }) => {
         return colors.lightBlue[400]
 
       case 'Received':
-        return colors.deepPurple[400]
+        return colors.deepPurple[100]
 
       case 'Canceled':
         return colors.redAccent[500]
@@ -46,7 +46,7 @@ const OrdersComponent = ({ isDashboard = false }) => {
         <div
           style={{
             backgroundColor: getStatusBackgroundColor(params.value as string),
-            color: colors.primary[500],
+            color: colors.primary[100],
             fontWeight: "bold",
             padding: '8px',
             borderRadius: '4px',

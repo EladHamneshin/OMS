@@ -57,12 +57,7 @@ export default function NavBar() {
                             className='button'
                             component={Link}
                             to="/oms/dashboard"
-                            label={<Typography
-                                sx={{
-                                    fontSize: "11px",
-                                    color: colors.grey[300]
-                                }}
-                            >Dashboard</Typography>}
+                            label="Dashboard"
                             value="dashboard"
                             icon={<Dashboard sx={{ color: colors.grey[100] }} />}
                         />,
