@@ -1,8 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { ColorModeContext, useMode } from "./theme/theme";
 import { ThemeProvider } from "@mui/material";
 import { DataProvider } from './components/DataContext'
-import UserContextProvider from './userContext';
 import './App.css';
 import SignIn from './pages/SignIn';
 import NavBar from './pages/navBar';
