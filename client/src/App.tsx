@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { ColorModeContext, useMode } from "./theme/theme";
 import { ThemeProvider } from "@mui/material";
 import { DataProvider } from './components/DataContext'
@@ -20,10 +20,9 @@ import Graph from './pages/graph';
 function App() {
   const [theme, colorMode] = useMode();
   return (<DataProvider>
-          <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
     <BrowserRouter>
-
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
           <>
             <NavBar />
             <Routes>
@@ -40,9 +39,9 @@ function App() {
             </Routes>
             <Kidnapped />
           </>
-    </BrowserRouter>
-    </ThemeProvider>
+        </ThemeProvider>
       </ColorModeContext.Provider>
+    </BrowserRouter>
   </DataProvider>
 
   );
