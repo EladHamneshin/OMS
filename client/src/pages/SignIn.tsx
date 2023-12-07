@@ -22,7 +22,7 @@ export default function SignIn() {
     React.useEffect(() => {
         if (userContext?.userInfo) {
             setTimeout(() => {
-                navigate('/oms/orders')
+                navigate('/oms/dashboard')
             }, 2000)
         }
     }, [userContext]);
@@ -43,7 +43,7 @@ export default function SignIn() {
                 if (user.email !== undefined && user.password !== undefined) {
                     await userContext?.loginUser(user.email, user.password);
                     toastSuccess('Successful login');
-                    navigate('/oms/orders');
+                    navigate('/oms/dashboard');
                 } else {
                     throw new Error('Email and password cannot be empty');
                 }
@@ -85,7 +85,7 @@ export default function SignIn() {
                             <Button
                                 variant="contained"
                                 fullWidth
-                                onClick={() => navigate('oms/orders')}
+                                onClick={() => navigate('oms/dashboard')}
                             >
                                 Go to Orders
                             </Button>
