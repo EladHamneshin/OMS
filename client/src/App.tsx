@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ColorModeContext, useMode } from "./theme/theme";
 import { ThemeProvider } from "@mui/material";
 import { DataProvider } from './components/DataContext'
+import UserContextProvider from './userContext';
 import './App.css';
 import SignIn from './pages/SignIn';
 import NavBar from './pages/navBar';
@@ -19,30 +20,33 @@ import Graph from './pages/graph';
 
 function App() {
   const [theme, colorMode] = useMode();
-  return (<DataProvider>
-    <BrowserRouter>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <>
-            <NavBar />
-            <Routes>
-              <Route path="/oms" element={<Home />} />
-              <Route path="/oms/login" element={<SignIn />} />
-              <Route path="/oms/orders" element={<OrdersComponent />} />
-              <Route path="/oms/register" element={<Register />} />
-              <Route path="/oms/logout" element={<Logout />} />
-              <Route path="/oms/graph" element={<Graph />} />
-              <Route path="/oms/users" element={<Users />} />
-              <Route path="/oms/Dashboard" element={<Dashboard />} />
-              <Route path="/oms/geography" element={<Geography />} />
-              <Route path={'*'} element={<h1>404 Not Found</h1>} />
-            </Routes>
-            <Kidnapped />
-          </>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </BrowserRouter>
-  </DataProvider>
+  return (
+   
+      <UserContextProvider>
+        
+          <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+              <>
+                <NavBar />
+                <DataProvider>
+                <Routes>
+                  <Route path="/oms" element={<Home />} />
+                  <Route path="/oms/login" element={<SignIn />} />
+                  <Route path="/oms/orders" element={<OrdersComponent />} />
+                  <Route path="/oms/register" element={<Register />} />
+                  <Route path="/oms/logout" element={<Logout />} />
+                  <Route path="/oms/graph" element={<Graph />} />
+                  <Route path="/oms/users" element={<Users />} />
+                  <Route path="/oms/Dashboard" element={<Dashboard />} />
+                  <Route path="/oms/geography" element={<Geography />} />
+                  <Route path={'*'} element={<h1>404 Not Found</h1>} />
+                </Routes> 
+                </DataProvider>
+                <Kidnapped />
+              </>
+            </ThemeProvider>
+          </ColorModeContext.Provider>
+      </UserContextProvider>
 
   );
 }

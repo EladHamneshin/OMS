@@ -5,10 +5,11 @@ import { tokens } from '../theme/theme';
 interface DetailsBoxProps {
     title: string;
     description: ReactNode;
+    children?: ReactNode
     isCartItems?: boolean;
 }
 
-const DetailsBox = ({ title, description, isCartItems = false }: DetailsBoxProps) => {
+const DetailsBox = ({ title, description, children, isCartItems = false }: DetailsBoxProps) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -20,7 +21,7 @@ const DetailsBox = ({ title, description, isCartItems = false }: DetailsBoxProps
             alignItems="flex-start"
             m="1px"
             sx={{
-                minWidth:"1200em",
+                minWidth: "1200em",
                 backgroundColor: isCartItems ? colors.lightBlue[700][700] : colors.primary[400],
                 p: "10px"
             }}
@@ -31,6 +32,7 @@ const DetailsBox = ({ title, description, isCartItems = false }: DetailsBoxProps
             <Typography variant="h5" color={colors.grey[100]} sx={{ wordWrap: 'break-word', maxWidth: '180px' }}>
                 {description}
             </Typography>
+            {children}
         </Stack>
     );
 };

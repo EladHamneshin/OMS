@@ -51,21 +51,22 @@ export default function NavBar() {
                     [
                         <BottomNavigationAction
                             sx={{
-                                color: colors.grey[100]
+                                color: colors.grey[100],
+
                             }}
                             key="dashboard"
                             className='button'
                             component={Link}
                             to="/oms/dashboard"
+                            value="dashboard"
                             label={<Typography
                                 sx={{
                                     fontSize: "11px",
                                     color: colors.grey[300]
                                 }}
                             >Dashboard</Typography>}
-                            value="dashboard"
                             icon={<Dashboard sx={{ color: colors.grey[100] }} />}
-                        />,
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="users"
                             className='button'
@@ -79,7 +80,7 @@ export default function NavBar() {
                             >Users</Typography>}
                             value="users"
                             icon={<PeopleAltIcon sx={{ color: colors.grey[100] }} />}
-                        />,
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="logout"
                             className='button'
@@ -93,7 +94,7 @@ export default function NavBar() {
                             >Logout</Typography>}
                             value="logout"
                             icon={<ExitToApp sx={{ color: colors.grey[100] }} />}
-                        />,
+                        ></BottomNavigationAction>,
                     ]
                 ) : (
                     [
@@ -110,7 +111,7 @@ export default function NavBar() {
                             >Sign In</Typography>}
                             value="sign in"
                             icon={<Person sx={{ color: colors.grey[100] }} />}
-                        />,
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="signUp"
                             className='button'
@@ -124,7 +125,7 @@ export default function NavBar() {
                             >Sign Up</Typography>}
                             value="sign up"
                             icon={<PersonAdd sx={{ color: colors.grey[100] }} />}
-                        />,
+                        ></BottomNavigationAction>,
                     ]
                 )}
             </BottomNavigation>

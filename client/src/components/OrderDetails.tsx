@@ -1,5 +1,4 @@
 import * as React from 'react';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
@@ -56,7 +55,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
     }
   };
 
-  const handleStatusChange = (e: React.ChangeEvent<{ value: OrderStatusEnum }>) => {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEditedOrder({
       ...editedOrder,
       status: e.target.value as OrderStatusEnum,
@@ -110,7 +109,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
         <DetailsBox title='Status' description={isEditMode && modeShipping && (adminTrue || admin) ? (
           <select
             value={editedOrder.status}
-            onChange={handleStatusChange as unknown as OrderStatusEnum}>
+            onChange={handleStatusChange}>
             <option value={OrderStatusEnum.Waiting}>Waiting</option>
             {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
             {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
