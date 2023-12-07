@@ -3,7 +3,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme/theme";
 import ProgressCircle from "./ProgressCircle";
 
-interface StatBoxProps {
+export interface StatBoxProps {
     title: string;
     subtitle: string;
     icon: React.ReactNode;
