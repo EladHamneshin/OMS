@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ColorModeContext, useMode } from "./theme/theme";
 import { ThemeProvider } from "@mui/material";
+import { DataProvider } from './components/DataContext'
 import './App.css';
 import SignIn from './pages/SignIn';
 import NavBar from './pages/navBar';
@@ -18,7 +19,7 @@ import Graph from './pages/graph';
 
 function App() {
   const [theme, colorMode] = useMode();
-  return (
+  return (<DataProvider>
     <BrowserRouter>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
@@ -41,6 +42,7 @@ function App() {
         </ThemeProvider>
       </ColorModeContext.Provider>
     </BrowserRouter>
+  </DataProvider>
 
   );
 }

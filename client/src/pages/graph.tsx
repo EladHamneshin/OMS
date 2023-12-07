@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import ordersApi from '../api/ordersApi';
 import order from "../types/orderType";
 import './style/graphStyle.css'
+import { useTheme } from '@mui/material';
+import { tokens } from '../theme/theme';
 
 
 // Define the enums
@@ -26,6 +28,10 @@ export const OrderEnum = {
 } as const;
 
 export default function Graph({ isDashboard = false }) {
+
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
     const [, setData] = useState<order[]>([]);
     const [allOrdersCounter, setAllOrdersCounter] = useState([
         {
@@ -132,7 +138,8 @@ export default function Graph({ isDashboard = false }) {
 
     return (
         <Box sx={{
-            width: '100vr',
+            width: '100vr', 
+            backgroundColor: isDashboard ? null : colors.grey[50],
             margin: isDashboard ? "0px" : "25px 20px 40px 20px",
             borderRadius: isDashboard ? "0px" : "15px",
             padding: isDashboard ? "0px" : "30px",
@@ -142,15 +149,18 @@ export default function Graph({ isDashboard = false }) {
                 height={300}
                 series={allOrdersCounter
                     .slice(0, seriesNb)
-                    .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))}
+                    .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))
+                }
             />
-            <Typography id="input-series-number" gutterBottom>
+            <Typography id="input-series-number" gutterBottom
+                sx={{ color: colors.grey[100] }}>
                 Number of statuses to show
             </Typography>
             <Slider
                 value={seriesNb}
                 onChange={handleSeriesNbChange}
                 valueLabelDisplay="auto"
+                sx={{ color: colors.lightBlue[200] }}
                 min={1}
                 max={Object.keys(OrderStatusEnum).length}
                 aria-labelledby="input-series-number"

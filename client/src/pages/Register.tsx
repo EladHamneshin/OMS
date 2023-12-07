@@ -2,12 +2,12 @@ import React, { useState, FormEvent } from 'react';
 import { isValidEmail, isValidPassword } from '../utils/validationUtils';
 import { register } from '../api/usersAPI';
 import { toastError, toastSuccess } from '../utils/toastUtils';
-import { Container, Avatar, Box, Grid, TextField, Button, Link } from '@mui/material';
+import { Container, Avatar, Box, Grid, TextField, Button, Link, useTheme, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { AdminUser } from '../types/admin';
 import './style/formStyle.css'
+import { tokens } from '../theme/theme';
 
 
 const SignUp = () => {
@@ -22,6 +22,9 @@ const SignUp = () => {
         last_name: '',
     });
     const navigate = useNavigate();
+
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const handleEmailBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         if (!isValidEmail(event.target.value)) {
@@ -120,22 +123,26 @@ const SignUp = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <div className='form2'>
+            <div className='form2' color={colors.grey[100]}>
                 <Box
                     sx={{
                         marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'center',
+                        alignItems: 'center'
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ m: 1, backgroundColor: colors.greenAccent[300], color: colors.grey[900] }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{
+                        mt: 3,
+                    }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField sx={{
+                                    backgroundColor: isEmailError ? "white" : colors.greenAccent[300],
+                                }}
                                     onBlur={handleEmailBlur}
                                     onChange={handleEmailChange}
                                     required
@@ -143,13 +150,18 @@ const SignUp = () => {
                                     error={isEmailError}
                                     helperText={isEmailError ? 'Email must be a valid email address' : ''}
                                     id="email"
-                                    label="Email Address"
+                                    label={<Typography
+                                        color={colors.grey[900]}>
+                                        Email Address
+                                    </Typography>}
                                     name="email"
                                     autoComplete="email"
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField sx={{
+                                    backgroundColor: isPasswordError ? "white" : colors.greenAccent[300],
+                                }}
                                     onBlur={handlePasswordBlur}
                                     onChange={handlePasswordChange}
                                     required
@@ -161,18 +173,26 @@ const SignUp = () => {
                                             : ''
                                     }
                                     name="password"
-                                    label="Password"
+                                    label={<Typography
+                                        color={colors.grey[900]}>
+                                        Password
+                                    </Typography>}
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField sx={{
+                                    backgroundColor : colors.greenAccent[300],
+                                }}
                                     required
                                     fullWidth
                                     name="confirmPassword"
-                                    label="Confirm Password"
+                                    label={<Typography
+                                        color={colors.grey[900]}>
+                                        Confirm Password
+                                    </Typography>}
                                     type="password"
                                     id="confirmPassword"
                                     autoComplete="new-password"
@@ -180,21 +200,32 @@ const SignUp = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField sx={{
+                                    backgroundColor: colors.greenAccent[300],
+                                }}
                                     required
                                     fullWidth
                                     name="first_name"
-                                    label="First Name"
+                                    label={<Typography
+                                        color={colors.grey[900]}>
+                                        First Name
+                                    </Typography>}
                                     id="first_name"
                                     onChange={handleFirstNameChange}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField sx={{
+                                    backgroundColor: colors.greenAccent[300],
+                                }}
                                     required
                                     fullWidth
                                     name="last_name"
-                                    label="Last Name"
+                                    label={<Typography
+                                        color={colors.grey[900]}>
+                                        Last Name
+                                    </Typography>}
+
                                     id="last_name"
                                     onChange={handleLastNameChange}
                                 />

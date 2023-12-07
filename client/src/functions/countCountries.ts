@@ -24,10 +24,6 @@ export const countCountriesInOrders = (orders: OrderInterface[])
         id,
         value,
     }));
-
-    console.log(result);
-
-
     return result;
 }
 
