@@ -28,7 +28,7 @@ const OrdersComponent = ({ isDashboard = false }) => {
         return colors.lightBlue[400]
 
       case 'Received':
-        return colors.deepPurple[400]
+        return colors.deepPurple[100]
 
       case 'Canceled':
         return colors.redAccent[500]

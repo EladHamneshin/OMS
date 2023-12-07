@@ -26,7 +26,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-
   useEffect(() => {
     if (isEditMode) {
       setEditedOrder(selectedOrder);
@@ -63,7 +62,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
   };
 
   const handleAddressChange = (field: string, value: string) => {
-    
     setEditedOrder({
       ...editedOrder,
       shippingDetails: {
@@ -91,7 +89,6 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
       },
     }));
   };
-  
 
   const admin = localStorage.getItem('admin');
   const storedAdmin = JSON.parse(localStorage.getItem('admin')!);
@@ -116,9 +113,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
           </select>
         ) : (
           selectedOrder?.status
-        )}>
-          
-        </DetailsBox>
+        )}></DetailsBox>
         <DetailsBox title='Total Price' description={selectedOrder?.totalPrice}></DetailsBox>
         <DetailsBox title='Shipping Address' description={isEditMode && modeShipping ? (
           <>
@@ -156,13 +151,13 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             />
           </>
         ) : (
-            <>
-              <DetailsBox title='Country' description={selectedOrder?.shippingDetails?.address?.country}></DetailsBox>
-              <DetailsBox title='City' description={selectedOrder?.shippingDetails?.address?.city}></DetailsBox>
-              <DetailsBox title='Street' description={selectedOrder?.shippingDetails?.address?.street}></DetailsBox>
-              <DetailsBox title='ZipCode' description={selectedOrder?.shippingDetails?.address?.zipCode}></DetailsBox>
-            </>
-          )}></DetailsBox>
+          <>
+            <DetailsBox title='Country' description={selectedOrder?.shippingDetails?.address?.country}></DetailsBox>
+            <DetailsBox title='City' description={selectedOrder?.shippingDetails?.address?.city}></DetailsBox>
+            <DetailsBox title='Street' description={selectedOrder?.shippingDetails?.address?.street}></DetailsBox>
+            <DetailsBox title='ZipCode' description={selectedOrder?.shippingDetails?.address?.zipCode}></DetailsBox>
+          </>
+        )}></DetailsBox>
         <DetailsBox title='Contact Number' description={selectedOrder?.shippingDetails.contactNumber}></DetailsBox>
         <DetailsBox title='Order Type' description={selectedOrder?.shippingDetails?.orderType}></DetailsBox>
         <DetailsBox title='User Name' description={selectedOrder?.userName}></DetailsBox>
@@ -172,7 +167,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             m="0px"
             sx={{
               p: "20px",
-              width:"100%"
+              width: "100%"
             }}
             key={index}>
             <DetailsBox title='Product ID' description={item.productId}></DetailsBox>
@@ -182,10 +177,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
             <DetailsBox title='Quantity' description={item.quantity.toString()}></DetailsBox>
             <DetailsBox title='Discount' description={item.discount.toString()}></DetailsBox>
             <DetailsBox title=' Image URL' description={item.image.url}></DetailsBox>
-
-          </Box >
-        ))} isCartItems={true}>
-        </DetailsBox>
+          </Box>
+        ))} isCartItems={true}></DetailsBox>
         {isEditMode && (
           <>
             <Button sx={{ color: colors.lightBlue[700] }} onClick={handleSave}>Save</Button>
