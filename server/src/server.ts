@@ -52,7 +52,7 @@ server.start().then(async () => {
    
   app.use(
     '/', 
-    cors(),
+    // cors(),
     expressMiddleware(server)
   );
 

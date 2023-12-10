@@ -15,18 +15,14 @@ export const createToken = (email: string, isAdmin: boolean) => {
 };
 
 export const autoToken = async (token: string) => {
-  // const tok = req.headers.token as string | undefined;
-  console.log("token",token);
   
   if (!token) {
     throw new RequestError('Not authorized, no token', STATUS_CODES.UNAUTHORIZED);
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    console.log("auro",decoded);
     
     const isAdmin = (decoded as JwtPayload).isAdmin;
-    console.log("adnim",isAdmin);
     
   return isAdmin
   } catch (err) {

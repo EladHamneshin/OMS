@@ -48,19 +48,13 @@ export const resolvers = {
         deleteUser: async (parent: any, args: { input: DeleteInput }) => {
             try {
               const decodedToken = await autoToken(args.input.token);
-              console.log("args",decodedToken);
-              
-          
-              if (!decodedToken.isAdmin) {
+              if (!decodedToken) {
                 throw new GraphQLError("Not authorized to delete a user", { extensions: { http: { status: 403 } } });
               }
-          
               const response = await userService.deleteUser(args.input.user_id);
-          
               if (!response) {
                 throw new GraphQLError("Failed to delete user", { extensions: { http: { status: 500 } } });
               }
-          
               return { message: "User deleted successfully" };
             } catch (error) {
               console.error("Error deleting user:", error);
