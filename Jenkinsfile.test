@@ -10,11 +10,29 @@ pipeline {
             steps {
                 script {
                     dir('server') {
+                        def dockerfileContent = '''
+                            FROM node:18-alpine AS builder
+
+                            WORKDIR /app
+
+                            COPY package*.json ./
+
+                            RUN npm install
+                            RUN npm install -D typescript
+
+                            COPY . .
+                            RUN npm run build
+                            CMD ["npm", "test"]
+                        '''
+                        
+                        // Write Dockerfile content to a file
+                        writeFile file: 'Dockerfile.test', text: dockerfileContent
+                    
                          // Create the network if it doesn't exist
                         sh 'docker network ls | grep -q app-network || docker network create app-network'
 
                         // Build the Docker image for Express.js server
-                        sh 'docker build -t oms-end-test .'
+                        sh 'docker build -t oms-end-test -f Dockerfile.test .'
 
                         // Start MongoDB container
                         sh 'docker run -d --network app-network --name mongo-db mongo'
