@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     dir('client') {
-                        sh 'echo "Building..."'
+                        sh 'echo "Building... test"'
                         sh 'docker build -t oms-client .'
                     }
                 }
