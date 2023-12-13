@@ -2,7 +2,7 @@ name: ESLint Check
 
 on:
   pull_request:
-    branches: [ jenkins ]
+    branches: [main]
     paths:
       - '**/*.ts'
       - '**/*.tsx'
