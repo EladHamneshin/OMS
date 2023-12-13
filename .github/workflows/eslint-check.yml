@@ -2,10 +2,10 @@ name: ESLint Check
 
 on:
   pull_request:
-    branches: [ develop, main ]
+    branches: [ jenkins ]
     paths:
-      - '**/*.ts'
-      - '**/*.tsx'
+      - 'client/**/*.ts'
+      - 'client/**/*.tsx'
       - '.github/workflows/eslint-check.yml'
  
 jobs:
@@ -19,11 +19,14 @@ jobs:
       with:
         node-version: '18' # Set this to your Node.js version
 
+    - name: Change to client directory
+      run: cd client
+
     - name: Install Dependencies
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint 'src/**/*.{ts,tsx}' --quiet
+      run: npx eslint '**/*.{ts,tsx}' --quiet
 
     - name: Check for TypeScript errors
       run: npx tsc --noEmit
