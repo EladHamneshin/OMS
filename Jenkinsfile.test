@@ -6,7 +6,7 @@ pipeline {
     }
     
     stages {
-        stage('Build and Test') {
+        stage('Build and Test...') {
             steps {
                 script {
                     dir('server') {
