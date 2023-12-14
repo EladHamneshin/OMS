@@ -26,7 +26,7 @@ jobs:
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint 'src/**/*.{ts,tsx}' --quiet
+      run: npx eslint 'client/src/**/*.{ts,tsx}' --quiet
 
     - name: Check for TypeScript errors
       run: npx tsc --noEmit
