@@ -20,13 +20,13 @@ jobs:
         node-version: '18' # Set this to your Node.js version
       
     - name: Install Dependencies
-      working-directory: ./client
+      working-directory: client
       run: npm install
 
     - name: Run ESLint
-      working-directory: ./client
+      working-directory: client
       run: npx eslint 'client/src/**/*.{ts,tsx}' --quiet
 
     - name: Check for TypeScript errors
-      working-directory: ./client
+      working-directory: client
       run: npx tsc --noEmit
