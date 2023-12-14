@@ -2,52 +2,99 @@ import * as React from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, ExitToApp, Person, PersonAdd } from '@mui/icons-material';
+import {
+    Dashboard,
+    ExitToApp,
+    Person,
+    PersonAdd,
+    DarkModeOutlined,
+    LightModeOutlined
+} from '@mui/icons-material';
 import './style/navBarStyle.css';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useContext } from 'react';
 import { UserContext } from "../userContext";
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { ColorModeContext, tokens } from '../theme/theme';
 
 export default function NavBar() {
     const userContext = useContext(UserContext);
     const [value, setValue] = React.useState('recents');
+
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const colorMode = useContext(ColorModeContext);
 
     const handleChange = (_event: React.SyntheticEvent<Element>, newValue: string) => {
         setValue(newValue);
     };
 
     return (
-        <div className='navFather'>
-            <BottomNavigation sx={{ width: 350 }} value={value} onChange={handleChange} className='nav'>
+        <Box display="flex"
+            justifyContent="center"
+            alignItems="center"
+        >
+            <BottomNavigation color={colors.grey[400]}
+                sx={{ width: 350 }}
+                value={value}
+                onChange={handleChange} className='nav'>
+                <IconButton
+                    className='button'
+                    onClick={colorMode!.toggleColorMode}>
+                    {theme.palette.mode === "dark" ? (
+                        <DarkModeOutlined sx={{ color: colors.grey[100] }} />
+                    ) : (
+                        <LightModeOutlined />
+                    )}
+                </IconButton>
                 {userContext?.userInfo ? (
                     [
                         <BottomNavigationAction
-                            key="orders"
+                            sx={{
+                                color: colors.grey[100],
+
+                            }}
+                            key="dashboard"
                             className='button'
                             component={Link}
-                            to="/oms/orders"
-                            label="Orders"
-                            value="orders"
-                            icon={<ShoppingCart />}
-                        />,
+                            to="/oms/dashboard"
+                            label={<Typography
+                                sx={{
+                                    fontSize: "11px",
+                                    color: colors.grey[300]
+                                }}
+                            >Dashboard</Typography>}
+                            value="dashboard"
+                            icon={<Dashboard sx={{ color: colors.grey[100] }} />}
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="users"
                             className='button'
                             component={Link}
                             to="/oms/users"
-                            label="Users"
+                            label={<Typography
+                                sx={{
+                                    fontSize: "11px",
+                                    color: colors.grey[300]
+                                }}
+                            >Users</Typography>}
                             value="users"
-                            icon={<PeopleAltIcon />}
-                        />,
+                            icon={<PeopleAltIcon sx={{ color: colors.grey[100] }} />}
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="logout"
                             className='button'
                             component={Link}
                             to="/oms/logout"
-                            label="Logout"
+                            label={<Typography
+                                sx={{
+                                    fontSize: "11px",
+                                    color: colors.grey[300]
+                                }}
+                            >Logout</Typography>}
                             value="logout"
-                            icon={<ExitToApp />}
-                        />,
+                            icon={<ExitToApp sx={{ color: colors.grey[100] }} />}
+                        ></BottomNavigationAction>,
                     ]
                 ) : (
                     [
@@ -56,22 +103,32 @@ export default function NavBar() {
                             className='button'
                             component={Link}
                             to="/oms/login"
-                            label="Sign In"
+                            label={<Typography
+                                sx={{
+                                    fontSize: "11px",
+                                    color: colors.grey[300]
+                                }}
+                            >Sign In</Typography>}
                             value="sign in"
-                            icon={<Person />}
-                        />,
+                            icon={<Person sx={{ color: colors.grey[100] }} />}
+                        ></BottomNavigationAction>,
                         <BottomNavigationAction
                             key="signUp"
                             className='button'
                             component={Link}
                             to="/oms/register"
-                            label="Sign Up"
+                            label={<Typography
+                                sx={{
+                                    fontSize: "11px",
+                                    color: colors.grey[300]
+                                }}
+                            >Sign Up</Typography>}
                             value="sign up"
-                            icon={<PersonAdd />}
-                        />,
+                            icon={<PersonAdd sx={{ color: colors.grey[100] }} />}
+                        ></BottomNavigationAction>,
                     ]
                 )}
             </BottomNavigation>
-        </div>
+        </Box>
     );
 }

@@ -1,17 +1,16 @@
-import { shallow } from 'enzyme';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import NavBar from '../pages/navBar';
+import { MemoryRouter } from 'react-router-dom';
 
-describe('NavBar component', () => {
-  it('renders without crashing', () => {
-    shallow(<NavBar />);
-  });
+test('renders NavBar component', () => {
+  render(
+    <MemoryRouter>
+      <NavBar />
+    </MemoryRouter>
+  );
 
-  it('renders all navigation links', () => {
-    const wrapper = shallow(<NavBar />);
-    expect(wrapper.find('a[href="/login"]')).toHaveLength(1);
-    expect(wrapper.find('a[href="/register"]')).toHaveLength(1);
-    expect(wrapper.find('a[href="/orders"]')).toHaveLength(1);
-  });
 
-  // Add more test cases as needed
+  expect(screen.getByText('Sign In')).toBeInTheDocument();
+  expect(screen.getByText('Sign Up')).toBeInTheDocument();
 });
