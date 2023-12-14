@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: [ main, dev ]
     paths:
-      - 'client/**/*.ts'
-      - 'client/**/*.tsx'
+      - '**/*.ts'
+      - '**/*.tsx'
       - '.github/workflows/eslint-check.yml'
  
 jobs:
