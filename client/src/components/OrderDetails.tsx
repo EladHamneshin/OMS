@@ -1,12 +1,16 @@
 import * as React from 'react';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
+import { Input, Select, MenuItem, Box, SelectChangeEvent } from '@mui/material';
+import { useTheme } from '@mui/material';
+import { tokens } from '../theme/theme';
 import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
 import { updateOrder } from '../api/ordersApi';
 import OrderInterface, { OrderStatusEnum } from '../types/orderType';
+import { countries } from "../data/country"
+import DetailsBox from './DetailsBox';
 
 interface OrderDetailsProps {
   selectedOrder: OrderInterface;
@@ -14,13 +18,24 @@ interface OrderDetailsProps {
   close: () => void;
 }
 
+// interface DetailsBoxProps {
+//   title: string;
+//   description: React.ReactNode;
+//   isCartItems?: boolean;
+// }
+
 const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, close }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedOrder, setEditedOrder] = useState<OrderInterface>(selectedOrder);
+  const [selectCountries, setSelectCountries] = useState<string>('');
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (isEditMode) {
       setEditedOrder(selectedOrder);
+      setSelectCountries(selectedOrder?.shippingDetails?.address?.country || '')
     }
   }, [isEditMode, selectedOrder]);
 
@@ -45,7 +60,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
     }
   };
 
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusChange = (e: React.ChangeEvent<{ value: OrderStatusEnum }>) => {
     setEditedOrder({
       ...editedOrder,
       status: e.target.value as OrderStatusEnum,
@@ -65,6 +80,22 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
     });
   };
 
+  const handleChangeCountries = (e: SelectChangeEvent<string>) => {
+    const selectedCountry = e.target.value as string;
+    setSelectCountries(selectedCountry)
+
+    setEditedOrder((prevOrder) => ({
+      ...prevOrder,
+      shippingDetails: {
+        ...prevOrder.shippingDetails,
+        address: {
+          ...prevOrder.shippingDetails?.address,
+          country: selectedCountry,
+        },
+      },
+    }));
+  };
+
   const admin = localStorage.getItem('admin');
   const storedAdmin = JSON.parse(localStorage.getItem('admin')!);
   const adminTrue = storedAdmin && storedAdmin.is_admin === true;
@@ -72,116 +103,101 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ selectedOrder, Refresh, clo
   const modeShipping = selectedOrder.status === 'Waiting';
 
   return (
-    <>
-      <DialogTitle>Order Details</DialogTitle>
-      <DialogContent style={{ minWidth: '500px', maxWidth: '800px', overflowY: 'auto', maxHeight: '50vh' }}>
-        <Typography variant="body2" color="text.secondary">
-          Order Time: {selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          status: {isEditMode && modeShipping && (adminTrue || admin) ? (
-            <select value={editedOrder.status} onChange={handleStatusChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}>
-              <option value={OrderStatusEnum.Waiting}>Waiting</option>
-              {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
-              {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
-            </select>
-          ) : (
-            selectedOrder?.status
-          )}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Total Price: {selectedOrder?.totalPrice}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Shipping Address:{' '}
-          {isEditMode && modeShipping && (
-            <>
-              <input
-                type="text"
-                value={editedOrder.shippingDetails?.address?.country || ''}
-                placeholder="Country"
-                onChange={(e) => handleAddressChange('country', e.target.value)}
-              />
-              <input
-                type="text"
-                value={editedOrder.shippingDetails?.address?.city || ''}
-                placeholder="City"
-                onChange={(e) => handleAddressChange('city', e.target.value)}
-              />
-              <input
-                type="text"
-                value={editedOrder.shippingDetails?.address?.street || ''}
-                placeholder="Street"
-                onChange={(e) => handleAddressChange('street', e.target.value)}
-              />
-              <input
-                type="number"
-                value={editedOrder.shippingDetails?.address?.zipCode || ''}
-                placeholder="Zipcode"
-                onChange={(e) => handleAddressChange('zipCode', e.target.value)}
-              />
-            </>
-          )}
-          {!isEditMode && (
-            <>
-              {selectedOrder?.shippingDetails?.address?.country}, {selectedOrder?.shippingDetails?.address?.city}, {selectedOrder?.shippingDetails?.address?.street}, {selectedOrder?.shippingDetails?.address?.zipCode}
-            </>
-          )}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Contact Number: {selectedOrder?.shippingDetails.contactNumber}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Order Type: {selectedOrder?.shippingDetails?.orderType}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          User Name: {selectedOrder?.userName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          User Email: {selectedOrder?.userEmail}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Cart Items:
-        </Typography>
-        {selectedOrder?.cartItems?.map((item, index) => (
-          <div key={index}>
-            <Typography variant="body2" color="text.secondary">
-              Product ID: {item.productId}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Name: {item.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Description: {item.description}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Price: {item.salePrice}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Quantity: {item.quantity}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Discount: {item.discount}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Image URL: {item.image.url}
-            </Typography>
-            <hr />
-          </div>
-        ))}
+    <Box sx={{ m: "20px", minHeight: '100%' }}>
+      <Typography variant="h4" color={colors.lightBlue[700]}>
+        Order Details
+      </Typography>
+      <DialogContent style={{ overflowY: 'auto', maxHeight: '500vh' }}>
+        <DetailsBox title='Order Time' description={selectedOrder ? new Date(selectedOrder.orderTime).toLocaleString() : ''}></DetailsBox>
+        <DetailsBox title='Status' description={isEditMode && modeShipping && (adminTrue || admin) ? (
+          <select
+            value={editedOrder.status}
+            onChange={(e) => handleStatusChange(e as React.ChangeEvent<{ value: OrderStatusEnum }>)}>
+            <option value={OrderStatusEnum.Waiting}>Waiting</option>
+            {orderType && <option value={OrderStatusEnum.Received}>Received</option>}
+            {adminTrue && <option value={OrderStatusEnum.Canceled}>Cancel</option>}
+          </select>
+        ) : (
+          selectedOrder?.status
+        )}></DetailsBox>
+        <DetailsBox title='Total Price' description={selectedOrder?.totalPrice}></DetailsBox>
+        <DetailsBox title='Shipping Address' description={isEditMode && modeShipping ? (
+          <>
+            <Select
+              value={isEditMode ? selectCountries : editedOrder.shippingDetails?.address?.country}
+              placeholder="Country"
+              onChange={handleChangeCountries}
+            >
+              {countries.map((country) => (
+                <MenuItem key={country} value={country}>
+                  {country}
+                </MenuItem>
+              ))}
+            </Select>
+            <Input
+              sx={{ marginLeft: "10px", marginRight: "10px" }}
+              type="text"
+              value={editedOrder.shippingDetails?.address?.city || ''}
+              placeholder="City"
+              onChange={(e) => handleAddressChange('city', e.target.value)}
+            />
+            <Input
+              sx={{ marginLeft: "10px", marginRight: "10px" }}
+              type="text"
+              value={editedOrder.shippingDetails?.address?.street || ''}
+              placeholder="Street"
+              onChange={(e) => handleAddressChange('street', e.target.value)}
+            />
+            <Input
+              sx={{ marginLeft: "10px", marginRight: "10px" }}
+              type="number"
+              value={editedOrder.shippingDetails?.address?.zipCode || ''}
+              placeholder="Zipcode"
+              onChange={(e) => handleAddressChange('zipCode', e.target.value)}
+            />
+          </>
+        ) : (
+          <>
+            <DetailsBox title='Country' description={selectedOrder?.shippingDetails?.address?.country}></DetailsBox>
+            <DetailsBox title='City' description={selectedOrder?.shippingDetails?.address?.city}></DetailsBox>
+            <DetailsBox title='Street' description={selectedOrder?.shippingDetails?.address?.street}></DetailsBox>
+            <DetailsBox title='ZipCode' description={selectedOrder?.shippingDetails?.address?.zipCode}></DetailsBox>
+          </>
+        )}></DetailsBox>
+        <DetailsBox title='Contact Number' description={selectedOrder?.shippingDetails.contactNumber}></DetailsBox>
+        <DetailsBox title='Order Type' description={selectedOrder?.shippingDetails?.orderType}></DetailsBox>
+        <DetailsBox title='User Name' description={selectedOrder?.userName}></DetailsBox>
+        <DetailsBox title='User Email' description={selectedOrder?.userEmail}></DetailsBox>
+        <DetailsBox title='Cart Items' description={selectedOrder?.cartItems?.map((item, index) => (
+          <Box
+            m="0px"
+            sx={{
+              p: "20px",
+              width: "100%"
+            }}
+            key={index}>
+            <DetailsBox title='Product ID' description={item.productId}></DetailsBox>
+            <DetailsBox title='Name' description={item.name}></DetailsBox>
+            <DetailsBox title='Description' description={item.description}></DetailsBox>
+            <DetailsBox title='Price' description={item.salePrice && `${item.salePrice} $`}></DetailsBox>
+            <DetailsBox title='Quantity' description={item.quantity.toString()}></DetailsBox>
+            <DetailsBox title='Discount' description={item.discount.toString()}></DetailsBox>
+            <DetailsBox title=' Image URL' description={item.image.url}></DetailsBox>
+          </Box>
+        ))} isCartItems={true}></DetailsBox>
         {isEditMode && (
           <>
-            <Button onClick={handleSave}>Save</Button>
-            <Button onClick={() => setIsEditMode(false)}>Cancel</Button>
+            <Button sx={{ color: colors.lightBlue[700] }} onClick={handleSave}>Save</Button>
+            <Button sx={{ color: colors.lightBlue[700] }} onClick={() => setIsEditMode(false)}>Cancel</Button>
           </>
         )}
         {!isEditMode && (
-          <Button onClick={handleEdit}>
-            <EditIcon />
+          <Button sx={{ color: colors.lightBlue[700] }} onClick={handleEdit}>
+            <EditIcon sx={{ color: colors.lightBlue[700] }} />
           </Button>
         )}
       </DialogContent>
-    </>
+    </Box>
   );
 };
 

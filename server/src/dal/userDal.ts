@@ -7,7 +7,7 @@ import pool from "../configs/connectDbAdmin.js"
 config();
 
 
-const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => { 
+const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
     const res = await pool.connect();
     try {
         const data = await res.query(query, values);
@@ -25,9 +25,8 @@ const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> 
 const addUser = async (user: AdminUser) => {
 
     // Check if the user already exists
-    const userExistsQuery = 'SELECT * FROM admin_users WHERE email = $1';
+    const userExistsQuery = `SELECT * FROM get_user_by_email($1)`;
     const existingUser = await sendQueryToDatabase(userExistsQuery, [user.email]);
-
     if (existingUser.rows.length > 0) {
         throw new RequestError("User already exists", STATUS_CODES.CONFLICT);
     }
@@ -53,9 +52,10 @@ const addUser = async (user: AdminUser) => {
 // login
 const getUserByEmail = async (email: string) => {
 
-    const query = `SELECT * FROM admin_users WHERE email = $1`;
+    const query = `SELECT * FROM get_user_by_email($1)`;
     const result = await sendQueryToDatabase(query, [email]);
-    if (!result) {
+    
+    if (result.rows.length === 0) {
         throw new RequestError("Error while getting user by email:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
     return result.rows;
@@ -79,7 +79,7 @@ const deleteUser = async (id: string) => {
     if (existingUser.rows.length === 0) {
         throw new RequestError("User not found", STATUS_CODES.NOT_FOUND);
     }
-    const deleteQuery = 'DELETE FROM admin_users WHERE user_id = $1';
+    const deleteQuery = 'SELECT * FROM delete_user_by_id( $1)';
     await sendQueryToDatabase(deleteQuery, [id]);
     return `User with ID ${id} deleted successfully.`;
 }
@@ -95,11 +95,22 @@ const getAllDal = async () => {
     return result.rows;
 }
 
+const deleteUserEmail = async (email: string) => {
+    const userExistsQuery = `SELECT * FROM delete_user_by_email( $1)`;
+    const existingUser = await sendQueryToDatabase(userExistsQuery, [email]);
+    if (existingUser.rows.length === 0) {
+        throw new RequestError("User not found", STATUS_CODES.NOT_FOUND);
+    }
+    const deleteQuery = 'DELETE FROM admin_users WHERE email = $1';
+    await sendQueryToDatabase(deleteQuery, [email]);
+    return `User with ID ${email} deleted successfully.`;
+}
 
 export const userDal = {
     addUser,
     getUserByEmail,
     validatePassword,
     deleteUser,
-    getAllDal
+    getAllDal,
+    deleteUserEmail
 };

@@ -6,6 +6,10 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { useEffect, useState } from 'react';
 import ordersApi from '../api/ordersApi';
 import order from "../types/orderType";
+import './style/graphStyle.css'
+import { useTheme } from '@mui/material';
+import { tokens } from '../theme/theme';
+
 
 // Define the enums
 export enum OrderStatusEnum {
@@ -13,8 +17,8 @@ export enum OrderStatusEnum {
     Sent = 'Sent',
     Received = 'Received',
     Canceled = 'Canceled',
-    AwaitingPayment = 'Awaiting payment', 
-    HeldByAdmin = 'Held by an admin', 
+    AwaitingPayment = 'Awaiting payment',
+    HeldByAdmin = 'Held by an admin',
 }
 
 export const OrderEnum = {
@@ -23,7 +27,11 @@ export const OrderEnum = {
     SelfCollection: 'SelfCollection',
 } as const;
 
-export default function Graph() {
+export default function Graph({ isDashboard = false }) {
+
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
     const [, setData] = useState<order[]>([]);
     const [allOrdersCounter, setAllOrdersCounter] = useState([
         {
@@ -129,27 +137,35 @@ export default function Graph() {
     }, []);
 
     return (
-        <div className='con'>
-            <Box sx={{ width: '100%' }}>
-                <BarChart
-                    height={300}
-                    series={allOrdersCounter
-                        .slice(0, seriesNb)
-                        .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))}
-                />
-                <Typography id="input-series-number" gutterBottom>
-                    Number of statuses to show
-                </Typography>
-                <Slider
-                    value={seriesNb}
-                    onChange={handleSeriesNbChange}
-                    valueLabelDisplay="auto"
-                    min={1}
-                    max={Object.keys(OrderStatusEnum).length}
-                    aria-labelledby="input-series-number"
-                />
-            </Box>
-        </div>
+        <Box sx={{
+            width: '100vr', 
+            backgroundColor: isDashboard ? null : colors.grey[50],
+            margin: isDashboard ? "0px" : "25px 20px 40px 20px",
+            borderRadius: isDashboard ? "0px" : "15px",
+            padding: isDashboard ? "0px" : "30px",
+            boxShadow: isDashboard ? "0px" : "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"
+        }}>
+            <BarChart
+                height={300}
+                series={allOrdersCounter
+                    .slice(0, seriesNb)
+                    .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))
+                }
+            />
+            <Typography id="input-series-number" gutterBottom
+                sx={{ color: colors.grey[100] }}>
+                Number of statuses to show
+            </Typography>
+            <Slider
+                value={seriesNb}
+                onChange={handleSeriesNbChange}
+                valueLabelDisplay="auto"
+                sx={{ color: colors.lightBlue[200] }}
+                min={1}
+                max={Object.keys(OrderStatusEnum).length}
+                aria-labelledby="input-series-number"
+            />
+        </Box>
     );
 }
 
