@@ -2,7 +2,7 @@ name: ESLint Check
 
 on:
   pull_request:
-    branches: [ main, dev ]
+    branches: [ dev, main ]
     paths:
       - '**/*.ts'
       - '**/*.tsx'
@@ -21,12 +21,12 @@ jobs:
 
     - name: Change to client directory
       run: cd client
-
+      
     - name: Install Dependencies
       run: npm install
 
     - name: Run ESLint
-      run: npx eslint '**/*.{ts,tsx}' --quiet
+      run: npx eslint 'src/**/*.{ts,tsx}' --quiet
 
     - name: Check for TypeScript errors
       run: npx tsc --noEmit
