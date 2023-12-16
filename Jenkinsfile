@@ -26,9 +26,9 @@ pipeline {
 
         stage('dockerhub login') {
             steps {
-                withCredentials([
-                    usernamePassword(credentials: 'docker_hub_elad', usernameVariable: 'USR', passwordVariable: 'PWD')
-                ]) {
+                withCredentials(
+                    [[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker_hub_elad', usernameVariable: 'USR', passwordVariable: 'PWD']]
+                ) {
                     sh 'docker login -u $USR -p $PWD'
                 }      
             }
