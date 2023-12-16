@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+     environment {
+        DOCKER_CREDENTIALS = credentials('docker-hub-elad')
+    }
+
     stages {
         stage('client build') {
             steps {
@@ -26,9 +30,8 @@ pipeline {
 
         stage('dockerhub login') {
             steps {
-		withCredentials([usernamePassword(credentialsId: 'docker-hub-elad', usernameVariable: 'USR', passwordVariable: 'PWD')]){
-		    sh 'docker logout'
-                    sh 'docker login -u $USR -p $PWD'                		
+		script{
+                    sh 'docker login -u $DOCKER_CREDENTIALS_USR -p $DOCKER_CREDENTIALS_PSW'                		
 	            sh 'echo "Login Completed"'   
                 }      
             }
