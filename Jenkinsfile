@@ -27,6 +27,7 @@ pipeline {
         stage('dockerhub login') {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'docker-hub-elad', usernameVariable: 'USR', passwordVariable: 'PWD')]){
+		    sh 'docker logout'
                     sh 'docker login -u $USR -p $PWD'                		
 	            sh 'echo "Login Completed"'   
                 }      
