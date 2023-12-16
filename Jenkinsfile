@@ -29,9 +29,7 @@ pipeline {
                 withCredentials(
                     [[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-elad', usernameVariable: 'USR', passwordVariable: 'PWD']]
                 ) {
-		    sh 'echo $PWD'
-		    sh 'echo $USR'
-                    sh 'echo $PWD | docker login -u $USR --password-stdin'                		
+                    sh 'docker login -u $USR -p $PWD'                		
 	            sh 'echo "Login Completed"'   
                 }      
             }
