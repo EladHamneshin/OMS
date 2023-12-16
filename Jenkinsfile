@@ -1,13 +1,18 @@
 pipeline {
     agent any
 
+    environment {     
+    DOCKERHUB_CREDENTIALS= credentials('docker_hub_elad')     
+    } 
+
+
     stages {
         stage('client build') {
             steps {
                 script {
                     dir('client') {
                         sh 'echo "Building..."'
-                        sh 'docker build -t oms-client .'
+                        sh 'docker build -t eladha123/oms-client .'
                     }
                 }
             }
@@ -18,33 +23,29 @@ pipeline {
                 script {
                     dir('server') {
                         sh 'echo "Building..."'
-                        sh 'docker build -t oms-server .'
+                        sh 'docker build -t eladha123/oms-server .'
                     }
                 }
             }
         }
-    }
 
-    post {
-        success {
-            script {
-                echo 'Linting passed. You may now merge.'
-                setGitHubPullRequestStatus(
-                    state: 'SUCCESS',
-                    context: 'class4_oms_lint',
-                    message: 'Build passed',
-                )
+         stage('dockerhub login') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentials: 'docker_hub_elad', usernameVariable: USR, passwordVariable: PWD)
+                ]){
+                    sh 'docker login -u ${USR} -p ${PWD}'
+                }      
             }
         }
-        
-        failure {
-            script {
-                echo 'Pipeline failed. Blocking pull request merge.'
-                setGitHubPullRequestStatus(
-                    state: 'FAILURE',
-                    context: 'class4_oms_lint',
-                    message: 'Build failed  run npm run build to see errors',
-                )
+
+          stage('dockerhub push') {
+            steps {
+                script {
+                    sh 'echo "Pushing..."'
+                    sh 'docker push eladha123/oms-server'
+                    sh 'docker push eladha123/oms-client'
+                }
             }
         }
     }
