@@ -24,22 +24,22 @@ pipeline {
             }
         }
 
-         stage('dockerhub login') {
+        stage('dockerhub login') {
             steps {
                 withCredentials([
-                    usernamePassword(credentials: 'docker_hub_elad', usernameVariable: USR, passwordVariable: PWD)
-                ]){
-                    sh 'docker login -u ${USR} -p ${PWD}'
+                    usernamePassword(credentials: 'docker_hub_elad', usernameVariable: 'USR', passwordVariable: 'PWD')
+                ]) {
+                    sh 'docker login -u $USR -p $PWD'
                 }      
             }
         }
 
-          stage('dockerhub push') {
+        stage('dockerhub push') {
             steps {
                 script {
                     sh 'echo "Pushing..."'
-                    sh 'docker push eladha123/oms-server'
-                    sh 'docker push eladha123/oms-client'
+                    sh 'docker push eladha123/oms-server:latest'
+                    sh 'docker push eladha123/oms-client:latest'
                 }
             }
         }
