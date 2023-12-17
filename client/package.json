@@ -11,6 +11,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@apollo/client": "^3.8.8",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.2",

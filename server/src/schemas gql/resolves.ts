@@ -15,6 +15,7 @@ export const resolvers = {
     },
     Mutation: {
         register: async (parent: any, args: { input: AdminUser }) => {
+          
             const newUser: AdminUser = {
                 first_name: args.input.first_name,
                 last_name: args.input.last_name,
@@ -30,11 +31,15 @@ export const resolvers = {
             userService.register(newUser);
             return newUser
         },
+        
         login: async (parent: any, args: { input: AdminUser }) => {
+          console.log("input",args.input);
+          console.log("args",args);
             const user = {
                 email: args.input.email,
                 password: args.input.password
             };
+            
             const users = await validateLogin(user.email, user.password);
             if (!users || users.length === 0) {
                 throw new GraphQLError("login failed", { extensions: { http: { status: 400 } } });

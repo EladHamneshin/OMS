@@ -21,8 +21,6 @@ export const typeDefs = `#graphql
   password: String
 }
   input LoginInput {
-  first_name: String
-  last_name: String
   email: String
   password: String
 }

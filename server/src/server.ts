@@ -14,6 +14,7 @@ import { resolvers } from './schemas gql/resolves.js';
 import { connectToPg } from './configs/connectDbAdmin.js';
 import connectToDatabase from './configs/connectToMongogoDB.js';
 import { ApolloServerErrorCode } from '@apollo/server/errors';
+import ordersRoutes from './routes/ordersRoutes.js';
 
 const app = express();
 
@@ -49,7 +50,7 @@ server.start().then(async () => {
 
   await connectToPg();
   await connectToDatabase();
-   
+   app.use("/orders",ordersRoutes)
   app.use(
     '/', 
     // cors(),

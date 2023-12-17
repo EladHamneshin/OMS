@@ -1,15 +1,19 @@
-import  { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../userContext';
-import { deleteUsers, getAllUsers } from '../api/usersAPI';
+import { DELETE_USER, GET_ALL_USERS, deleteUsers } from '../api/usersQuery';
+import { useMutation, useQuery } from '@apollo/client';
 
 function Users() {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const { data } = useQuery(GET_ALL_USERS);
+  const [rows, setRows] = useState([]);
+  const [deleteMutation] = useMutation(DELETE_USER);
 
   useEffect(() => {
     if (!userContext?.userInfo) {
@@ -17,14 +21,39 @@ function Users() {
     }
   }, [userContext, navigate]);
 
-  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    setLoading(true)
+    const fetchData = async () => {
+      try {
+        if (data && data.getAllUsers) {
+          const allData = data.getAllUsers;
+          setRows(allData);
+          setLoading(false)
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleDeleteUser = async (userId: string) => {
+    fetchData();
+  }, [data]);
+
+  const handleDeleteUser = async (user_id: string) => {
     try {
       if (userContext?.userInfo?.is_admin) {
-        const response = await deleteUsers(userId);
-        console.log(response);
-        setRows((prevRows) => prevRows.filter((row: any) => row.user_id !== userId));
+        const token = localStorage.getItem('token');
+        const {data} = await deleteMutation ({
+          variables: {
+            input: {
+                user_id,
+                token
+            },
+        },
+        }) 
+        console.log(data);
+        setRows((prevRows) => prevRows.filter((row: any) => row.user_id !== user_id));
       } else {
         console.error('User does not have permission to delete.');
       }
@@ -41,35 +70,20 @@ function Users() {
     { field: 'is_admin', headerName: 'Admin', width: 80 },
     ...(userContext?.userInfo?.is_admin
       ? [
-          {
-            field: 'delete',
-            headerName: 'Delete',
-            width: 100,
-            renderCell: (params: GridRenderCellParams) => (
-              <DeleteIcon
-                onClick={() => handleDeleteUser(params.row.user_id)}
-                style={{ cursor: 'pointer' }}
-              />
-            ),
-          },
-        ]
+        {
+          field: 'delete',
+          headerName: 'Delete',
+          width: 100,
+          renderCell: (params: GridRenderCellParams) => (
+            <DeleteIcon
+              onClick={() => handleDeleteUser(params.row.user_id)}
+              style={{ cursor: 'pointer' }}
+            />
+          ),
+        },
+      ]
       : []),
   ];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllUsers();
-        setRows(data.users);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   if (loading) {
     return <CircularProgress />;

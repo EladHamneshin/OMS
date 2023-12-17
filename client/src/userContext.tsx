@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 import { User } from './types/userAdmin';
-import { logOutApi, login } from './api/usersAPI';
+import { LOGIN } from './api/usersQuery';
+import { useMutation } from '@apollo/client';
 
 interface UserContextProviderProps {
     children: React.ReactNode;
@@ -20,13 +21,23 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
         : undefined;
 
     const [userInfo, setUserInfo] = useState<User | null>(initialUserInfo);
+    const [loginMutation] = useMutation(LOGIN);
 
-    const loginUser = async (email: string, password: string) => {
+    const loginUser = async (email: string, password: string):Promise<User> => {
         try {
-            const loggedUser = await login({ email, password });
-            localStorage.setItem('admin', JSON.stringify(loggedUser));
-            setUserInfo(loggedUser);
-            return loggedUser;
+            const {data}  = await loginMutation({
+                variables: {
+                    input: {
+                        email,
+                        password
+                    },
+                },
+            });
+            localStorage.setItem('admin', JSON.stringify(data.login));
+            localStorage.setItem('token', data.login.token);
+            
+            setUserInfo(data.login);
+            return data;
         } catch (error) {
             console.error('Login failed:', error);
             throw error;
@@ -35,7 +46,6 @@ const UserContextProvider: React.FC<UserContextProviderProps> = (props) => {
 
     const logoutUser = async () => {
         try {
-            await logOutApi();
             localStorage.removeItem('admin');
             localStorage.removeItem('omsToken');
             setUserInfo(null);

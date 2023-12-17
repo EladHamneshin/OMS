@@ -1,19 +1,22 @@
 import React, { useState, FormEvent } from 'react';
 import { isValidEmail, isValidPassword } from '../utils/validationUtils';
-import { register } from '../api/usersAPI';
+import { REGISTER } from '../api/usersQuery';
 import { toastError, toastSuccess } from '../utils/toastUtils';
 import { Container, Avatar, Box, Grid, TextField, Button, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { AdminUser } from '../types/admin';
+// import { AdminUser } from '../types/admin';
 import './style/formStyle.css'
+import { useMutation } from '@apollo/client';
+
 
 
 const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isEmailError, setEmailError] = useState(false);
     const [isPasswordError, setPasswordError] = useState(false);
+    const [registerMutation] = useMutation(REGISTER);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -100,14 +103,17 @@ const SignUp = () => {
         try {
             setIsLoading(true);
 
-            const data: AdminUser = {
-                email,
-                password,
-                first_name,
-                last_name,
-                isAdmin: true
-            }
-            await register(data);
+            const { data } = await registerMutation({
+                variables: {
+                    input: {
+                        email: formData.email,
+                        password: formData.password,
+                        first_name:formData.first_name,
+                        last_name:formData.last_name,
+                    },
+                },
+            });
+
 
             setIsLoading(false);
             toastSuccess('Registration successful');
