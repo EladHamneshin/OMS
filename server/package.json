@@ -6,7 +6,9 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "jest --forceExit",
-    "dev": "tsc && nodemon .",
+    "dev": "npm-run-all --parallel watch:typescript start:dev",
+    "watch:typescript": "tsc --watch ",
+    "start:dev": "nodemon .",
     "buildtest": "babel src -d dist",
     "build": "tsc",
     "start": "node ."
@@ -35,8 +37,10 @@
     "mongoose": "^8.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5",
     "pg": "^8.11.3",
-    "sequelize": "^6.35.1"
+    "sequelize": "^6.35.1",
+    "wait-on": "^7.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
@@ -52,6 +56,7 @@
     "@types/morgan": "^1.9.9",
     "@types/pg": "^8.10.9",
     "@types/supertest": "^2.0.16",
+    "@types/wait-on": "^5.3.4",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",

@@ -8,7 +8,7 @@ const { Pool } = pkg;
 
 
 export const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
-    const pool = new Pool({connectionString: process.env.PG_URI});
+    const pool = new Pool({});
     const res = await pool.connect();
     try {
         const data = await res.query(query, values);
