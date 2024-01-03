@@ -33,6 +33,10 @@ export const typeDefs = `#graphql
 type DeleteUserResponse {
   message: String
 }
+
+type PubSubResponse {
+  message:String
+}
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -43,8 +47,13 @@ type DeleteUserResponse {
   }
   # The "Mutation" type is used for modifying data on the server
   type Mutation {
-    register(input: RegisterInput): User
+    register(input: RegisterInput): User 
     login(input:LoginInput):User
     deleteUser(input:DeleteInput):DeleteUserResponse
   }
+  # Subscription
+  type Subscription{
+    messagePubSub:PubSubResponse
+}
+
 `;

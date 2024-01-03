@@ -3,8 +3,9 @@ import orderModel from '../models/OrderModel.js';
 
 const connectToDatabase = async () => {
     try {
-        console.log('Connecting to MongoDB');
         const connectionString = process.env.MONGO_URI!;
+        console.log(connectionString);
+        
         await mongoose.connect(connectionString);
 
         const order = new orderModel(); 

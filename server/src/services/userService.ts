@@ -25,9 +25,7 @@ const register = async (userInput: AdminUser) => {
 
 
 const getUserByEmailService = async (email: string) => {
-    
     const data = await userDal.getUserByEmail(email);
-    
     if (data) return data
     throw new RequestError("error getting .service", STATUS_CODES.INTERNAL_SERVER_ERROR)
 }

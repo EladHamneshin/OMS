@@ -115,7 +115,7 @@ const SignUp = () => {
             });
 
 
-            setIsLoading(false);
+            setIsLoading(false);        
             toastSuccess('Registration successful');
             navigate('/oms/login');
         } catch (err) {

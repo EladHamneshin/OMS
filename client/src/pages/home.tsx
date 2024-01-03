@@ -3,6 +3,7 @@ import './style/homeStyle.css'
 
 
 export default function Home() {
+    
     return (
         <div>
             <section>

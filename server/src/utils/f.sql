@@ -13,3 +13,4 @@ CREATE TABLE admin_users (
   is_admin BOOLEAN,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+

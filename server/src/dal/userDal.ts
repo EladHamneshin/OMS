@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt';
 import RequestError from "../utils/RequestError.js";
 import STATUS_CODES from "../utils/StatusCodes.js";
 import pkg from 'pg';
-import { GraphQLError } from "graphql";
-const { Pool } = pkg;
+import { client } from "../configs/connectRedis.js"
 
+const { Pool } = pkg;
 
 export const sendQueryToDatabase = async (query: string, values?: any[]): Promise<any> => {
     const pool = new Pool({});
@@ -21,10 +21,7 @@ export const sendQueryToDatabase = async (query: string, values?: any[]): Promis
     }
 }
 
-
-
 const addUser = async (user: AdminUser) => {
-
     const values = [
         user.first_name,
         user.last_name,
@@ -32,12 +29,13 @@ const addUser = async (user: AdminUser) => {
         user.password,
         user.isAdmin = false
     ];
-
     const query = `INSERT INTO admin_users (first_name, last_name, email, password, is_admin)
             VALUES ($1, $2, $3, $4, $5)
         `;
     const res = await sendQueryToDatabase(query, values);
-
+    // add to redis
+    const newUser = await client.set(`user:${user.email}`, JSON.stringify([user]));
+    await client.expire(`user:${user.email}`, 60 * 60 * 24);
     if (!res) {
         throw new RequestError("Error while adding user:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
@@ -45,7 +43,6 @@ const addUser = async (user: AdminUser) => {
 
 // login
 const getUserByEmail = async (email: string) => {
-
     const query = `SELECT * FROM admin_users WHERE email = $1`;
     const result = await sendQueryToDatabase(query, [email]);
     if (!result) {
@@ -53,25 +50,21 @@ const getUserByEmail = async (email: string) => {
     }
     return result.rows;
 };
-
 const validatePassword = async (password: string, hashedPassword: string) => {
-
     const bcryptPassword = await bcrypt.compare(password, hashedPassword);
     if (!bcryptPassword) {
         throw new RequestError("Error while validating password:", STATUS_CODES.INTERNAL_SERVER_ERROR);
     }
     return bcryptPassword
-
 };
 
-
 const deleteUser = async (id: string) => {
-    const userExistsQuery = 'SELECT * FROM admin_users WHERE user_id = $1';  
+    const userExistsQuery = 'SELECT * FROM admin_users WHERE user_id = $1';
     const existingUser = await sendQueryToDatabase(userExistsQuery, [id]);
     if (existingUser.rows.length === 0) {
         throw new RequestError("User not found", STATUS_CODES.NOT_FOUND);
     }
-    const deleteQuery = 'DELETE FROM admin_users WHERE user_id = $1';  
+    const deleteQuery = 'DELETE FROM admin_users WHERE user_id = $1';
     await sendQueryToDatabase(deleteQuery, [id]);
     return `User with ID ${id} deleted successfully.`;
 };

@@ -5,20 +5,17 @@ const { Pool } = pkg;
 import { validate } from '../utils/validate.js';
 config();
 const connect = {
-    user: process.env.PGUSER!,
-    password: process.env.PGPASSWORD!,
-    host: process.env.PGHOST!,
-    port: Number(process.env.PGPORT!),
-    database: process.env.PGDATABASE,
 }
-const pool = new Pool(connect);
+console.log(connect);
+
+const pool = new Pool();
 
 export const connectToPg = async () => {
     try {
 
         const client: PoolClient = await pool.connect();
         console.log('Connected to postgres');
-        await defaultAdminUsers(client);
+        // await defaultAdminUsers(client); 
     } catch (err) {
         console.error('Error connecting to DB', err);
     } finally {

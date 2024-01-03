@@ -20,7 +20,7 @@ services:
     restart: always
     image: mongo:4.2.0
     volumes:
-      - ./data:/data/db
+      - data:/data/db
     ports:
      - '27017:27017'
   cache:

@@ -6,7 +6,7 @@ import Home from './pages/home';
 import OrdersComponent from './pages/Orders';
 import Register from './pages/Register';
 import Logout from './components/Logout';
-
+import PubSub from '../src/pages/PubSub'
 import Kidnapped from './components/Kidnapped';
 import 'react-toastify/dist/ReactToastify.css';
 // import Geography from './scenes/geography';
@@ -29,6 +29,7 @@ function App() {
           <Route path="/oms/logout" element={<Logout/>}/>
           <Route path="/oms/graph" element={<Graph/>}/>
           <Route path="/oms/users" element={<Users/>}/>
+          <Route path="/oms/pubsub" element={<PubSub/>}/>
           <Route path={'*'} element={<h1>404 Not Found</h1>} />
         </Routes>
         <Kidnapped/>
